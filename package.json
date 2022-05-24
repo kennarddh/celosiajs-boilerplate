@@ -8,7 +8,8 @@
 		"clean": "rm -rf ./build",
 		"start": "set \"NODE_ENV=production\" && node ./build/App.js",
 		"dev": "nodemon --exec npx babel-node src/app.js",
-		"lint": "eslint .",
+		"lint:check": "eslint src/**/*.{js,jsx}",
+		"lint:fix": "eslint --fix src/**/*.{js,jsx}",
 		"prettier:fix": "prettier -w \"src/**/*.js\"",
 		"prettier:check": "prettier -c \"src/**/*.js\""
 	},
