@@ -68,12 +68,20 @@ Start the production server.
 npm start
 ```
 
-### Lint
+### Lint Check
 
-Lint the code.
+Finds errors in your code.
 
 ```bash
-npm run lint
+npm run lint:check
+```
+
+### Lint Fix
+
+Fixes linting errors.
+
+```bash
+npm run lint:check
 ```
 
 ### Prettier fix
