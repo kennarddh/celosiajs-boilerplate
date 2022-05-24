@@ -4,14 +4,14 @@ import Example from '../Models/Example'
 // Utils
 import RemoveSpecialCharacter from '../Utils/RemoveSpecialCharacter'
 
-export const ExampleController = async (req, res) => {
+export const ExampleController = (req, res) => {
 	const { body } = req
 
 	const example = new Example({
 		message: RemoveSpecialCharacter(body.message),
 	})
 
-	await example
+	example
 		.save()
 		.then(() => {
 			return res.status(200).json({
