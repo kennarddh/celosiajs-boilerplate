@@ -50,6 +50,12 @@ npm run dev
 npm run build
 ```
 
+### Clean
+
+```bash
+npm run clean
+```
+
 ### Start build
 
 ```bash
