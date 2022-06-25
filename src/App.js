@@ -4,7 +4,6 @@ import express from 'express'
 
 // Middleware
 import cors from 'cors'
-import bodyParser from 'body-parser'
 import compression from 'compression'
 import helmet from 'helmet'
 
@@ -21,8 +20,8 @@ const PORT = process.env.PORT || 8080
 app.use(compression())
 app.use(helmet())
 
-app.use(bodyParser.urlencoded({ extended: false }))
-app.use(bodyParser.json())
+app.use(express.urlencoded({ extended: false }))
+app.use(express.json())
 
 app.use(cors())
 
