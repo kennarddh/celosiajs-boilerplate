@@ -18,9 +18,15 @@
 		"url": "https://github.com/kennarddh/express-boilerplate"
 	},
 	"keywords": [
-		"express",
+		"nodejs",
 		"boilerplate",
-		"express-boilerplate"
+		"babel",
+		"jwt",
+		"express",
+		"mongodb",
+		"eslint",
+		"bcrypt",
+		"jsonwebtoken"
 	],
 	"author": "kennarddh",
 	"license": "ISC",
