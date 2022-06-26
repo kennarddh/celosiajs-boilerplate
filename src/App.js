@@ -11,7 +11,7 @@ import helmet from 'helmet'
 import db from './Database'
 
 // Router
-import ExampleRouter from './Routes/Example'
+import AuthRouter from './Routes/Auth'
 
 const app = express()
 const PORT = process.env.PORT || 8080
@@ -31,6 +31,6 @@ db.on('error', error => {
 })
 
 // Router
-app.use('/api', ExampleRouter)
+app.use('/api', AuthRouter)
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`))
