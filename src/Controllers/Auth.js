@@ -79,3 +79,25 @@ export const Login = (req, res) => {
 			})
 		})
 }
+
+export const GetUserData = (req, res) => {
+	User.findById(req.user.id)
+		.exec()
+		.then(user => {
+			return res.status(200).json({
+				success: true,
+				data: {
+					id: user.id,
+					username: user.username,
+					name: user.name,
+					email: user.email,
+				},
+			})
+		})
+		.catch(() => {
+			return res.status(500).json({
+				success: false,
+				error: 'Internal server error',
+			})
+		})
+}
