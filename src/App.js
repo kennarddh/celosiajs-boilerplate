@@ -6,6 +6,7 @@ import express from 'express'
 import cors from 'cors'
 import compression from 'compression'
 import helmet from 'helmet'
+import rateLimit from 'express-rate-limit'
 
 // Database
 import db from './Database'
@@ -25,6 +26,15 @@ app.use(express.urlencoded({ extended: false }))
 app.use(express.json())
 
 app.use(cors())
+
+const limiter = rateLimit({
+	windowMs: 1 * 60 * 1000, // 1 minutes
+	max: 100, // Limit each IP to 100 requests per `window` (here, per 1 minutes)
+	standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
+	legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+})
+
+app.use(limiter)
 
 // Database
 db.on('error', error => {
