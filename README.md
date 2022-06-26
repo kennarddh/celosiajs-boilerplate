@@ -13,11 +13,14 @@ npm install
 The environment variables can be found and modified in the `.env` file. They come with these default values:
 
 ```bash
-# Port number
+# Port number (optional, default: 8080)
 PORT=8080
 
-# URL of the Mongo DB
+# URL of the Mongo DB (required)
 DB_HOST=mongodb://127.0.0.1:27017/express-boilerplate
+
+# JWT secret (required)
+JWT_SECRET=
 ```
 
 ### Project Structure
