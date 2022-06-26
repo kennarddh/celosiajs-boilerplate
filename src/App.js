@@ -31,6 +31,6 @@ db.on('error', error => {
 })
 
 // Router
-app.use('/api', AuthRouter)
+app.use('/api/auth', AuthRouter)
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`))

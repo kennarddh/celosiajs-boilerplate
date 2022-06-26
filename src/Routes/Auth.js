@@ -12,8 +12,8 @@ import LoginValidation from '../Validation/Auth/Login'
 
 const Router = express.Router()
 
-Router.post('/auth/register', RegisterValidation(), Register)
-Router.post('/auth/login', LoginValidation(), Login)
-Router.get('/auth/user', VerifyJWT, GetUserData)
+Router.post('/register', RegisterValidation(), Register)
+Router.post('/login', LoginValidation(), Login)
+Router.get('/user', VerifyJWT, GetUserData)
 
 export default Router
