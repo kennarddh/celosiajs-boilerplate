@@ -21,6 +21,12 @@ DB_HOST=mongodb://127.0.0.1:27017/express-boilerplate
 
 # JWT secret (required)
 JWT_SECRET=
+
+# Rate limiter max (optional, default: 10)
+RATE_LIMITER_MAX=10
+
+# Rate limiter window ms (optional, default: 60000 (1 minute))
+RATE_LIMITER_WINDOW_MS=60000
 ```
 
 ### Project Structure
