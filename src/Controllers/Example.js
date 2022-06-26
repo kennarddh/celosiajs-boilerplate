@@ -1,5 +1,5 @@
 // Models
-import Example from '../Models/Example'
+import Example from '../Models/User'
 
 // Utils
 import RemoveSpecialCharacter from '../Utils/RemoveSpecialCharacter'
