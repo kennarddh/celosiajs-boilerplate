@@ -6,6 +6,7 @@ import express from 'express'
 import cors from 'cors'
 import compression from 'compression'
 import helmet from 'helmet'
+import RateLimiter from './Middlewares/RateLimiter'
 
 // Database
 import db from './Database'
@@ -25,6 +26,8 @@ app.use(express.urlencoded({ extended: false }))
 app.use(express.json())
 
 app.use(cors())
+
+app.use(RateLimiter)
 
 // Database
 db.on('error', error => {
