@@ -84,7 +84,7 @@ npm run lint:check
 Fixes linting errors.
 
 ```bash
-npm run lint:check
+npm run lint:fix
 ```
 
 ### Prettier fix
