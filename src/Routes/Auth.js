@@ -1,13 +1,15 @@
 import express from 'express'
 
 // Controllers
-import { ExampleController } from '../Controllers/Auth'
+import { Register, Login, GetUserData } from '../Controllers/Auth'
 
-// Validation
-import ExampleValidation from '../Validation/Example'
+// Middleware
+import VerifyJWT from '../Middlewares/VerifyJWT'
 
 const Router = express.Router()
 
-Router.post('/example', ExampleValidation(), ExampleController)
+Router.post('/auth/register', Register)
+Router.post('/auth/login', Login)
+Router.get('/auth/user', VerifyJWT, GetUserData)
 
 export default Router
