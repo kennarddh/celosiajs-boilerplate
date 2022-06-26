@@ -12,6 +12,7 @@ import db from './Database'
 
 // Router
 import AuthRouter from './Routes/Auth'
+import NoMatchRouter from './Routes/NoMatch'
 
 const app = express()
 const PORT = process.env.PORT || 8080
@@ -32,5 +33,7 @@ db.on('error', error => {
 
 // Router
 app.use('/api/auth', AuthRouter)
+
+app.use('*', NoMatchRouter)
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`))
