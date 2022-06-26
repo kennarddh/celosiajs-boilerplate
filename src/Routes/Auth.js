@@ -1,7 +1,7 @@
 import express from 'express'
 
 // Controllers
-import { ExampleController } from '../Controllers/Example'
+import { ExampleController } from '../Controllers/Auth'
 
 // Validation
 import ExampleValidation from '../Validation/Example'
