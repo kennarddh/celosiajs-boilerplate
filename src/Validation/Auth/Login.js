@@ -29,7 +29,9 @@ const Login = () => {
 				}
 			})
 			.bail()
-			.isLength({ min: 8, max: 32 }),
+			.isLength({ min: 8, max: 32 })
+			.bail()
+			.toLowerCase(),
 		CheckValidationError(),
 	]
 
