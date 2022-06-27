@@ -15,18 +15,7 @@ const Register = () => {
 			.bail()
 			.escape()
 			.isLength({ max: 32 })
-			.bail()
-			.custom(async value => {
-				await User.findOne({ username: value })
-					.exec()
-					.then(user => {
-						if (user) {
-							throw new Error(
-								'Username or email has already taken'
-							)
-						}
-					})
-			}),
+			.bail(),
 		body('name')
 			.trim()
 			.not()
@@ -43,15 +32,15 @@ const Register = () => {
 			.isEmail()
 			.bail()
 			.normalizeEmail({ all_lowercase: true })
-			.custom(async value => {
-				await User.findOne({ email: value })
+			.custom(async (value, { req }) => {
+				await User.findOne({
+					$or: [{ email: value }, { username: req.body.username }],
+				})
 					.exec()
 					.then(user => {
-						if (user) {
-							throw new Error(
-								'Username or email has already taken'
-							)
-						}
+						if (!user) return true
+
+						throw new Error('Username or email has already taken')
 					})
 			}),
 		body('password')
