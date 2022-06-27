@@ -34,7 +34,7 @@ export const Register = async (req, res) => {
 export const Login = (req, res) => {
 	const { email, password } = req.body
 
-	User.findOne({ email })
+	User.findOne({ email: email.toLowerCase() })
 		.exec()
 		.then(user => {
 			if (!user) {
@@ -44,7 +44,7 @@ export const Login = (req, res) => {
 				})
 			}
 
-			bcrypt.compare(password, user.password).then(isPasswordCorrect => {
+			bcrypt.compare(password.toLowerCase(), user.password.toLowerCase()).then(isPasswordCorrect => {
 				if (!isPasswordCorrect) {
 					return res.status(403).json({
 						success: false,
@@ -54,7 +54,7 @@ export const Login = (req, res) => {
 
 				const payload = {
 					id: user._id,
-					username: user.username,
+					username: user.username.toLowerCase(),
 				}
 
 				jwt.sign(
