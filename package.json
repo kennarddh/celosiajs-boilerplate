@@ -6,7 +6,7 @@
 	"scripts": {
 		"build": "babel ./src --out-dir ./build",
 		"clean": "rimraf ./build",
-		"start": "set \"NODE_ENV=production\" && node ./build/App.js",
+		"start": "cross-env NODE_ENV=production node ./build/App.js",
 		"dev": "nodemon --exec npx babel-node src/app.js",
 		"lint:check": "eslint src/**/*.js",
 		"lint:fix": "eslint --fix src/**/*.js",
@@ -50,6 +50,7 @@
 		"@babel/plugin-transform-runtime": "^7.18.6",
 		"@babel/preset-env": "^7.18.6",
 		"@babel/runtime": "^7.18.3",
+		"cross-env": "^7.0.3",
 		"eslint": "^8.18.0",
 		"eslint-config-airbnb-base": "^15.0.0",
 		"eslint-config-prettier": "^8.3.0",
