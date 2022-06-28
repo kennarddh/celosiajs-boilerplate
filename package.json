@@ -6,7 +6,7 @@
 	"scripts": {
 		"build": "babel ./src --out-dir ./build",
 		"clean": "rimraf ./build",
-		"start": "set \"NODE_ENV=production\" && node ./build/App.js",
+		"start": "cross-env NODE_ENV=production node ./build/App.js",
 		"dev": "nodemon --exec npx babel-node src/app.js",
 		"lint:check": "eslint src/**/*.js",
 		"lint:fix": "eslint --fix src/**/*.js",
