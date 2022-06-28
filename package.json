@@ -5,7 +5,7 @@
 	"main": "src/App.js",
 	"scripts": {
 		"build": "babel ./src --out-dir ./build",
-		"clean": "rm -rf ./build",
+		"clean": "rimraf ./build",
 		"start": "set \"NODE_ENV=production\" && node ./build/App.js",
 		"dev": "nodemon --exec npx babel-node src/app.js",
 		"lint:check": "eslint src/**/*.js",
@@ -57,6 +57,7 @@
 		"eslint-plugin-prettier": "^4.0.0",
 		"eslint-plugin-security": "^1.5.0",
 		"nodemon": "^2.0.18",
-		"prettier": "^2.7.1"
+		"prettier": "^2.7.1",
+		"rimraf": "^3.0.2"
 	}
 }
