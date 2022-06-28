@@ -5,7 +5,7 @@
 	"main": "src/App.js",
 	"scripts": {
 		"build": "babel ./src --out-dir ./build",
-		"clean": "rm -rf ./build",
+		"clean": "rimraf ./build",
 		"start": "set \"NODE_ENV=production\" && node ./build/App.js",
 		"dev": "nodemon --exec npx babel-node src/app.js",
 		"lint:check": "eslint src/**/*.js",
