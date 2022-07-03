@@ -30,10 +30,12 @@ const LoggerFormat = [
 
 const Logger = winston.createLogger({
 	level: process.env.LOG_LEVEL || 'info',
-	silent: process.NODE_ENV === 'test',
+	silent: process.env.NODE_ENV === 'test',
 	format: winston.format.combine(...LoggerFormat),
 	transports: [
-		new winston.transports.Console({}),
+		new winston.transports.Console({
+			silent: process.env.NODE_ENV !== 'development',
+		}),
 		new WinstonDailyRotateFile({
 			dirname: path.resolve(logsRootDirectory, 'Application'),
 			filename: 'Application-%DATE%.log',
