@@ -35,6 +35,7 @@ const Logger = winston.createLogger({
 			maxSize: '1m',
 			maxFiles: '14d',
 			handleExceptions: true,
+			handleRejections: true,
 		}),
 	],
 })
