@@ -7,6 +7,10 @@ const Logger = winston.createLogger({
 		new winston.transports.File({
 			filename: 'Logs/Application.log',
 		}),
+		new winston.transports.File({
+			level: 'error',
+			filename: 'Logs/Error.log',
+		}),
 	],
 	format: winston.format.combine(
 		winston.format.timestamp(),
