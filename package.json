@@ -60,6 +60,7 @@
 		"eslint-plugin-security": "^1.5.0",
 		"nodemon": "^2.0.18",
 		"prettier": "^2.7.1",
-		"rimraf": "^3.0.2"
+		"rimraf": "^3.0.2",
+		"swagger-cli": "^4.0.4"
 	}
 }
