@@ -4,10 +4,9 @@ import WinstonDailyRotateFile from 'winston-daily-rotate-file'
 
 import path from 'path'
 
-const logsRootDirectory = path.resolve(
-	path.dirname(require.main.filename),
-	'../Logs'
-)
+import GetRootDirectory from './GetRootDirectory'
+
+const logsRootDirectory = path.resolve(GetRootDirectory(), 'Logs')
 
 const RemoveError = winston.format(info => {
 	return info.level !== 'error' ? info : false
