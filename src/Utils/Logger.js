@@ -12,6 +12,12 @@ const logsRootDirectory = path.resolve(
 const Logger = winston.createLogger({
 	level: process.env.LOG_LEVEL || 'info',
 	silent: process.NODE_ENV === 'test',
+	format: winston.format.combine(
+		winston.format.timestamp(),
+		winston.format.metadata(),
+		winston.format.ms(),
+		winston.format.json()
+	),
 	transports: [
 		new winston.transports.Console({}),
 		new WinstonDailyRotateFile({
@@ -24,18 +30,13 @@ const Logger = winston.createLogger({
 		new WinstonDailyRotateFile({
 			dirname: path.resolve(logsRootDirectory, 'Error'),
 			level: 'error',
-			filename: 'Error/Error.log-%DATE%',
+			filename: 'Error.log-%DATE%',
 			zippedArchive: true,
 			maxSize: '1m',
 			maxFiles: '14d',
+			handleExceptions: true,
 		}),
 	],
-	format: winston.format.combine(
-		winston.format.timestamp(),
-		winston.format.metadata(),
-		winston.format.ms(),
-		winston.format.json()
-	),
 })
 
 export default Logger
