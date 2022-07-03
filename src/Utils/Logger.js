@@ -9,15 +9,29 @@ const logsRootDirectory = path.resolve(
 	'../Logs'
 )
 
+const RemoveError = winston.format(info => {
+	return info.level !== 'error' ? info : false
+})
+
+const RemoveWarn = winston.format(info => {
+	return info.level !== 'warn' ? info : false
+})
+
+const RemoveInfo = winston.format(info => {
+	return info.level !== 'info' ? info : false
+})
+
+const LoggerFormat = [
+	winston.format.timestamp(),
+	winston.format.metadata(),
+	winston.format.ms(),
+	winston.format.json(),
+]
+
 const Logger = winston.createLogger({
 	level: process.env.LOG_LEVEL || 'info',
 	silent: process.NODE_ENV === 'test',
-	format: winston.format.combine(
-		winston.format.timestamp(),
-		winston.format.metadata(),
-		winston.format.ms(),
-		winston.format.json()
-	),
+	format: winston.format.combine(...LoggerFormat),
 	transports: [
 		new winston.transports.Console({}),
 		new WinstonDailyRotateFile({
@@ -36,6 +50,20 @@ const Logger = winston.createLogger({
 			maxFiles: '14d',
 			handleExceptions: true,
 			handleRejections: true,
+		}),
+		new WinstonDailyRotateFile({
+			dirname: path.resolve(logsRootDirectory, 'Http'),
+			level: 'http',
+			filename: 'Http.log-%DATE%',
+			zippedArchive: true,
+			maxSize: '1m',
+			maxFiles: '14d',
+			format: winston.format.combine(
+				RemoveError(),
+				RemoveWarn(),
+				RemoveInfo(),
+				...LoggerFormat
+			),
 		}),
 	],
 })
