@@ -4,25 +4,16 @@ import WinstonDailyRotateFile from 'winston-daily-rotate-file'
 
 import path from 'path'
 
-import GetRootDirectory from './GetRootDirectory'
+// Utils
+import GetRootDirectory from '../GetRootDirectory'
+
+// Format
+import RemoveError from './Format/RemoveError'
+import RemoveWarn from './Format/RemoveWarn'
+import RemoveInfo from './Format/RemoveInfo'
+import RemoveHttp from './Format/RemoveHttp'
 
 const logsRootDirectory = path.resolve(GetRootDirectory(), 'Logs')
-
-const RemoveError = winston.format(info => {
-	return info.level !== 'error' ? info : false
-})
-
-const RemoveWarn = winston.format(info => {
-	return info.level !== 'warn' ? info : false
-})
-
-const RemoveInfo = winston.format(info => {
-	return info.level !== 'info' ? info : false
-})
-
-const RemoveHttp = winston.format(info => {
-	return info.level !== 'http' ? info : false
-})
 
 const LoggerFormat = [
 	winston.format.timestamp(),
