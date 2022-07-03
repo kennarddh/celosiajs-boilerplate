@@ -1,15 +1,32 @@
 import winston from 'winston'
 
+import WinstonDailyRotateFile from 'winston-daily-rotate-file'
+
+import path from 'path'
+
+const logsRootDirectory = path.resolve(
+	path.dirname(require.main.filename),
+	'../Logs'
+)
+
 const Logger = winston.createLogger({
 	level: process.env.LOG_LEVEL || 'info',
 	transports: [
 		new winston.transports.Console({}),
-		new winston.transports.File({
-			filename: 'Logs/Application.log',
+		new WinstonDailyRotateFile({
+			dirname: path.resolve(logsRootDirectory, 'Application'),
+			filename: 'Application-%DATE%.log',
+			zippedArchive: true,
+			maxSize: '1m',
+			maxFiles: '14d',
 		}),
-		new winston.transports.File({
+		new WinstonDailyRotateFile({
+			dirname: path.resolve(logsRootDirectory, 'Error'),
 			level: 'error',
-			filename: 'Logs/Error.log',
+			filename: 'Error/Error.log-%DATE%',
+			zippedArchive: true,
+			maxSize: '1m',
+			maxFiles: '14d',
 		}),
 	],
 	format: winston.format.combine(
