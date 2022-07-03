@@ -27,6 +27,9 @@ RATE_LIMITER_MAX=100
 
 # Rate limiter window ms (optional, default: 60000 (1 minute))
 RATE_LIMITER_WINDOW_MS=60000
+
+# Logger level (optional, default: info)
+LOG_LEVEL=info
 ```
 
 ### Project Structure
