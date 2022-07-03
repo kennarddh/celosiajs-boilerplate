@@ -25,5 +25,6 @@ module.exports = {
 		'no-console': 'off',
 		'consistent-return': 'off',
 		'no-unused-vars': 'warn',
+		'import/extensions': ['warn', { js: 'never', json: 'never' }],
 	},
 }
