@@ -12,7 +12,8 @@
 		"lint:check": "eslint src/**/*.js",
 		"lint:fix": "eslint --fix src/**/*.js",
 		"prettier:fix": "prettier -w \"src/**/*.js\"",
-		"prettier:check": "prettier -c \"src/**/*.js\""
+		"prettier:check": "prettier -c \"src/**/*.js\"",
+		"prepare": "npm run build:swagger"
 	},
 	"repository": {
 		"type": "git",
