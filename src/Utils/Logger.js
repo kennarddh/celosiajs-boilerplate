@@ -11,6 +11,7 @@ const logsRootDirectory = path.resolve(
 
 const Logger = winston.createLogger({
 	level: process.env.LOG_LEVEL || 'info',
+	silent: process.NODE_ENV === 'test',
 	transports: [
 		new winston.transports.Console({}),
 		new WinstonDailyRotateFile({
