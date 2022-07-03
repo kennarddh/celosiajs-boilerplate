@@ -1,0 +1,91 @@
+{
+	"openapi": "3.0.3",
+	"info": {
+		"title": "Express Boilerplate",
+		"version": "1.0"
+	},
+	"servers": [
+		{
+			"url": "{url}:{port}/api/",
+			"variables": {
+				"port": {
+					"default": "8080",
+					"enum": ["8080"],
+					"description": "The port the server will run on"
+				},
+				"url": {
+					"default": "http://localhost",
+					"enum": ["http://localhost"],
+					"description": "Server url"
+				}
+			}
+		}
+	],
+	"paths": {
+		"/auth/user": {
+			"get": {
+				"tags": ["Authentication"],
+				"summary": "Get the current user",
+				"description": "Get the current user",
+				"security": [
+					{
+						"x-access-token": []
+					}
+				],
+				"responses": {
+					"200": {
+						"$ref": "./Paths/Auth/User/Get/Responses/200.json"
+					},
+					"401": {
+						"$ref": "./Paths/Auth/User/Get/Responses/401.json"
+					},
+					"500": {
+						"$ref": "./Paths/Auth/User/Get/Responses/500.json"
+					}
+				}
+			}
+		},
+		"/auth/register": {
+			"post": {
+				"tags": ["Authentication"],
+				"summary": "Register new user",
+				"description": "Register new user",
+				"requestBody": {
+					"$ref": "./Paths/Auth/Register/Post/RequestBody.json"
+				},
+				"responses": {
+					"201": {
+						"$ref": "./Paths/Auth/Register/Post/Responses/201.json"
+					},
+					"400": {
+						"$ref": "./Paths/Auth/Register/Post/Responses/400.json"
+					},
+					"500": {
+						"$ref": "./Paths/Auth/Register/Post/Responses/500.json"
+					}
+				}
+			}
+		},
+		"/auth/login": {
+			"post": {
+				"tags": ["Authentication"],
+				"summary": "Login",
+				"description": "Login",
+				"requestBody": {
+					"$ref": "./Paths/Auth/Login/Post/RequestBody.json"
+				},
+				"responses": {
+					"200": {
+						"$ref": "./Paths/Auth/Login/Post/Responses/200.json"
+					},
+					"400": {
+						"$ref": "./Paths/Auth/Login/Post/Responses/400.json"
+					},
+					"500": {
+						"$ref": "./Paths/Auth/Login/Post/Responses/500.json"
+					}
+				}
+			}
+		}
+	}
+}

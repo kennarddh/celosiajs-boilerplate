@@ -1,0 +1,20 @@
+{
+	"description": "Internal Server Error",
+	"content": {
+		"application/json": {
+			"schema": {
+				"type": "object",
+				"properties": {
+					"success": {
+						"type": "boolean",
+						"default": false
+					},
+					"error": {
+						"type": "string",
+						"default": "Login Failed"
+					}
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,29 @@
+{
+	"content": {
+		"application/json": {
+			"schema": {
+				"type": "object",
+				"properties": {
+					"username": {
+						"type": "string",
+						"minLength": 1
+					},
+					"name": {
+						"type": "string",
+						"minLength": 1
+					},
+					"email": {
+						"type": "string",
+						"minLength": 1,
+						"format": "email"
+					},
+					"password": {
+						"type": "string",
+						"minLength": 8
+					}
+				},
+				"required": ["username", "name", "email", "password"]
+			}
+		}
+	}
+}

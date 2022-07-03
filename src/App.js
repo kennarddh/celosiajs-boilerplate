@@ -14,6 +14,7 @@ import db from './Database'
 
 // Router
 import AuthRouter from './Routes/Auth'
+import DocsRouter from './Routes/Docs'
 import NoMatchRouter from './Routes/NoMatch'
 
 const app = express()
@@ -39,6 +40,8 @@ db.on('error', error => {
 
 // Router
 app.use('/api/auth', AuthRouter)
+
+app.use('/api/docs', DocsRouter)
 
 app.use('*', NoMatchRouter)
 
