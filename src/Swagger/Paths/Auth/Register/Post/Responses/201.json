@@ -1,0 +1,25 @@
+{
+	"description": "Sign Up Successful",
+	"content": {
+		"application/json": {
+			"schema": {
+				"type": "object",
+				"properties": {
+					"success": {
+						"type": "boolean",
+						"default": true
+					},
+					"data": {
+						"type": "object",
+						"properties": {
+							"id": {
+								"type": "string",
+								"minLength": 1
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}

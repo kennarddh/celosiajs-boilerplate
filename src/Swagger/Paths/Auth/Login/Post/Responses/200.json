@@ -1,0 +1,19 @@
+{
+	"description": "Login Successful",
+	"content": {
+		"application/json": {
+			"schema": {
+				"type": "object",
+				"properties": {
+					"success": {
+						"type": "boolean",
+						"default": true
+					},
+					"token": {
+						"type": "string"
+					}
+				}
+			}
+		}
+	}
+}

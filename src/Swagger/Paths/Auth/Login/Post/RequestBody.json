@@ -1,0 +1,21 @@
+{
+	"content": {
+		"application/json": {
+			"schema": {
+				"type": "object",
+				"properties": {
+					"email": {
+						"type": "string",
+						"minLength": 1,
+						"format": "email"
+					},
+					"password": {
+						"type": "string",
+						"minLength": 8
+					}
+				},
+				"required": ["email", "password"]
+			}
+		}
+	}
+}
