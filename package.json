@@ -5,6 +5,7 @@
 	"main": "src/App.js",
 	"scripts": {
 		"build": "babel ./src --out-dir ./build",
+		"build:swagger": "swagger-cli bundle ./src/Swagger/Swagger.json --outfile ./src/Swagger.json --type json",
 		"clean": "rimraf ./build",
 		"start": "cross-env NODE_ENV=production node ./build/App.js",
 		"dev": "nodemon --exec npx babel-node src/app.js",
