@@ -39,6 +39,7 @@ src\
  |--Models\         # Mongoose models (data layer)
  |--Routes\         # Routes
  |--Utils\          # Utility classes and functions
+ |--Swagger\        # Open Api 3 spec
  |--Validations\    # Request data validation schemas
  |--App.js          # Express app
 ```
