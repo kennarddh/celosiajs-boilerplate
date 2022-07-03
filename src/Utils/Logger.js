@@ -21,6 +21,10 @@ const RemoveInfo = winston.format(info => {
 	return info.level !== 'info' ? info : false
 })
 
+const RemoveHttp = winston.format(info => {
+	return info.level !== 'http' ? info : false
+})
+
 const LoggerFormat = [
 	winston.format.timestamp(),
 	winston.format.metadata(),
@@ -66,6 +70,16 @@ const Logger = winston.createLogger({
 				RemoveInfo(),
 				...LoggerFormat
 			),
+		}),
+		new WinstonDailyRotateFile({
+			dirname: path.resolve(logsRootDirectory, 'Debug'),
+			level: 'debug',
+			filename: 'Debug.log-%DATE%',
+			zippedArchive: true,
+			maxSize: '1m',
+			maxFiles: '14d',
+			format: winston.format.combine(RemoveHttp(), ...LoggerFormat),
+			silent: process.env.NODE_ENV !== 'development',
 		}),
 	],
 })
