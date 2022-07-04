@@ -13,8 +13,8 @@
 		"dev": "cross-env NODE_ENV=development nodemon --exec npx babel-node src/app.js",
 		"lint:check": "eslint src/**/*.js",
 		"lint:fix": "eslint --fix src/**/*.js",
-		"prettier:fix": "prettier -w \"src/**/*.js\"",
-		"prettier:check": "prettier -c \"src/**/*.js\"",
+		"prettier:fix": "prettier -w \"src/**/*.{js,json}\"",
+		"prettier:check": "prettier -c \"src/**/*.{js,json}\"",
 		"prepare": "npm run build:swagger"
 	},
 	"repository": {
