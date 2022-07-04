@@ -4,11 +4,13 @@
 	"description": "Express boilerplate",
 	"main": "src/App.js",
 	"scripts": {
-		"build": "babel ./src --out-dir ./build",
+		"build": "babel ./src --out-dir ./build && npm run build:swagger:production",
+		"build:swagger:production": "swagger-cli bundle ./src/Swagger/Swagger.json --outfile ./build/Swagger.json --type json",
 		"build:swagger": "swagger-cli bundle ./src/Swagger/Swagger.json --outfile ./src/Swagger.json --type json",
 		"clean": "rimraf ./build",
+		"clean:logs": "rimraf ./Logs",
 		"start": "cross-env NODE_ENV=production node ./build/App.js",
-		"dev": "nodemon --exec npx babel-node src/app.js",
+		"dev": "cross-env NODE_ENV=development nodemon --exec npx babel-node src/app.js",
 		"lint:check": "eslint src/**/*.js",
 		"lint:fix": "eslint --fix src/**/*.js",
 		"prettier:fix": "prettier -w \"src/**/*.js\"",
@@ -44,7 +46,9 @@
 		"helmet": "^5.0.2",
 		"jsonwebtoken": "^8.5.1",
 		"mongoose": "^6.4.2",
-		"swagger-ui-express": "^4.4.0"
+		"swagger-ui-express": "^4.4.0",
+		"winston": "^3.8.1",
+		"winston-daily-rotate-file": "^4.7.1"
 	},
 	"devDependencies": {
 		"@babel/cli": "^7.18.6",

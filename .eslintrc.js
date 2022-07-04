@@ -22,7 +22,7 @@ module.exports = {
 				allow: ['_id'],
 			},
 		],
-		'no-console': 'off',
+		'no-console': 'error',
 		'consistent-return': 'off',
 		'no-unused-vars': 'warn',
 		'import/extensions': ['warn', { js: 'never', json: 'never' }],

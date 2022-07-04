@@ -8,9 +8,13 @@ import compression from 'compression'
 import helmet from 'helmet'
 import RateLimiter from './Middlewares/RateLimiter'
 import MongoSanitize from './Middlewares/MongoSanitize'
+import LogHttpRequest from './Middlewares/LogHttpRequest'
 
 // Database
 import db from './Database'
+
+// Utils
+import Logger from './Utils/Logger/Logger'
 
 // Router
 import AuthRouter from './Routes/Auth'
@@ -33,9 +37,11 @@ app.use(RateLimiter)
 
 app.use(MongoSanitize)
 
+app.use(LogHttpRequest)
+
 // Database
 db.on('error', error => {
-	console.log(`MongoDB connection error: ${error}`)
+	Logger.error('Mongo DB connection error', { error })
 })
 
 // Router
@@ -45,4 +51,6 @@ app.use('/api/docs', DocsRouter)
 
 app.use('*', NoMatchRouter)
 
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`))
+app.listen(PORT, () =>
+	Logger.info(`Server running`, { port: PORT, pid: process.pid })
+)
