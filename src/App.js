@@ -8,6 +8,7 @@ import compression from 'compression'
 import helmet from 'helmet'
 import RateLimiter from './Middlewares/RateLimiter'
 import MongoSanitize from './Middlewares/MongoSanitize'
+import LogHttpRequest from './Middlewares/LogHttpRequest'
 
 // Database
 import db from './Database'
@@ -32,6 +33,8 @@ app.use(cors())
 app.use(RateLimiter)
 
 app.use(MongoSanitize)
+
+app.use(LogHttpRequest)
 
 // Database
 db.on('error', error => {
