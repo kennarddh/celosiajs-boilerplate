@@ -9,7 +9,7 @@
 		"clean": "rimraf ./build",
 		"clean:logs": "rimraf ./Logs",
 		"start": "cross-env NODE_ENV=production node ./build/App.js",
-		"dev": "nodemon --exec npx babel-node src/app.js",
+		"dev": "cross-env NODE_ENV=development nodemon --exec npx babel-node src/app.js",
 		"lint:check": "eslint src/**/*.js",
 		"lint:fix": "eslint --fix src/**/*.js",
 		"prettier:fix": "prettier -w \"src/**/*.js\"",
