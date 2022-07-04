@@ -1,3 +1,5 @@
+import Logger from '../Utils/Logger/Logger'
+
 const RemoveXAccessToken = headers => {
 	const newHeaders = {}
 
@@ -23,17 +25,14 @@ const LogHttpRequest = (req, res, next) => {
 			url,
 		} = req
 
-		console.log(
-			JSON.stringify({
-				timestamp: Date.now(),
-				processingTime: Date.now() - requestStart,
-				headers: RemoveXAccessToken(headers),
-				httpVersion,
-				method,
-				remoteFamily,
-				url,
-			})
-		)
+		Logger.http({
+			processingTime: Date.now() - requestStart,
+			headers: RemoveXAccessToken(headers),
+			httpVersion,
+			method,
+			remoteFamily,
+			url,
+		})
 	})
 
 	next()
