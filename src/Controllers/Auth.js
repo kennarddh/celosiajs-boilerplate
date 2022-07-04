@@ -128,6 +128,10 @@ export const GetUserData = (req, res) => {
 	User.findById(req.user.id)
 		.exec()
 		.then(user => {
+			Logger.error('Get user data success', {
+				id: user.id,
+			})
+
 			return res.status(200).json({
 				success: true,
 				data: {
@@ -138,7 +142,11 @@ export const GetUserData = (req, res) => {
 				},
 			})
 		})
-		.catch(() => {
+		.catch(error => {
+			Logger.error('Get user data find user failed', {
+				error,
+			})
+
 			return res.status(500).json({
 				success: false,
 				error: 'Internal server error',
