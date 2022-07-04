@@ -25,6 +25,9 @@ const LogHttpRequest = (req, res, next) => {
 			url,
 		} = req
 
+		const { statusCode, statusMessage } = res
+		const responseHeaders = res.getHeaders()
+
 		Logger.http({
 			processingTime: Date.now() - requestStart,
 			headers: RemoveXAccessToken(headers),
@@ -32,6 +35,11 @@ const LogHttpRequest = (req, res, next) => {
 			method,
 			remoteFamily,
 			url,
+			response: {
+				statusCode,
+				statusMessage,
+				headers: responseHeaders,
+			},
 		})
 	})
 
