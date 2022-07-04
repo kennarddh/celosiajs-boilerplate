@@ -2,7 +2,7 @@
 	"description": "Validation Failed",
 	"content": {
 		"application/json": {
-			"schema":{
+			"schema": {
 				"$ref": "../../../../../Components/Schemas/ValidationFailed.json"
 			}
 		}
