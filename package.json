@@ -4,7 +4,8 @@
 	"description": "Express boilerplate",
 	"main": "src/App.js",
 	"scripts": {
-		"build": "babel ./src --out-dir ./build",
+		"build": "babel ./src --out-dir ./build && npm run build:swagger:production",
+		"build:swagger:production": "swagger-cli bundle ./src/Swagger/Swagger.json --outfile ./build/Swagger.json --type json",
 		"build:swagger": "swagger-cli bundle ./src/Swagger/Swagger.json --outfile ./src/Swagger.json --type json",
 		"clean": "rimraf ./build",
 		"clean:logs": "rimraf ./Logs",
