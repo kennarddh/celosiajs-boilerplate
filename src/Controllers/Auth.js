@@ -4,6 +4,8 @@ import bcrypt from 'bcrypt'
 // Models
 import User from '../Models/User'
 
+import Logger from '../Utils/Logger/Logger'
+
 export const Register = async (req, res) => {
 	const { username, name, email, password } = req.body
 
@@ -16,6 +18,10 @@ export const Register = async (req, res) => {
 
 	user.save()
 		.then(() => {
+			Logger.info('New user succesfully created', {
+				id: user._id,
+			})
+
 			return res.status(201).json({
 				success: true,
 				data: {
@@ -23,10 +29,15 @@ export const Register = async (req, res) => {
 				},
 			})
 		})
-		.catch(() => {
+		.catch(error => {
+			Logger.error('New user failed to create', {
+				id: user._id,
+				error,
+			})
+
 			return res.status(500).json({
 				success: false,
-				error: 'User not created',
+				error: 'Internal server error',
 			})
 		})
 }
