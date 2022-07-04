@@ -3,6 +3,7 @@ module.exports = {
 		'airbnb-base',
 		'plugin:prettier/recommended',
 		'plugin:security/recommended',
+		'plugin:json/recommended',
 	],
 	plugins: ['prettier'],
 	parserOptions: {
