@@ -1,6 +1,6 @@
 import CreateUser from '../../Services/User/Create'
 
-const Register = async (req, res) => {
+const Register = (req, res) => {
 	const { username, name, email, password } = req.body
 
 	CreateUser({ username, name, email, password })
