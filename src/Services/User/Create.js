@@ -43,4 +43,5 @@ const Create = ({ username, name, email, password }) =>
 				reject({ code: 500 })
 			})
 	})
+
 export default Create
