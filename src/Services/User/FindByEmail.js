@@ -8,6 +8,8 @@ const FindByEmail = ({ email }) =>
 		User.findOne({ email: email.toLowerCase() })
 			.exec()
 			.then(user => {
+				if (!user) return reject({ code: 404 })
+
 				resolve({ user })
 			})
 			.catch(error => {

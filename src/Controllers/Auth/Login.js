@@ -1,24 +1,15 @@
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcrypt'
 
-// Models
-import User from '../../Models/User'
-
 import Logger from '../../Utils/Logger/Logger'
+
+import FindUserByEmail from '../../Services/User/FindByEmail'
 
 const Login = (req, res) => {
 	const { email, password } = req.body
 
-	User.findOne({ email: email.toLowerCase() })
-		.exec()
-		.then(user => {
-			if (!user) {
-				return res.status(403).json({
-					success: false,
-					error: 'Invalid email or password',
-				})
-			}
-
+	FindUserByEmail({ email })
+		.then(({ user }) => {
 			bcrypt
 				.compare(password, user.password)
 				.then(isPasswordCorrect => {
@@ -76,15 +67,20 @@ const Login = (req, res) => {
 					})
 				})
 		})
-		.catch(error => {
-			Logger.error('Login find user failed', {
-				error,
-			})
+		.catch(({ code }) => {
+			if (code === 500) {
+				return res.status(500).json({
+					success: false,
+					error: 'Internal server error',
+				})
+			}
 
-			return res.status(500).json({
-				success: false,
-				error: 'Internal server error',
-			})
+			if (code === 404) {
+				return res.status(403).json({
+					success: false,
+					error: 'Invalid email or password',
+				})
+			}
 		})
 }
 
