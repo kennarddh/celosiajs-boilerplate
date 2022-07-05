@@ -8,6 +8,8 @@ const FindByEmail = ({ id }) =>
 		User.findById(id)
 			.exec()
 			.then(user => {
+				if (!user) return reject({ code: 404 })
+
 				resolve({ user })
 			})
 			.catch(error => {

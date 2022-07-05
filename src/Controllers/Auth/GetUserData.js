@@ -1,12 +1,12 @@
-// Models
-import User from '../../Models/User'
-
 import Logger from '../../Utils/Logger/Logger'
 
+import FindUserById from '../../Services/User/FindById'
+
 const GetUserData = (req, res) => {
-	User.findById(req.user.id)
-		.exec()
-		.then(user => {
+	const { id } = req.user
+
+	FindUserById({ id })
+		.then(({ user }) => {
 			Logger.error('Get user data success', {
 				id: user.id,
 			})
@@ -14,22 +14,27 @@ const GetUserData = (req, res) => {
 			return res.status(200).json({
 				success: true,
 				data: {
-					id: user.id,
+					id: user._id,
 					username: user.username,
 					name: user.name,
 					email: user.email,
 				},
 			})
 		})
-		.catch(error => {
-			Logger.error('Get user data find user failed', {
-				error,
-			})
+		.catch(({ code }) => {
+			if (code === 500) {
+				return res.status(500).json({
+					success: false,
+					error: 'Internal server error',
+				})
+			}
 
-			return res.status(500).json({
-				success: false,
-				error: 'Internal server error',
-			})
+			if (code === 404) {
+				return res.status(403).json({
+					success: false,
+					error: 'Invalid email or password',
+				})
+			}
 		})
 }
 
