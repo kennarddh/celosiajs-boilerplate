@@ -44,8 +44,14 @@ src\
  |--Utils\          # Utility classes and functions
  |--Swagger\        # Open Api 3 spec
  |--Validations\    # Request data validation schemas
+ |--Services        # Services
  |--App.js          # Express app
 ```
+
+## Services Reject Code
+
+-   500 Intenal server error
+-   404 Not found
 
 ## Available Scripts
 
