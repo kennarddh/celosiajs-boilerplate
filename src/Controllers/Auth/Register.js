@@ -1,43 +1,24 @@
-import bcrypt from 'bcrypt'
-
-// Models
-import User from '../../Models/User'
-
-import Logger from '../../Utils/Logger/Logger'
+import CreateUser from '../../Services/User/Create'
 
 const Register = async (req, res) => {
 	const { username, name, email, password } = req.body
 
-	const user = new User({
-		username: username.toLowerCase(),
-		name,
-		email: email.toLowerCase(),
-		password: await bcrypt.hash(password, 10),
-	})
-
-	user.save()
-		.then(() => {
-			Logger.info('New user successfully created', {
-				id: user._id,
-			})
-
+	CreateUser({ username, name, email, password })
+		.then(({ id }) => {
 			return res.status(201).json({
 				success: true,
 				data: {
-					id: user._id,
+					id,
 				},
 			})
 		})
-		.catch(error => {
-			Logger.error('New user failed to create', {
-				id: user._id,
-				error,
-			})
-
-			return res.status(500).json({
-				success: false,
-				error: 'Internal server error',
-			})
+		.catch(({ code }) => {
+			if (code === 500) {
+				return res.status(500).json({
+					success: false,
+					error: 'Internal server error',
+				})
+			}
 		})
 }
 
