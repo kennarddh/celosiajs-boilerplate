@@ -39,6 +39,9 @@
 					"401": {
 						"$ref": "./Paths/Auth/User/Get/Responses/401.json"
 					},
+					"403": {
+						"$ref": "./Paths/Auth/User/Get/Responses/403.json"
+					},
 					"500": {
 						"$ref": "./Paths/Auth/User/Get/Responses/500.json"
 					}
