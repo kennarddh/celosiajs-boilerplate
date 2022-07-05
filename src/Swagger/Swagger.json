@@ -81,6 +81,9 @@
 					"400": {
 						"$ref": "./Paths/Auth/Login/Post/Responses/400.json"
 					},
+					"403": {
+						"$ref": "./Paths/Auth/Login/Post/Responses/403.json"
+					},
 					"500": {
 						"$ref": "./Paths/Auth/Login/Post/Responses/500.json"
 					}

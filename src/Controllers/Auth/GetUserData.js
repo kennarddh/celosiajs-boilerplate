@@ -22,17 +22,10 @@ const GetUserData = (req, res) => {
 			})
 		})
 		.catch(({ code }) => {
-			if (code === 500) {
+			if (code === 500 || code === 404) {
 				return res.status(500).json({
 					success: false,
 					error: 'Internal server error',
-				})
-			}
-
-			if (code === 404) {
-				return res.status(403).json({
-					success: false,
-					error: 'Invalid email or password',
 				})
 			}
 		})

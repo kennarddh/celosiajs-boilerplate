@@ -1,0 +1,10 @@
+{
+	"description": "Invalid email or password",
+	"content": {
+		"application/json": {
+			"schema": {
+				"$ref": "../../../../../Components/Schemas/InvalidEmailOrPassword.json"
+			}
+		}
+	}
+}
