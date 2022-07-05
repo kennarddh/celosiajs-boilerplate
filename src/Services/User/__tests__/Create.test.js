@@ -6,6 +6,10 @@ import Create from '../Create'
 import User from '../../../Models/User'
 
 describe('Create user service', () => {
+	afterEach(() => {
+		mockingoose.resetAll()
+	})
+
 	it('Should create new user', () => {
 		expect.assertions(3)
 
