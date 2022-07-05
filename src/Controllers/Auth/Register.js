@@ -16,15 +16,15 @@ const Register = async (req, res) => {
 	})
 
 	user.save()
-		.then(() => {
+		.then(newUser => {
 			Logger.info('New user successfully created', {
-				id: user._id,
+				id: newUser._id,
 			})
 
 			return res.status(201).json({
 				success: true,
 				data: {
-					id: user._id,
+					id: newUser._id,
 				},
 			})
 		})
