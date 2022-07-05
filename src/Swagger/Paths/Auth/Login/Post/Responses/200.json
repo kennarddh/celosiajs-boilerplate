@@ -9,8 +9,13 @@
 						"type": "boolean",
 						"default": true
 					},
-					"token": {
-						"type": "string"
+					"data": {
+						"type": "object",
+						"properties": {
+							"token": {
+								"type": "string"
+							}
+						}
 					}
 				}
 			}
