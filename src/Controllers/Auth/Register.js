@@ -4,11 +4,11 @@ const Register = (req, res) => {
 	const { username, name, email, password } = req.body
 
 	CreateUser({ username, name, email, password })
-		.then(({ id }) => {
+		.then(({ user }) => {
 			return res.status(201).json({
 				success: true,
 				data: {
-					id,
+					id: user._id,
 				},
 			})
 		})
