@@ -23,7 +23,7 @@ const Create = ({ username, name, email, password }) =>
 							id: user._id,
 						})
 
-						resolve({ id: user._id })
+						resolve({ user })
 					})
 					.catch(error => {
 						Logger.error('Create user to database failed', {
