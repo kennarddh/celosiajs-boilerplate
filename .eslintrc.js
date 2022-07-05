@@ -27,5 +27,6 @@ module.exports = {
 		'consistent-return': 'off',
 		'no-unused-vars': 'warn',
 		'import/extensions': ['warn', { js: 'never', json: 'never' }],
+		'prefer-promise-reject-errors': 'off',
 	},
 }
