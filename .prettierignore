@@ -3,3 +3,4 @@
 /package-lock.json
 /.eslintignore
 /.gitignore
+/src/Swagger.json
