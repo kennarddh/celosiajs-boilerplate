@@ -1,6 +1,6 @@
 import JWTVerify from '../Utils/Promises/JWTVerify'
 
-const VerifyJWT = (req, res, next) => {
+const VerifyJWT = async (req, res, next) => {
 	const token = req.headers['x-access-token']?.split(' ')[1]
 
 	if (!token)
@@ -9,7 +9,7 @@ const VerifyJWT = (req, res, next) => {
 			error: 'Failed to authenticate',
 		})
 
-	JWTVerify(token, process.env.JWT_SECRET)
+	await JWTVerify(token, process.env.JWT_SECRET)
 		.then(decoded => {
 			const user = {
 				id: decoded.id,
