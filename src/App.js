@@ -21,7 +21,7 @@ import AuthRouter from './Routes/Auth'
 import DocsRouter from './Routes/Docs'
 import NoMatchRouter from './Routes/NoMatch'
 
-const app = express()
+export const app = express()
 const PORT = process.env.PORT || 8080
 
 // Middleware

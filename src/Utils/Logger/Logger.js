@@ -26,37 +26,6 @@ const Transports = [
 	new winston.transports.Console({
 		silent: process.env.NODE_ENV !== 'development',
 	}),
-	new WinstonDailyRotateFile({
-		dirname: path.resolve(logsRootDirectory, 'Application'),
-		filename: 'Application-%DATE%.log',
-		zippedArchive: true,
-		maxSize: '1m',
-		maxFiles: '14d',
-	}),
-	new WinstonDailyRotateFile({
-		dirname: path.resolve(logsRootDirectory, 'Error'),
-		level: 'error',
-		filename: 'Error.log-%DATE%',
-		zippedArchive: true,
-		maxSize: '1m',
-		maxFiles: '14d',
-		handleExceptions: true,
-		handleRejections: true,
-	}),
-	new WinstonDailyRotateFile({
-		dirname: path.resolve(logsRootDirectory, 'Http'),
-		level: 'http',
-		filename: 'Http.log-%DATE%',
-		zippedArchive: true,
-		maxSize: '1m',
-		maxFiles: '14d',
-		format: winston.format.combine(
-			RemoveError(),
-			RemoveWarn(),
-			RemoveInfo(),
-			...LoggerFormat
-		),
-	}),
 ]
 
 if (process.env.NODE_ENV === 'development') {
@@ -70,6 +39,42 @@ if (process.env.NODE_ENV === 'development') {
 			maxFiles: '14d',
 			format: winston.format.combine(RemoveHttp(), ...LoggerFormat),
 			silent: process.env.NODE_ENV !== 'development',
+		})
+	)
+}
+
+if (process.env.NODE_ENV !== 'test') {
+	Transports.push(
+		new WinstonDailyRotateFile({
+			dirname: path.resolve(logsRootDirectory, 'Application'),
+			filename: 'Application-%DATE%.log',
+			zippedArchive: true,
+			maxSize: '1m',
+			maxFiles: '14d',
+		}),
+		new WinstonDailyRotateFile({
+			dirname: path.resolve(logsRootDirectory, 'Error'),
+			level: 'error',
+			filename: 'Error.log-%DATE%',
+			zippedArchive: true,
+			maxSize: '1m',
+			maxFiles: '14d',
+			handleExceptions: true,
+			handleRejections: true,
+		}),
+		new WinstonDailyRotateFile({
+			dirname: path.resolve(logsRootDirectory, 'Http'),
+			level: 'http',
+			filename: 'Http.log-%DATE%',
+			zippedArchive: true,
+			maxSize: '1m',
+			maxFiles: '14d',
+			format: winston.format.combine(
+				RemoveError(),
+				RemoveWarn(),
+				RemoveInfo(),
+				...LoggerFormat
+			),
 		})
 	)
 }
