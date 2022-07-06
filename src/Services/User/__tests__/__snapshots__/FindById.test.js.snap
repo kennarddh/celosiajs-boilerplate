@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Create user service Should create new user: findByIdQuery 1`] = `
+Object {
+  "_id": "62c526bb503a77b155f6eba5",
+}
+`;
+
+exports[`Create user service Should create new user: findByIdResult 1`] = `
+Object {
+  "_id": "62c526bb503a77b155f6eba5",
+  "email": "email@example.com",
+  "name": "Name",
+  "password": "password",
+  "username": "username",
+}
+`;
