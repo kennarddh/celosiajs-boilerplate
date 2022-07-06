@@ -16,7 +16,10 @@
 		"prettier:fix": "prettier -w \"src/**/*.{js,json}\"",
 		"prettier:check": "prettier -c \"src/**/*.{js,json}\"",
 		"prepare": "npm run build:swagger",
-		"test": "jest"
+		"test": "jest",
+		"test:watch": "jest --watch",
+		"test:watch:all": "jest --watchAll",
+		"test:changed": "jest -o"
 	},
 	"repository": {
 		"type": "git",
