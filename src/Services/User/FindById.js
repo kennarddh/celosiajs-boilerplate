@@ -3,7 +3,7 @@ import User from '../../Models/User'
 
 import Logger from '../../Utils/Logger/Logger'
 
-const FindByEmail = ({ id }) =>
+const FindById = ({ id }) =>
 	new Promise((resolve, reject) => {
 		User.findById(id)
 			.exec()
@@ -21,4 +21,4 @@ const FindByEmail = ({ id }) =>
 			})
 	})
 
-export default FindByEmail
+export default FindById
