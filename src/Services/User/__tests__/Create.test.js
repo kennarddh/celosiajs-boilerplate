@@ -20,7 +20,7 @@ describe('Create user service', () => {
 			password: 'password',
 		}
 
-		mockingoose(User, 'save').toReturn(user)
+		mockingoose(User).toReturn(user, 'save')
 
 		const createPromise = Create(user).then(({ user: newUser }) => {
 			expect(newUser.username).toBe(user.username)
