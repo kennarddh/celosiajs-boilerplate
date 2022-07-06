@@ -51,4 +51,10 @@ describe('Verify JWT middleware', () => {
 
 		return promise
 	})
+
+	it.todo('Should failed with invalid token')
+
+	it.todo('Should failed with invalid header')
+
+	it.todo('Should failed without header')
 })
