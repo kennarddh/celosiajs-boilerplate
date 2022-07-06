@@ -15,3 +15,9 @@ Object {
   "username": "username",
 }
 `;
+
+exports[`Create user service Should reject with 404: findById404Query 1`] = `
+Object {
+  "_id": "62c526bb503a77b155f6eba5",
+}
+`;

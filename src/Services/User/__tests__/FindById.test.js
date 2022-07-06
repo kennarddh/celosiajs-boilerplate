@@ -42,4 +42,34 @@ describe('Create user service', () => {
 
 		return findByIdPromise
 	})
+
+	it('Should reject with 404', async () => {
+		expect.assertions(2)
+
+		const user = {
+			_id: mongoose.Types.ObjectId('62c526bb503a77b155f6eba6'),
+			username: 'username1',
+			name: 'Name1',
+			email: 'email1@example.com',
+			password: 'password1',
+		}
+
+		mockingoose(User).toReturn(query => {
+			expect(query.getQuery()).toMatchSnapshot('findById404Query')
+
+			if (query.getQuery()._id === user._id) return user
+		}, 'findOne')
+
+		const mock = jest.fn()
+
+		try {
+			await FindById({
+				id: mongoose.Types.ObjectId('62c526bb503a77b155f6eba5'),
+			})
+		} catch ({ code }) {
+			mock(code)
+		}
+
+		expect(mock).toHaveBeenCalledWith(404)
+	})
 })
