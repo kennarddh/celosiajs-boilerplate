@@ -7,12 +7,12 @@ import FindById from '../FindById'
 // Models
 import User from '../../../Models/User'
 
-describe('Create user service', () => {
+describe('Find by id user service', () => {
 	afterEach(() => {
 		mockingoose.resetAll()
 	})
 
-	it('Should create new user', () => {
+	it('Should get user', () => {
 		expect.assertions(6)
 
 		const user = {
