@@ -59,7 +59,7 @@ describe('Verify JWT middleware', () => {
 		return promise
 	})
 
-	it('Should failed with invalid token', async () => {
+	it('Should fail with invalid token', async () => {
 		expect.assertions(2)
 
 		mockRequest = {
@@ -81,7 +81,7 @@ describe('Verify JWT middleware', () => {
 		})
 	})
 
-	it('Should failed with invalid header', async () => {
+	it('Should fail with invalid header', async () => {
 		expect.assertions(2)
 
 		mockRequest = {
@@ -101,7 +101,7 @@ describe('Verify JWT middleware', () => {
 		})
 	})
 
-	it('Should failed without header', async () => {
+	it('Should fail without header', async () => {
 		expect.assertions(2)
 
 		mockRequest = {
