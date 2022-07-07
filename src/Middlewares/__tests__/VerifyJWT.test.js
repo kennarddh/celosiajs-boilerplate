@@ -7,32 +7,38 @@ jest.mock('../../Utils/Promises/JWTVerify')
 describe('Verify JWT middleware', () => {
 	const nextFunction = jest.fn()
 	const jsonFunction = jest.fn()
-	const statusFunction = jest.fn(() => ({
-		json: jsonFunction,
-	}))
+	const statusFunction = jest.fn()
 
 	let mockRequest
-	let mockResponse
 
-	const user = {
-		id: 'id',
-		username: 'username',
-	}
+	let mockResponse
 
 	beforeEach(() => {
 		mockRequest = {}
+
 		mockResponse = {
-			status: statusFunction,
+			status: statusFunction.mockReturnThis(),
+			json: jsonFunction.mockReturnThis(),
 		}
+	})
+
+	afterEach(() => {
+		jest.clearAllMocks()
 	})
 
 	it('Should success', async () => {
 		expect.assertions(3)
+
 		mockRequest = {
 			headers: {
 				'x-access-token':
 					'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyYzQ1N2RmNjhhZDc0NTRjNTRhNWFjOSIsInVzZXJuYW1lIjoidGVzdHRlc3QxMiIsImlhdCI6MTY1NzEwMTIzMSwiZXhwIjoxNjU3MTg3NjMxfQ.-YlQ95KUSFaxGZLvTlQLkAEkXBLHmSqzIeJspzSw5vM',
 			},
+		}
+
+		const user = {
+			id: 'id',
+			username: 'username',
 		}
 
 		JWTVerify.mockResolvedValueOnce(user)
@@ -54,44 +60,25 @@ describe('Verify JWT middleware', () => {
 	})
 
 	it('Should failed with invalid token', async () => {
-		expect.assertions(4)
+		expect.assertions(2)
+
 		mockRequest = {
 			headers: {
 				'x-access-token':
-					'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyYzQ1N2RmNjhhZDc0NTRjNTRhNWFjOSIsInVzZXJuYW1lIjoidGVzdHRlc3QxMiIsImlhdCI6MTY1NzEwMTIzMSwiZXhwIjoxNjU3MTg3NjMxfQ.-YlQ95KUSFaxGZLvTlQLkAEkXBLHmSqzIeJspzSw5vM',
+					'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyYzQ1N2RmNjhhZDc0NTRjNTRhNWFjOSIsInVzZXJuYW1lIjoidGVzdHRlc3QxMiIsImlhdCI6MTY1NzEwMTIzMSwiZXhwIjoxNjU3MTg3NjMxfQ.-YlQ95KUSFaxGZLvTlQLkAEkXBLHmSqzIeJspzSw5vM',
 			},
 		}
 
-		JWTVerify.mockRejectedValueOnce({
-			success: false,
-			error: 'Failed to authenticate',
-		})
+		JWTVerify.mockRejectedValueOnce()
 
-		const promise = new Promise((_, reject) => {
-			VerifyJWT(mockRequest, mockResponse, () => {
-				nextFunction()
+		await VerifyJWT(mockRequest, mockResponse)
 
-				reject()
-			})
-		})
-
-		const mock = jest.fn()
-
-		try {
-			await promise()
-		} catch {
-			mock()
-		}
-
-		expect(mock).toHaveBeenCalled()
-		expect(nextFunction).toHaveBeenCalled()
+		expect(statusFunction.mock.calls[0][0]).toBe(401)
 
 		expect(jsonFunction.mock.calls[0][0]).toEqual({
 			success: false,
 			error: 'Failed to authenticate',
 		})
-
-		expect(statusFunction.mock.calls[0][0]).toBe(401)
 	})
 
 	it.todo('Should failed with invalid header')
