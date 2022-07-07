@@ -81,7 +81,25 @@ describe('Verify JWT middleware', () => {
 		})
 	})
 
-	it.todo('Should failed with invalid header')
+	it('Should failed with invalid header', async () => {
+		expect.assertions(2)
+
+		mockRequest = {
+			headers: {
+				'x-access-token':
+					'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyYzQ1N2RmNjhhZDc0NTRjNTRhNWFjOSIsInVzZXJuYW1lIjoidGVzdHRlc3QxMiIsImlhdCI6MTY1NzEwMTIzMSwiZXhwIjoxNjU3MTg3NjMxfQ.-YlQ95KUSFaxGZLvTlQLkAEkXBLHmSqzIeJspzSw5vM',
+			},
+		}
+
+		await VerifyJWT(mockRequest, mockResponse)
+
+		expect(statusFunction.mock.calls[0][0]).toBe(401)
+
+		expect(jsonFunction.mock.calls[0][0]).toEqual({
+			success: false,
+			error: 'Failed to authenticate',
+		})
+	})
 
 	it.todo('Should failed without header')
 })
