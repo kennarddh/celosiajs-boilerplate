@@ -101,5 +101,20 @@ describe('Verify JWT middleware', () => {
 		})
 	})
 
-	it.todo('Should failed without header')
+	it('Should failed without header', async () => {
+		expect.assertions(2)
+
+		mockRequest = {
+			headers: {},
+		}
+
+		await VerifyJWT(mockRequest, mockResponse)
+
+		expect(statusFunction.mock.calls[0][0]).toBe(401)
+
+		expect(jsonFunction.mock.calls[0][0]).toEqual({
+			success: false,
+			error: 'Failed to authenticate',
+		})
+	})
 })
