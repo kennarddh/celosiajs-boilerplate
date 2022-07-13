@@ -25,7 +25,7 @@ module.exports = {
 				allow: ['_id'],
 			},
 		],
-		'no-console': 'error',
+		'no-console': 'warn',
 		'consistent-return': 'off',
 		'no-unused-vars': 'warn',
 		'import/extensions': ['warn', { js: 'never', json: 'never' }],
