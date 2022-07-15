@@ -21,7 +21,7 @@ describe('Login', () => {
 		expect.assertions(3)
 		FindByEmail.mockResolvedValueOnce({
 			user: {
-				password: 'test',
+				password: 'testtest',
 				_id: 'id',
 				username: 'testtest',
 			},
@@ -43,6 +43,33 @@ describe('Login', () => {
 			data: {
 				token: `Bearer token`,
 			},
+		})
+	})
+
+	it('Should fail with invalid password', async () => {
+		expect.assertions(3)
+		FindByEmail.mockResolvedValueOnce({
+			user: {
+				password: 'testtest2',
+				_id: 'id',
+				username: 'testtest',
+			},
+		})
+
+		bcrypt.compare.mockResolvedValueOnce(false)
+
+		JWTSign.mockResolvedValueOnce('token')
+
+		const res = await request(App).post('/api/auth/login').send({
+			email: 'test@test.com',
+			password: 'testtest',
+		})
+
+		expect(res.statusCode).toEqual(403)
+		expect(res.body).toHaveProperty('error')
+		expect(res.body).toEqual({
+			success: false,
+			error: 'Invalid email or password',
 		})
 	})
 })
