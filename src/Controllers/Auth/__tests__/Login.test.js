@@ -278,4 +278,38 @@ describe('Login', () => {
 			success: false,
 		})
 	})
+
+	it('Should fail with password whitespace validation', async () => {
+		expect.assertions(3)
+		FindByEmail.mockResolvedValueOnce({
+			user: {
+				password: 'testtest',
+				_id: 'id',
+				username: 'testtest',
+			},
+		})
+
+		bcrypt.compare.mockResolvedValueOnce(true)
+
+		JWTSign.mockResolvedValueOnce('token')
+
+		const res = await request(App).post('/api/auth/login').send({
+			email: 'test@test.com',
+			password: 'test test',
+		})
+
+		expect(res.statusCode).toEqual(400)
+		expect(res.body).toHaveProperty('errors')
+		expect(res.body).toEqual({
+			errors: [
+				{
+					location: 'body',
+					msg: 'Password cannot have whitespace',
+					param: 'password',
+					value: 'test test',
+				},
+			],
+			success: false,
+		})
+	})
 })
