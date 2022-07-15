@@ -1,4 +1,3 @@
-import jwt from 'jsonwebtoken'
 import bcrypt from 'bcrypt'
 
 import Logger from '../../Utils/Logger/Logger'
