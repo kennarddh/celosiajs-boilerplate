@@ -5,6 +5,8 @@ import Logger from '../../Utils/Logger/Logger'
 
 import FindUserByEmail from '../../Services/User/FindByEmail'
 
+import JWTSign from '../../Utils/Promises/JWTSign'
+
 const Login = (req, res) => {
 	const { email, password } = req.body
 
@@ -25,23 +27,10 @@ const Login = (req, res) => {
 						username: user.username.toLowerCase(),
 					}
 
-					jwt.sign(
-						payload,
-						process.env.JWT_SECRET,
-						{ expiresIn: 86400 },
-						(error, token) => {
-							if (error) {
-								Logger.error('Login jwt failed', {
-									id: user._id,
-									error,
-								})
-
-								return res.status(500).json({
-									success: false,
-									error: 'Internal server error',
-								})
-							}
-
+					JWTSign(payload, process.env.JWT_SECRET, {
+						expiresIn: 86400,
+					})
+						.then(token => {
 							Logger.info('User logged in successfully', {
 								id: user._id,
 							})
@@ -52,8 +41,18 @@ const Login = (req, res) => {
 									token: `Bearer ${token}`,
 								},
 							})
-						}
-					)
+						})
+						.catch(error => {
+							Logger.error('Login jwt failed', {
+								id: user._id,
+								error,
+							})
+
+							return res.status(500).json({
+								success: false,
+								error: 'Internal server error',
+							})
+						})
 				})
 				.catch(error => {
 					Logger.error('Login bcrypt failed', {
