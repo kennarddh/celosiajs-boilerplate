@@ -1,5 +1,3 @@
-import 'dotenv/config'
-
 import express from 'express'
 
 // Middleware
@@ -21,8 +19,7 @@ import AuthRouter from './Routes/Auth'
 import DocsRouter from './Routes/Docs'
 import NoMatchRouter from './Routes/NoMatch'
 
-export const app = express()
-const PORT = process.env.PORT || 8080
+const app = express()
 
 // Middleware
 app.use(compression())
@@ -51,6 +48,4 @@ app.use('/api/docs', DocsRouter)
 
 app.use('*', NoMatchRouter)
 
-app.listen(PORT, () =>
-	Logger.info(`Server running`, { port: PORT, pid: process.pid })
-)
+export default app
