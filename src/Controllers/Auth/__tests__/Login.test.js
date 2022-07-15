@@ -15,6 +15,8 @@ jest.mock('../../../Utils/Promises/JWTSign')
 describe('Login', () => {
 	afterEach(() => {
 		jest.clearAllMocks()
+		jest.restoreAllMocks()
+		jest.resetModules()
 	})
 
 	it('Should success', async () => {
@@ -125,6 +127,34 @@ describe('Login', () => {
 		FindByEmail.mockRejectedValueOnce({ code: 500 })
 
 		bcrypt.compare.mockResolvedValueOnce(false)
+
+		JWTSign.mockResolvedValueOnce('token')
+
+		const res = await request(App).post('/api/auth/login').send({
+			email: 'test@test.com',
+			password: 'testtest',
+		})
+
+		expect(res.statusCode).toEqual(500)
+		expect(res.body).toHaveProperty('error')
+		expect(res.body).toEqual({
+			success: false,
+			error: 'Internal server error',
+		})
+	})
+
+	it('Should fail with failed bcrypt', async () => {
+		FindByEmail.mockResolvedValueOnce({
+			user: {
+				password: 'testtest',
+				_id: 'id',
+				username: 'testtest',
+			},
+		})
+
+		bcrypt.compare.mockRestore()
+
+		bcrypt.compare.mockRejectedValueOnce('error')
 
 		JWTSign.mockResolvedValueOnce('token')
 
