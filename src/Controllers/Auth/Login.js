@@ -15,11 +15,6 @@ const Login = (req, res) => {
 				.compare(password, user.password)
 				.then(isPasswordCorrect => {
 					if (!isPasswordCorrect) {
-						console.log({
-							isPasswordCorrect,
-							password,
-							'user.password': user.password,
-						})
 						return res.status(403).json({
 							success: false,
 							error: 'Invalid email or password',
