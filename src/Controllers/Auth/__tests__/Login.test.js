@@ -171,7 +171,7 @@ describe('Login', () => {
 		})
 	})
 
-	it('Invalid password validation', async () => {
+	it('Should fail with invalid password validation', async () => {
 		expect.assertions(3)
 		FindByEmail.mockResolvedValueOnce({
 			user: {
