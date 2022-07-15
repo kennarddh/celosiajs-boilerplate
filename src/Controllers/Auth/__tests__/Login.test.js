@@ -204,4 +204,38 @@ describe('Login', () => {
 			success: false,
 		})
 	})
+
+	it('Should fail with invalid email validation', async () => {
+		expect.assertions(3)
+		FindByEmail.mockResolvedValueOnce({
+			user: {
+				password: 'testtest',
+				_id: 'id',
+				username: 'testtest',
+			},
+		})
+
+		bcrypt.compare.mockResolvedValueOnce(true)
+
+		JWTSign.mockResolvedValueOnce('token')
+
+		const res = await request(App).post('/api/auth/login').send({
+			email: 'test',
+			password: 'testtest',
+		})
+
+		expect(res.statusCode).toEqual(400)
+		expect(res.body).toHaveProperty('errors')
+		expect(res.body).toEqual({
+			errors: [
+				{
+					location: 'body',
+					msg: 'Invalid value',
+					param: 'email',
+					value: 'test',
+				},
+			],
+			success: false,
+		})
+	})
 })
