@@ -93,4 +93,25 @@ describe('Login', () => {
 			error: 'Invalid email or password',
 		})
 	})
+
+	it('Should fail internal server error', async () => {
+		expect.assertions(3)
+		FindByEmail.mockRejectedValueOnce({ code: 500 })
+
+		bcrypt.compare.mockResolvedValueOnce(false)
+
+		JWTSign.mockResolvedValueOnce('token')
+
+		const res = await request(App).post('/api/auth/login').send({
+			email: 'test@test.com',
+			password: 'testtest',
+		})
+
+		expect(res.statusCode).toEqual(500)
+		expect(res.body).toHaveProperty('error')
+		expect(res.body).toEqual({
+			success: false,
+			error: 'Internal server error',
+		})
+	})
 })
