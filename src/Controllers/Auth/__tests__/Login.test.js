@@ -72,4 +72,25 @@ describe('Login', () => {
 			error: 'Invalid email or password',
 		})
 	})
+
+	it('Should fail with invalid email', async () => {
+		expect.assertions(3)
+		FindByEmail.mockRejectedValueOnce({ code: 404 })
+
+		bcrypt.compare.mockResolvedValueOnce(false)
+
+		JWTSign.mockResolvedValueOnce('token')
+
+		const res = await request(App).post('/api/auth/login').send({
+			email: 'test@test.com',
+			password: 'testtest',
+		})
+
+		expect(res.statusCode).toEqual(403)
+		expect(res.body).toHaveProperty('error')
+		expect(res.body).toEqual({
+			success: false,
+			error: 'Invalid email or password',
+		})
+	})
 })
