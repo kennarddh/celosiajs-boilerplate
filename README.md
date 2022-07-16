@@ -35,16 +35,16 @@ LOG_LEVEL=info
 ### Project Structure
 
 ```
-src\
- |--Controllers\    # Route controllers (controller layer)
- |--Database\       # Database configuration
- |--Middlewares\    # Custom express middlewares
- |--Models\         # Mongoose models (data layer)
- |--Routes\         # Routes
- |--Utils\          # Utility classes and functions
- |--Swagger\        # Open Api 3 spec
- |--Validations\    # Request data validation schemas
- |--Services        # Services
+src/
+ |--Controllers/    # Route controllers (controller layer)
+ |--Database/       # Database configuration
+ |--Middlewares/    # Custom express middlewares
+ |--Models/         # Mongoose models (data layer)
+ |--Routes/         # Routes
+ |--Utils/          # Utility classes and functions
+ |--Swagger/        # Open Api 3 spec
+ |--Validations/    # Request data validation schemas
+ |--Services/       # Services
  |--App.js          # Express app
  |--index.js        # Entry
 ```
