@@ -46,6 +46,7 @@ src\
  |--Validations\    # Request data validation schemas
  |--Services        # Services
  |--App.js          # Express app
+ |--index.js        # Entry
 ```
 
 ## Services Reject Code
