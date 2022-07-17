@@ -163,4 +163,37 @@ describe('Register', () => {
 			],
 		})
 	})
+
+	it('Should fail with invalid name validation', async () => {
+		const user = {
+			username: 'testtest1234',
+			name: 'Testtest1234',
+			email: 'testtest1234@gmail.com',
+			password: 'testtest1234',
+		}
+
+		user.name = 'Testtest1234testtest1234testtest1234testtest1234'
+
+		Create.mockRejectedValueOnce({
+			code: 500,
+		})
+
+		FindByEmailOrUsername.mockRejectedValueOnce({ code: 404 })
+
+		const res = await request(App).post('/api/auth/register').send(user)
+
+		expect(res.statusCode).toEqual(400)
+		expect(res.body).toHaveProperty('errors')
+		expect(res.body).toEqual({
+			success: false,
+			errors: [
+				{
+					location: 'body',
+					msg: 'Invalid value',
+					param: 'name',
+					value: user.name,
+				},
+			],
+		})
+	})
 })
