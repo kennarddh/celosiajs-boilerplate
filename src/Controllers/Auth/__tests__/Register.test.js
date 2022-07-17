@@ -45,4 +45,31 @@ describe('Register', () => {
 				})
 			})
 	})
+
+	it('Should fail with failed create user', async () => {
+		const user = {
+			username: 'testtest1234',
+			name: 'Testtest1234',
+			email: 'testtest1234@gmail.com',
+			password: 'testtest1234',
+		}
+
+		Create.mockRejectedValueOnce({
+			code: 500,
+		})
+
+		FindByEmailOrUsername.mockRejectedValueOnce({ code: 404 })
+
+		return request(App)
+			.post('/api/auth/register')
+			.send(user)
+			.then(res => {
+				expect(res.statusCode).toEqual(500)
+				expect(res.body).toHaveProperty('error')
+				expect(res.body).toEqual({
+					success: false,
+					error: 'Internal server error',
+				})
+			})
+	})
 })
