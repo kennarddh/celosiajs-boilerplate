@@ -15,3 +15,9 @@ Object {
   "username": "username",
 }
 `;
+
+exports[`Find by email user service Should reject with 404: findByEmailOrUsername404Query 1`] = `
+Object {
+  "email": "email2@example.com",
+}
+`;

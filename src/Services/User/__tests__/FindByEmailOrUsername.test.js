@@ -49,4 +49,41 @@ describe('Find by email user service', () => {
 
 		return findByEmailOrUsernamePromise
 	})
+
+	it('Should reject with 404', async () => {
+		expect.assertions(2)
+
+		const user = {
+			_id: mongoose.Types.ObjectId('62c526bb503a77b155f6eba6'),
+			username: 'username1',
+			name: 'Name1',
+			email: 'email1@example.com',
+			password: 'password1',
+		}
+
+		mockingoose(User).toReturn(query => {
+			expect(query.getQuery()).toMatchSnapshot(
+				'findByEmailOrUsername404Query'
+			)
+
+			if (
+				query.getQuery().email === user.email ||
+				query.getQuery().username === user.username
+			)
+				return user
+		}, 'findOne')
+
+		const mock = jest.fn()
+
+		try {
+			await FindByEmail({
+				email: 'email2@example.com',
+				username: 'username2',
+			})
+		} catch ({ code }) {
+			mock(code)
+		}
+
+		expect(mock).toHaveBeenCalledWith(404)
+	})
 })
