@@ -31,19 +31,16 @@ describe('Register', () => {
 
 		FindByEmailOrUsername.mockRejectedValueOnce({ code: 404 })
 
-		return request(App)
-			.post('/api/auth/register')
-			.send(user)
-			.then(res => {
-				expect(res.statusCode).toEqual(201)
-				expect(res.body).toHaveProperty('data')
-				expect(res.body).toEqual({
-					success: true,
-					data: {
-						id: 'id',
-					},
-				})
-			})
+		const res = await request(App).post('/api/auth/register').send(user)
+
+		expect(res.statusCode).toEqual(201)
+		expect(res.body).toHaveProperty('data')
+		expect(res.body).toEqual({
+			success: true,
+			data: {
+				id: 'id',
+			},
+		})
 	})
 
 	it('Should fail with failed create user', async () => {
@@ -60,16 +57,13 @@ describe('Register', () => {
 
 		FindByEmailOrUsername.mockRejectedValueOnce({ code: 404 })
 
-		return request(App)
-			.post('/api/auth/register')
-			.send(user)
-			.then(res => {
-				expect(res.statusCode).toEqual(500)
-				expect(res.body).toHaveProperty('error')
-				expect(res.body).toEqual({
-					success: false,
-					error: 'Internal server error',
-				})
-			})
+		const res = await request(App).post('/api/auth/register').send(user)
+
+		expect(res.statusCode).toEqual(500)
+		expect(res.body).toHaveProperty('error')
+		expect(res.body).toEqual({
+			success: false,
+			error: 'Internal server error',
+		})
 	})
 })
