@@ -1,12 +1,19 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Find by email user service Should get user: findByEmailOrUsernameQuery 1`] = `
+exports[`Find by email or username user service Should get user: findByEmailOrUsernameQuery 1`] = `
 Object {
-  "email": "email@example.com",
+  "$or": Array [
+    Object {
+      "email": "email@example.com",
+    },
+    Object {
+      "username": "username",
+    },
+  ],
 }
 `;
 
-exports[`Find by email user service Should get user: findByEmailOrUsernameResult 1`] = `
+exports[`Find by email or username user service Should get user: findByEmailOrUsernameResult 1`] = `
 Object {
   "_id": "62c526bb503a77b155f6eba5",
   "email": "email@example.com",
@@ -16,8 +23,15 @@ Object {
 }
 `;
 
-exports[`Find by email user service Should reject with 404: findByEmailOrUsername404Query 1`] = `
+exports[`Find by email or username user service Should reject with 404: findByEmailOrUsername404Query 1`] = `
 Object {
-  "email": "email2@example.com",
+  "$or": Array [
+    Object {
+      "email": "email2@example.com",
+    },
+    Object {
+      "username": "username2",
+    },
+  ],
 }
 `;

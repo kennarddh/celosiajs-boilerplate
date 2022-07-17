@@ -2,12 +2,12 @@ import * as mockingoose from 'mockingoose'
 
 import mongoose from 'mongoose'
 
-import FindByEmail from '../FindByEmail'
+import FindByEmailOrUsername from '../FindByEmailOrUsername'
 
 // Models
 import User from '../../../Models/User'
 
-describe('Find by email user service', () => {
+describe('Find by email or username user service', () => {
 	afterEach(() => {
 		mockingoose.resetAll()
 	})
@@ -29,13 +29,13 @@ describe('Find by email user service', () => {
 			)
 
 			if (
-				query.getQuery().email === user.email ||
-				query.getQuery().username === user.username
+				query.getQuery().$or[0].email === user.email ||
+				query.getQuery().$or[1].username === user.username
 			)
 				return user
 		}, 'findOne')
 
-		const findByEmailOrUsernamePromise = FindByEmail({
+		const findByEmailOrUsernamePromise = FindByEmailOrUsername({
 			email: user.email,
 			username: user.username,
 		}).then(({ user: newUser }) => {
@@ -67,8 +67,8 @@ describe('Find by email user service', () => {
 			)
 
 			if (
-				query.getQuery().email === user.email ||
-				query.getQuery().username === user.username
+				query.getQuery().$or[0].email === user.email ||
+				query.getQuery().$or[1].username === user.username
 			)
 				return user
 		}, 'findOne')
@@ -76,7 +76,7 @@ describe('Find by email user service', () => {
 		const mock = jest.fn()
 
 		try {
-			await FindByEmail({
+			await FindByEmailOrUsername({
 				email: 'email2@example.com',
 				username: 'username2',
 			})
