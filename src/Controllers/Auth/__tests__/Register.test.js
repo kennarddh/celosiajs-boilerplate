@@ -201,7 +201,7 @@ describe('Register', () => {
 		const user = {
 			username: 'testtest1234',
 			name: 'Testtest1234',
-			email: 'testtest1234@ gmail.com',
+			email: 'testtest1234@gmail.com',
 			password: 'testtest1234',
 		}
 
@@ -225,6 +225,39 @@ describe('Register', () => {
 					msg: 'Invalid value',
 					param: 'email',
 					value: user.email,
+				},
+			],
+		})
+	})
+
+	it('Should fail with invalid password validation', async () => {
+		const user = {
+			username: 'testtest1234',
+			name: 'Testtest1234',
+			email: 'testtest1234@gmail.com',
+			password: 'testtest1234',
+		}
+
+		user.password = 'test'
+
+		Create.mockRejectedValueOnce({
+			code: 500,
+		})
+
+		FindByEmailOrUsername.mockRejectedValueOnce({ code: 404 })
+
+		const res = await request(App).post('/api/auth/register').send(user)
+
+		expect(res.statusCode).toEqual(400)
+		expect(res.body).toHaveProperty('errors')
+		expect(res.body).toEqual({
+			success: false,
+			errors: [
+				{
+					location: 'body',
+					msg: 'Invalid value',
+					param: 'password',
+					value: user.password,
 				},
 			],
 		})
