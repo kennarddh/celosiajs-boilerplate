@@ -66,4 +66,35 @@ describe('Register', () => {
 			error: 'Internal server error',
 		})
 	})
+
+	it('Should fail with already exist email or username', async () => {
+		const user = {
+			username: 'testtest1234',
+			name: 'Testtest1234',
+			email: 'testtest1234@gmail.com',
+			password: 'testtest1234',
+		}
+
+		Create.mockRejectedValueOnce({
+			code: 500,
+		})
+
+		FindByEmailOrUsername.mockResolvedValueOnce({ user })
+
+		const res = await request(App).post('/api/auth/register').send(user)
+
+		expect(res.statusCode).toEqual(400)
+		expect(res.body).toHaveProperty('errors')
+		expect(res.body).toEqual({
+			success: false,
+			errors: [
+				{
+					location: 'body',
+					msg: 'Username or email has already taken',
+					param: 'email',
+					value: user.email,
+				},
+			],
+		})
+	})
 })
