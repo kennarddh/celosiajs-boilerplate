@@ -3,8 +3,7 @@ import { body } from 'express-validator'
 // Middleware
 import CheckValidationError from '../../Middlewares/CheckValidationError'
 
-// Models
-import User from '../../Models/User'
+import FindUserByEmailOrUsername from '../../Services/User/FindByEmailOrUsername'
 
 const Register = () => {
 	const validator = [
@@ -33,14 +32,26 @@ const Register = () => {
 			.bail()
 			.normalizeEmail({ all_lowercase: true })
 			.custom(async (value, { req }) => {
-				await User.findOne({
-					$or: [{ email: value }, { username: req.body.username }],
+				await FindUserByEmailOrUsername({
+					email: value,
+					username: req.body.username,
 				})
-					.exec()
-					.then(user => {
-						if (!user) return true
-
+					.then(() => {
 						throw new Error('Username or email has already taken')
+					})
+					.catch(error => {
+						if (error.code === 404) return true
+
+						if (
+							error.message ===
+							'Username or email has already taken'
+						) {
+							throw new Error(
+								'Username or email has already taken'
+							)
+						} else {
+							throw new Error('Internal Server Error')
+						}
 					})
 			}),
 		body('password')
