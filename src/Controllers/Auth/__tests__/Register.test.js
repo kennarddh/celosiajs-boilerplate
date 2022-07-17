@@ -97,4 +97,37 @@ describe('Register', () => {
 			],
 		})
 	})
+
+	it('Should fail with password whitespace validation', async () => {
+		const user = {
+			username: 'testtest1234',
+			name: 'Testtest1234',
+			email: 'testtest1234@gmail.com',
+			password: 'testtest1234',
+		}
+
+		user.password = 'test test1234'
+
+		Create.mockRejectedValueOnce({
+			code: 500,
+		})
+
+		FindByEmailOrUsername.mockRejectedValueOnce({ code: 404 })
+
+		const res = await request(App).post('/api/auth/register').send(user)
+
+		expect(res.statusCode).toEqual(400)
+		expect(res.body).toHaveProperty('errors')
+		expect(res.body).toEqual({
+			success: false,
+			errors: [
+				{
+					location: 'body',
+					msg: 'Password cannot have whitespace',
+					param: 'password',
+					value: user.password,
+				},
+			],
+		})
+	})
 })
