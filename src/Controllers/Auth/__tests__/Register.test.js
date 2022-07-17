@@ -27,6 +27,8 @@ describe('Register', () => {
 	})
 
 	it('Should success', async () => {
+		expect.assertions(3)
+
 		Create.mockResolvedValueOnce({
 			user: {
 				_id: 'id',
@@ -48,6 +50,8 @@ describe('Register', () => {
 	})
 
 	it('Should fail with failed create user', async () => {
+		expect.assertions(3)
+
 		Create.mockRejectedValueOnce({
 			code: 500,
 		})
@@ -65,6 +69,8 @@ describe('Register', () => {
 	})
 
 	it('Should fail with already exist email or username', async () => {
+		expect.assertions(3)
+
 		Create.mockRejectedValueOnce({
 			code: 500,
 		})
@@ -89,6 +95,8 @@ describe('Register', () => {
 	})
 
 	it('Should fail with password whitespace validation', async () => {
+		expect.assertions(3)
+
 		user.password = 'test test1234'
 
 		Create.mockRejectedValueOnce({
@@ -115,6 +123,8 @@ describe('Register', () => {
 	})
 
 	it('Should fail with invalid username validation', async () => {
+		expect.assertions(3)
+
 		user.username = 'testtest1234testtest1234testtest1234testtest1234'
 
 		Create.mockRejectedValueOnce({
@@ -141,6 +151,8 @@ describe('Register', () => {
 	})
 
 	it('Should fail with invalid name validation', async () => {
+		expect.assertions(3)
+
 		user.name = 'Testtest1234testtest1234testtest1234testtest1234'
 
 		Create.mockRejectedValueOnce({
@@ -167,6 +179,8 @@ describe('Register', () => {
 	})
 
 	it('Should fail with invalid email validation', async () => {
+		expect.assertions(3)
+
 		user.email = 'testtest1234@ gmail.com'
 
 		Create.mockRejectedValueOnce({
@@ -193,6 +207,8 @@ describe('Register', () => {
 	})
 
 	it('Should fail with invalid password validation', async () => {
+		expect.assertions(3)
+
 		user.password = 'test'
 
 		Create.mockRejectedValueOnce({
