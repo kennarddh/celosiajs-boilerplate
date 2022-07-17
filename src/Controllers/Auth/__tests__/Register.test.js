@@ -9,6 +9,17 @@ jest.mock('../../../Services/User/Create')
 jest.mock('../../../Services/User/FindByEmailOrUsername')
 
 describe('Register', () => {
+	let user
+
+	beforeEach(() => {
+		user = {
+			username: 'testtest1234',
+			name: 'Testtest1234',
+			email: 'testtest1234@gmail.com',
+			password: 'testtest1234',
+		}
+	})
+
 	afterEach(() => {
 		jest.clearAllMocks()
 		jest.restoreAllMocks()
@@ -16,13 +27,6 @@ describe('Register', () => {
 	})
 
 	it('Should success', async () => {
-		const user = {
-			username: 'testtest1234',
-			name: 'Testtest1234',
-			email: 'testtest1234@gmail.com',
-			password: 'testtest1234',
-		}
-
 		Create.mockResolvedValueOnce({
 			user: {
 				_id: 'id',
@@ -44,13 +48,6 @@ describe('Register', () => {
 	})
 
 	it('Should fail with failed create user', async () => {
-		const user = {
-			username: 'testtest1234',
-			name: 'Testtest1234',
-			email: 'testtest1234@gmail.com',
-			password: 'testtest1234',
-		}
-
 		Create.mockRejectedValueOnce({
 			code: 500,
 		})
@@ -68,13 +65,6 @@ describe('Register', () => {
 	})
 
 	it('Should fail with already exist email or username', async () => {
-		const user = {
-			username: 'testtest1234',
-			name: 'Testtest1234',
-			email: 'testtest1234@gmail.com',
-			password: 'testtest1234',
-		}
-
 		Create.mockRejectedValueOnce({
 			code: 500,
 		})
@@ -99,13 +89,6 @@ describe('Register', () => {
 	})
 
 	it('Should fail with password whitespace validation', async () => {
-		const user = {
-			username: 'testtest1234',
-			name: 'Testtest1234',
-			email: 'testtest1234@gmail.com',
-			password: 'testtest1234',
-		}
-
 		user.password = 'test test1234'
 
 		Create.mockRejectedValueOnce({
@@ -132,13 +115,6 @@ describe('Register', () => {
 	})
 
 	it('Should fail with invalid username validation', async () => {
-		const user = {
-			username: 'testtest1234',
-			name: 'Testtest1234',
-			email: 'testtest1234@gmail.com',
-			password: 'testtest1234',
-		}
-
 		user.username = 'testtest1234testtest1234testtest1234testtest1234'
 
 		Create.mockRejectedValueOnce({
@@ -165,13 +141,6 @@ describe('Register', () => {
 	})
 
 	it('Should fail with invalid name validation', async () => {
-		const user = {
-			username: 'testtest1234',
-			name: 'Testtest1234',
-			email: 'testtest1234@gmail.com',
-			password: 'testtest1234',
-		}
-
 		user.name = 'Testtest1234testtest1234testtest1234testtest1234'
 
 		Create.mockRejectedValueOnce({
@@ -198,13 +167,6 @@ describe('Register', () => {
 	})
 
 	it('Should fail with invalid email validation', async () => {
-		const user = {
-			username: 'testtest1234',
-			name: 'Testtest1234',
-			email: 'testtest1234@gmail.com',
-			password: 'testtest1234',
-		}
-
 		user.email = 'testtest1234@ gmail.com'
 
 		Create.mockRejectedValueOnce({
@@ -231,13 +193,6 @@ describe('Register', () => {
 	})
 
 	it('Should fail with invalid password validation', async () => {
-		const user = {
-			username: 'testtest1234',
-			name: 'Testtest1234',
-			email: 'testtest1234@gmail.com',
-			password: 'testtest1234',
-		}
-
 		user.password = 'test'
 
 		Create.mockRejectedValueOnce({
