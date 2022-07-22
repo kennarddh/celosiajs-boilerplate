@@ -24,19 +24,18 @@ describe('Find by id user service', () => {
 		}
 
 		mockingoose(User).toReturn(query => {
-			expect(query.getQuery()).toMatchSnapshot('findByIdQuery')
+			expect(query.getQuery()._id).toBe(user._id)
 
 			if (query.getQuery()._id === user._id) return user
 		}, 'findOne')
 
 		const findByIdPromise = FindById({ id: user._id }).then(
 			({ user: newUser }) => {
-				expect(newUser).toMatchSnapshot('findByIdResult')
-
-				expect(newUser.username).toBe(user.username)
-				expect(newUser.name).toBe(user.name)
-				expect(newUser.email).toBe(user.email)
 				expect(newUser._id).toBe(user._id)
+				expect(newUser.email).toBe(user.email)
+				expect(newUser.name).toBe(user.name)
+				expect(newUser.password).toBe(user.password)
+				expect(newUser.username).toBe(user.username)
 			}
 		)
 
@@ -55,7 +54,9 @@ describe('Find by id user service', () => {
 		}
 
 		mockingoose(User).toReturn(query => {
-			expect(query.getQuery()).toMatchSnapshot('findById404Query')
+			expect(query.getQuery()._id).toEqual(
+				mongoose.Types.ObjectId('62c526bb503a77b155f6eba5')
+			)
 
 			if (query.getQuery()._id === user._id) return user
 		}, 'findOne')
