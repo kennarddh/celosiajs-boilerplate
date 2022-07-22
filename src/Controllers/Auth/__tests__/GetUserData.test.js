@@ -87,4 +87,32 @@ describe('Get user data', () => {
 			error: 'Internal server error',
 		})
 	})
+
+	it('Should fail with code 404 FindById', async () => {
+		expect.assertions(5)
+
+		const token = 'Bearer token'
+
+		JWTVerify.mockResolvedValueOnce({
+			id: user._id,
+			username: user.username,
+		})
+
+		FindById.mockRejectedValueOnce({ code: 404 })
+
+		const res = await request(App)
+			.get('/api/auth/user')
+			.set('x-access-token', token)
+
+		expect(JWTVerify).toHaveBeenCalledWith('token', undefined)
+
+		expect(FindById).toHaveBeenCalledWith({ id: user._id })
+
+		expect(res.statusCode).toEqual(500)
+		expect(res.body).toHaveProperty('error')
+		expect(res.body).toEqual({
+			success: false,
+			error: 'Internal server error',
+		})
+	})
 })
