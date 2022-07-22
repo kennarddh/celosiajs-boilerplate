@@ -13,7 +13,7 @@ describe('Find by email or username user service', () => {
 	})
 
 	it('Should get user', () => {
-		expect.assertions(6)
+		expect.assertions(7)
 
 		const user = {
 			_id: mongoose.Types.ObjectId('62c526bb503a77b155f6eba5'),
@@ -24,9 +24,8 @@ describe('Find by email or username user service', () => {
 		}
 
 		mockingoose(User).toReturn(query => {
-			expect(query.getQuery()).toMatchSnapshot(
-				'findByEmailOrUsernameQuery'
-			)
+			expect(query.getQuery().$or[0].email).toBe(user.email)
+			expect(query.getQuery().$or[1].username).toBe(user.username)
 
 			if (
 				query.getQuery().$or[0].email === user.email ||
@@ -39,19 +38,18 @@ describe('Find by email or username user service', () => {
 			email: user.email,
 			username: user.username,
 		}).then(({ user: newUser }) => {
-			expect(newUser).toMatchSnapshot('findByEmailOrUsernameResult')
-
-			expect(newUser.username).toBe(user.username)
-			expect(newUser.name).toBe(user.name)
-			expect(newUser.email).toBe(user.email)
 			expect(newUser._id).toBe(user._id)
+			expect(newUser.email).toBe(user.email)
+			expect(newUser.name).toBe(user.name)
+			expect(newUser.password).toBe(user.password)
+			expect(newUser.username).toBe(user.username)
 		})
 
 		return findByEmailOrUsernamePromise
 	})
 
 	it('Should reject with 404', async () => {
-		expect.assertions(2)
+		expect.assertions(3)
 
 		const user = {
 			_id: mongoose.Types.ObjectId('62c526bb503a77b155f6eba6'),
@@ -62,9 +60,8 @@ describe('Find by email or username user service', () => {
 		}
 
 		mockingoose(User).toReturn(query => {
-			expect(query.getQuery()).toMatchSnapshot(
-				'findByEmailOrUsername404Query'
-			)
+			expect(query.getQuery().$or[0].email).toBe('email2@example.com')
+			expect(query.getQuery().$or[1].username).toBe('username2')
 
 			if (
 				query.getQuery().$or[0].email === user.email ||

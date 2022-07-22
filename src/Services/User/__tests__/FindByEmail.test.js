@@ -24,19 +24,18 @@ describe('Find by email user service', () => {
 		}
 
 		mockingoose(User).toReturn(query => {
-			expect(query.getQuery()).toMatchSnapshot('findByIdQuery')
+			expect(query.getQuery().email).toBe('email@example.com')
 
 			if (query.getQuery().email === user.email) return user
 		}, 'findOne')
 
 		const findByIdPromise = FindByEmail({ email: user.email }).then(
 			({ user: newUser }) => {
-				expect(newUser).toMatchSnapshot('findByIdResult')
-
-				expect(newUser.username).toBe(user.username)
-				expect(newUser.name).toBe(user.name)
-				expect(newUser.email).toBe(user.email)
 				expect(newUser._id).toBe(user._id)
+				expect(newUser.email).toBe(user.email)
+				expect(newUser.name).toBe(user.name)
+				expect(newUser.password).toBe(user.password)
+				expect(newUser.username).toBe(user.username)
 			}
 		)
 
@@ -55,7 +54,7 @@ describe('Find by email user service', () => {
 		}
 
 		mockingoose(User).toReturn(query => {
-			expect(query.getQuery()).toMatchSnapshot('findById404Query')
+			expect(query.getQuery().email).toBe('email2@example.com')
 
 			if (query.getQuery()._id === user._id) return user
 		}, 'findOne')
