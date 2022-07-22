@@ -59,4 +59,32 @@ describe('Get user data', () => {
 			},
 		})
 	})
+
+	it('Should fail with code 500 FindById', async () => {
+		expect.assertions(5)
+
+		const token = 'Bearer token'
+
+		JWTVerify.mockResolvedValueOnce({
+			id: user._id,
+			username: user.username,
+		})
+
+		FindById.mockRejectedValueOnce({ code: 500 })
+
+		const res = await request(App)
+			.get('/api/auth/user')
+			.set('x-access-token', token)
+
+		expect(JWTVerify).toHaveBeenCalledWith('token', undefined)
+
+		expect(FindById).toHaveBeenCalledWith({ id: user._id })
+
+		expect(res.statusCode).toEqual(500)
+		expect(res.body).toHaveProperty('error')
+		expect(res.body).toEqual({
+			success: false,
+			error: 'Internal server error',
+		})
+	})
 })
