@@ -5,21 +5,20 @@ import JWTSign from '../JWTSign'
 jest.mock('jsonwebtoken')
 
 describe('JWT sign', () => {
+	const payload = {
+		foo: 'bar',
+	}
+
+	const secret = 'secret'
+
+	const options = {
+		expiresIn: 10,
+	}
+
+	const sign = jest.spyOn(jwt, 'sign')
+
 	it('Should sign jwt', async () => {
 		expect.assertions(3)
-
-		const payload = {
-			foo: 'bar',
-		}
-
-		const secret = 'secret'
-
-		const options = {
-			expiresIn: 10,
-		}
-
-		const sign = jest.spyOn(jwt, 'sign')
-
 		const mock = jest.fn()
 
 		sign.mockImplementation(
@@ -49,18 +48,6 @@ describe('JWT sign', () => {
 
 	it('Should failed', async () => {
 		expect.assertions(3)
-
-		const payload = {
-			foo: 'bar',
-		}
-
-		const secret = 'secret'
-
-		const options = {
-			expiresIn: 10,
-		}
-
-		const sign = jest.spyOn(jwt, 'sign')
 
 		const mock = jest.fn()
 		const mock2 = jest.fn()
