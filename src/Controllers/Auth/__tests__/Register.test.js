@@ -24,6 +24,9 @@ describe('Register', () => {
 		jest.clearAllMocks()
 		jest.restoreAllMocks()
 		jest.resetModules()
+
+		Create.mockRestore()
+		FindByEmailOrUsername.mockRestore()
 	})
 
 	it('Should success', async () => {
