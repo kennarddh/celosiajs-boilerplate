@@ -17,6 +17,11 @@ describe('Login', () => {
 		jest.clearAllMocks()
 		jest.restoreAllMocks()
 		jest.resetModules()
+
+		FindByEmail.mockRestore()
+		JWTSign.mockRestore()
+
+		bcrypt.compare.mockRestore()
 	})
 
 	it('Should success', async () => {
@@ -151,8 +156,6 @@ describe('Login', () => {
 				username: 'testtest',
 			},
 		})
-
-		bcrypt.compare.mockRestore()
 
 		bcrypt.compare.mockRejectedValueOnce('error')
 
