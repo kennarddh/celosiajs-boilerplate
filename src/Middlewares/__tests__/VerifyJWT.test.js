@@ -24,6 +24,8 @@ describe('Verify JWT middleware', () => {
 
 	afterEach(() => {
 		jest.clearAllMocks()
+
+		JWTVerify.mockRestore()
 	})
 
 	it('Should success', async () => {
