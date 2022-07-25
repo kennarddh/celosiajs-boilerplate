@@ -34,4 +34,26 @@ describe('JWT verify', () => {
 		expect(mock).toHaveBeenCalledTimes(1)
 		expect(mock).toBeCalledWith(token, secret)
 	})
+
+	it('Should failed', async () => {
+		expect.assertions(3)
+
+		const mock = jest.fn()
+		const mock2 = jest.fn()
+
+		verify.mockImplementation(
+			(tokenImplementation, secretImplementation, callback) => {
+				callback(new Error('error'), null)
+
+				mock(tokenImplementation, secretImplementation)
+			}
+		)
+
+		await JWTVerify(token, secret).catch(mock2)
+
+		expect(mock).toHaveBeenCalledTimes(1)
+		expect(mock).toBeCalledWith(token, secret)
+
+		expect(mock2).toBeCalledWith(new Error('error'))
+	})
 })
