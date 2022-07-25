@@ -214,8 +214,6 @@ describe('Register', () => {
 
 		user.password = 'test'
 
-		FindByEmailOrUsername.mockRestore()
-
 		Create.mockRejectedValueOnce({
 			code: 500,
 		})
