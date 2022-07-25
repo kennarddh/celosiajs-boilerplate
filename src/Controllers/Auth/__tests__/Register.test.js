@@ -211,6 +211,8 @@ describe('Register', () => {
 
 		user.password = 'test'
 
+		FindByEmailOrUsername.mockRestore()
+
 		Create.mockRejectedValueOnce({
 			code: 500,
 		})
@@ -229,6 +231,32 @@ describe('Register', () => {
 					msg: 'Invalid value',
 					param: 'password',
 					value: user.password,
+				},
+			],
+		})
+	})
+
+	it('Should fail with invalid find user by email or username 500 validation', async () => {
+		expect.assertions(3)
+
+		Create.mockRejectedValueOnce({
+			code: 500,
+		})
+
+		FindByEmailOrUsername.mockRejectedValueOnce({ code: 500 })
+
+		const res = await request(App).post('/api/auth/register').send(user)
+
+		expect(res.statusCode).toEqual(400)
+		expect(res.body).toHaveProperty('errors')
+		expect(res.body).toEqual({
+			success: false,
+			errors: [
+				{
+					location: 'body',
+					msg: 'Internal Server Error',
+					param: 'email',
+					value: user.email,
 				},
 			],
 		})
