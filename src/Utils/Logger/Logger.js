@@ -22,11 +22,7 @@ const LoggerFormat = [
 	winston.format.json(),
 ]
 
-const Transports = [
-	new winston.transports.Console({
-		silent: process.env.NODE_ENV !== 'development',
-	}),
-]
+const Transports = []
 
 if (process.env.NODE_ENV === 'development') {
 	Transports.push(
@@ -75,7 +71,8 @@ if (process.env.NODE_ENV !== 'test') {
 				RemoveInfo(),
 				...LoggerFormat
 			),
-		})
+		}),
+		new winston.transports.Console()
 	)
 }
 
