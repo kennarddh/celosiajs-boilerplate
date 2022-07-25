@@ -25,6 +25,9 @@ describe('Get user data', () => {
 		jest.clearAllMocks()
 		jest.restoreAllMocks()
 		jest.resetModules()
+
+		FindById.mockRestore()
+		JWTVerify.mockRestore()
 	})
 
 	it('Should success', async () => {
