@@ -111,11 +111,11 @@ describe('Get user data', () => {
 
 		expect(FindById).toHaveBeenCalledWith({ id: user._id })
 
-		expect(res.statusCode).toEqual(500)
+		expect(res.statusCode).toEqual(404)
 		expect(res.body).toHaveProperty('error')
 		expect(res.body).toEqual({
 			success: false,
-			error: 'Internal server error',
+			error: 'User not found',
 		})
 	})
 })

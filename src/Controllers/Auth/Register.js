@@ -12,13 +12,11 @@ const Register = (req, res) => {
 				},
 			})
 		})
-		.catch(({ code }) => {
-			if (code === 500) {
-				return res.status(500).json({
-					success: false,
-					error: 'Internal server error',
-				})
-			}
+		.catch(() => {
+			return res.status(500).json({
+				success: false,
+				error: 'Internal server error',
+			})
 		})
 }
 
