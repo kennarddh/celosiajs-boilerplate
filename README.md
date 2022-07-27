@@ -143,3 +143,43 @@ Check the code formatting.
 ```bash
 npm run prettier:check
 ```
+
+### Test
+
+Run all tests
+
+```bash
+npm run test
+```
+
+### Watch test
+
+Watch changed test
+
+```bash
+npm run test:watch
+```
+
+### Watch all test
+
+Watch all test
+
+```bash
+npm run test:watch:all
+```
+
+### Test coverage
+
+Run test coverage
+
+```bash
+npm run test:coverage
+```
+
+### Test changed
+
+Run tests related to changed files based on hg/git (uncommitted files)
+
+```bash
+npm run test:changed
+```
