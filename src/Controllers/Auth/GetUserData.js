@@ -22,12 +22,17 @@ const GetUserData = (req, res) => {
 			})
 		})
 		.catch(({ code }) => {
-			if (code === 500 || code === 404) {
-				return res.status(500).json({
+			if (code === 404) {
+				return res.status(404).json({
 					success: false,
-					error: 'Internal server error',
+					error: 'User not found',
 				})
 			}
+
+			return res.status(500).json({
+				success: false,
+				error: 'Internal server error',
+			})
 		})
 }
 
