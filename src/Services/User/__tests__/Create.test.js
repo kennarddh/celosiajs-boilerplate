@@ -13,7 +13,7 @@ describe('Create user service', () => {
 	})
 
 	it('Should create new user', () => {
-		expect.assertions(3)
+		expect.assertions(4)
 
 		const user = {
 			username: 'username',
@@ -22,12 +22,17 @@ describe('Create user service', () => {
 			password: 'password',
 		}
 
+		const hash = jest.spyOn(bcrypt, 'hash')
+
+		hash.mockResolvedValueOnce('passwordHash')
+
 		mockingoose(User).toReturn(user, 'save')
 
 		const createPromise = Create(user).then(({ user: newUser }) => {
 			expect(newUser.username).toBe(user.username)
 			expect(newUser.name).toBe(user.name)
 			expect(newUser.email).toBe(user.email)
+			expect(newUser.password).toBe('passwordHash')
 		})
 
 		return createPromise
