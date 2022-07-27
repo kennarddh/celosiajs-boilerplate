@@ -66,19 +66,17 @@ const Login = (req, res) => {
 				})
 		})
 		.catch(({ code }) => {
-			if (code === 500) {
-				return res.status(500).json({
-					success: false,
-					error: 'Internal server error',
-				})
-			}
-
 			if (code === 404) {
 				return res.status(403).json({
 					success: false,
 					error: 'Invalid email or password',
 				})
 			}
+
+			return res.status(500).json({
+				success: false,
+				error: 'Internal server error',
+			})
 		})
 }
 
