@@ -73,4 +73,22 @@ describe('Find by id user service', () => {
 
 		expect(mock).toHaveBeenCalledWith(404)
 	})
+
+	it('Should reject with 500', async () => {
+		expect.assertions(1)
+
+		mockingoose(User).toReturn(new Error(), 'findOne')
+
+		const mock = jest.fn()
+
+		try {
+			await FindById({
+				id: mongoose.Types.ObjectId('62c526bb503a77b155f6eba5'),
+			})
+		} catch ({ code }) {
+			mock(code)
+		}
+
+		expect(mock).toHaveBeenCalledWith(500)
+	})
 })

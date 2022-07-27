@@ -83,4 +83,23 @@ describe('Find by email or username user service', () => {
 
 		expect(mock).toHaveBeenCalledWith(404)
 	})
+
+	it('Should reject with 500', async () => {
+		expect.assertions(1)
+
+		mockingoose(User).toReturn(new Error(), 'findOne')
+
+		const mock = jest.fn()
+
+		try {
+			await FindByEmailOrUsername({
+				email: 'email2@example.com',
+				username: 'username2',
+			})
+		} catch ({ code }) {
+			mock(code)
+		}
+
+		expect(mock).toHaveBeenCalledWith(500)
+	})
 })
