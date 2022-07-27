@@ -66,4 +66,33 @@ describe('Create user service', () => {
 			code: 500,
 		})
 	})
+
+	it('Should failed if save failed', async () => {
+		expect.assertions(1)
+
+		const user = {
+			username: 'username',
+			name: 'Name',
+			email: 'email@example.com',
+			password: 'password',
+		}
+
+		const hash = jest.spyOn(bcrypt, 'hash')
+
+		hash.mockResolvedValueOnce('passwordHash')
+
+		mockingoose(User).toReturn(new Error(), 'save')
+
+		const mock = jest.fn()
+
+		try {
+			await Create(user)
+		} catch (error) {
+			mock(error)
+		}
+
+		expect(mock).toBeCalledWith({
+			code: 500,
+		})
+	})
 })
