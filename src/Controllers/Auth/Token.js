@@ -44,7 +44,7 @@ const Token = (req, res) => {
 							})
 						})
 						.catch(error => {
-							Logger.error('refresh token jwt failed', {
+							Logger.error('Refresh token jwt failed', {
 								id: decoded.id,
 								error,
 							})
@@ -56,7 +56,7 @@ const Token = (req, res) => {
 						})
 				})
 				.catch(error => {
-					Logger.error('create new token jwt failed', {
+					Logger.error('Create new token jwt failed', {
 						id: decoded.id,
 						error,
 					})
