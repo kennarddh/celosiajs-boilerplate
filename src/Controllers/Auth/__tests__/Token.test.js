@@ -57,12 +57,7 @@ describe('Token', () => {
 	it('Should fail if jwt verify failed', async () => {
 		expect.assertions(4)
 
-		const payload = {
-			id: 'id',
-			username: 'username',
-		}
-
-		JWTVerify.mockRejectedValueOnce(payload)
+		JWTVerify.mockRejectedValueOnce()
 
 		JWTSign.mockResolvedValueOnce('token')
 		JWTSign.mockResolvedValueOnce('refreshToken')
@@ -78,6 +73,29 @@ describe('Token', () => {
 		expect(res.body).toEqual({
 			success: false,
 			error: 'Failed to authenticate',
+		})
+	})
+
+	it('Should fail with no refresh token', async () => {
+		expect.assertions(3)
+
+		const payload = {
+			id: 'id',
+			username: 'username',
+		}
+
+		JWTVerify.mockResolvedValueOnce(payload)
+
+		JWTSign.mockResolvedValueOnce('token')
+		JWTSign.mockResolvedValueOnce('refreshToken')
+
+		const res = await request(App).post('/api/auth/token')
+
+		expect(res.statusCode).toEqual(400)
+		expect(res.body).toHaveProperty('error')
+		expect(res.body).toEqual({
+			success: false,
+			error: 'Refresh token is required',
 		})
 	})
 })
