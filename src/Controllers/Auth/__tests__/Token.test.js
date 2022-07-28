@@ -98,4 +98,31 @@ describe('Token', () => {
 			error: 'Refresh token is required',
 		})
 	})
+
+	it('Should fail if jwt sign token failed', async () => {
+		expect.assertions(4)
+
+		const payload = {
+			id: 'id',
+			username: 'username',
+		}
+
+		JWTVerify.mockResolvedValueOnce(payload)
+
+		JWTSign.mockRejectedValueOnce('token')
+		JWTSign.mockResolvedValueOnce('refreshToken')
+
+		const res = await request(App)
+			.post('/api/auth/token')
+			.set('Cookie', ['refreshToken=refreshToken'])
+
+		expect(JWTVerify.mock.calls[0][0]).toBe('refreshToken')
+
+		expect(res.statusCode).toEqual(500)
+		expect(res.body).toHaveProperty('error')
+		expect(res.body).toEqual({
+			success: false,
+			error: 'Internal server error',
+		})
+	})
 })
