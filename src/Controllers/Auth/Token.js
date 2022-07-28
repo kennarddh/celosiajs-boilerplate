@@ -19,12 +19,13 @@ const Token = (req, res) => {
 			}
 
 			JWTSign(payload, process.env.JWT_SECRET, {
-				expiresIn: process.env.JWT_EXPIRE || 60, // Expires in 1 minute
+				expiresIn: parseInt(process.env.JWT_EXPIRE, 10) || 60, // Expires in 1 minute
 			})
 				.then(token => {
 					JWTSign(payload, process.env.REFRESH_JWT_SECRET, {
 						expiresIn:
-							process.env.REFRESH_JWT_EXPIRE || 60 * 60 * 24 * 30, // Expires in 30 days
+							parseInt(process.env.REFRESH_JWT_EXPIRE, 10) ||
+							60 * 60 * 24 * 30, // Expires in 30 days
 					})
 						.then(newRefreshToken => {
 							Logger.info('User refresh token successfully', {
