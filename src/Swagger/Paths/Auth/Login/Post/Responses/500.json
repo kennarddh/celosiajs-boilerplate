@@ -11,7 +11,7 @@
 					},
 					"error": {
 						"type": "string",
-						"default": "Login Failed"
+						"default": "Internal server error"
 					}
 				}
 			}
