@@ -30,16 +30,41 @@ const Login = (req, res) => {
 						expiresIn: 86400,
 					})
 						.then(token => {
-							Logger.info('User logged in successfully', {
-								id: user._id,
+							JWTSign(payload, process.env.REFRESH_JWT_SECRET, {
+								expiresIn: 86400,
 							})
+								.then(refreshToken => {
+									Logger.info('User logged in successfully', {
+										id: user._id,
+									})
 
-							return res.status(200).json({
-								success: true,
-								data: {
-									token: `Bearer ${token}`,
-								},
-							})
+									res.cookie('refresh-token', refreshToken, {
+										secure: true,
+										httpOnly: true,
+										sameSite: 'lax',
+									})
+
+									return res.status(200).json({
+										success: true,
+										data: {
+											token: `Bearer ${token}`,
+										},
+									})
+								})
+								.catch(error => {
+									Logger.error(
+										'Login refrest token jwt failed',
+										{
+											id: user._id,
+											error,
+										}
+									)
+
+									return res.status(500).json({
+										success: false,
+										error: 'Internal server error',
+									})
+								})
 						})
 						.catch(error => {
 							Logger.error('Login jwt failed', {
