@@ -38,7 +38,7 @@ const Login = (req, res) => {
 										id: user._id,
 									})
 
-									res.cookie('refresh-token', refreshToken, {
+									res.cookie('refreshToken', refreshToken, {
 										secure: true,
 										httpOnly: true,
 										sameSite: 'lax',
