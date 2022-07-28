@@ -39,7 +39,9 @@ const Login = (req, res) => {
 									})
 
 									res.cookie('refreshToken', refreshToken, {
-										secure: true,
+										secure:
+											process.env.NODE_ENV ===
+											'production',
 										httpOnly: true,
 										sameSite: 'lax',
 									})
