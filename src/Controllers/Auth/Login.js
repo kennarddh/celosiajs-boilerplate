@@ -27,11 +27,13 @@ const Login = (req, res) => {
 					}
 
 					JWTSign(payload, process.env.JWT_SECRET, {
-						expiresIn: 60, // Expires in 1 minute
+						expiresIn: process.env.JWT_EXPIRE || 60, // Expires in 1 minute
 					})
 						.then(token => {
 							JWTSign(payload, process.env.REFRESH_JWT_SECRET, {
-								expiresIn: 60 * 60 * 24 * 30, // Expires in 30 days
+								expiresIn:
+									process.env.REFRESH_JWT_EXPIRE ||
+									60 * 60 * 24 * 30, // Expires in 30 days
 							})
 								.then(refreshToken => {
 									Logger.info('User logged in successfully', {
