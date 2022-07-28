@@ -109,7 +109,7 @@ describe('Token', () => {
 
 		JWTVerify.mockResolvedValueOnce(payload)
 
-		JWTSign.mockRejectedValueOnce('token')
+		JWTSign.mockRejectedValueOnce()
 		JWTSign.mockResolvedValueOnce('refreshToken')
 
 		const res = await request(App)
@@ -117,6 +117,35 @@ describe('Token', () => {
 			.set('Cookie', ['refreshToken=refreshToken'])
 
 		expect(JWTVerify.mock.calls[0][0]).toBe('refreshToken')
+
+		expect(res.statusCode).toEqual(500)
+		expect(res.body).toHaveProperty('error')
+		expect(res.body).toEqual({
+			success: false,
+			error: 'Internal server error',
+		})
+	})
+
+	it('Should fail if jwt sign refresh token failed', async () => {
+		expect.assertions(5)
+
+		const payload = {
+			id: 'id',
+			username: 'username',
+		}
+
+		JWTVerify.mockResolvedValueOnce(payload)
+
+		JWTSign.mockResolvedValueOnce('token')
+		JWTSign.mockRejectedValueOnce()
+
+		const res = await request(App)
+			.post('/api/auth/token')
+			.set('Cookie', ['refreshToken=refreshToken'])
+
+		expect(JWTVerify.mock.calls[0][0]).toBe('refreshToken')
+
+		expect(JWTSign.mock.calls[0][0]).toStrictEqual(payload)
 
 		expect(res.statusCode).toEqual(500)
 		expect(res.body).toHaveProperty('error')
