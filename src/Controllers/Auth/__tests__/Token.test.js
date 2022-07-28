@@ -53,4 +53,31 @@ describe('Token', () => {
 			'refreshToken=refreshToken; Path=/; HttpOnly; SameSite=Lax',
 		])
 	})
+
+	it('Should fail if jwt verify failed', async () => {
+		expect.assertions(4)
+
+		const payload = {
+			id: 'id',
+			username: 'username',
+		}
+
+		JWTVerify.mockRejectedValueOnce(payload)
+
+		JWTSign.mockResolvedValueOnce('token')
+		JWTSign.mockResolvedValueOnce('refreshToken')
+
+		const res = await request(App)
+			.post('/api/auth/token')
+			.set('Cookie', ['refreshToken=refreshToken'])
+
+		expect(JWTVerify.mock.calls[0][0]).toBe('refreshToken')
+
+		expect(res.statusCode).toEqual(401)
+		expect(res.body).toHaveProperty('error')
+		expect(res.body).toEqual({
+			success: false,
+			error: 'Failed to authenticate',
+		})
+	})
 })
