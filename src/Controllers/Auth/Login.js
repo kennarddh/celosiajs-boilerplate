@@ -27,19 +27,48 @@ const Login = (req, res) => {
 					}
 
 					JWTSign(payload, process.env.JWT_SECRET, {
-						expiresIn: 86400,
+						expiresIn: process.env.JWT_EXPIRE || 60, // Expires in 1 minute
 					})
 						.then(token => {
-							Logger.info('User logged in successfully', {
-								id: user._id,
+							JWTSign(payload, process.env.REFRESH_JWT_SECRET, {
+								expiresIn:
+									process.env.REFRESH_JWT_EXPIRE ||
+									60 * 60 * 24 * 30, // Expires in 30 days
 							})
+								.then(refreshToken => {
+									Logger.info('User logged in successfully', {
+										id: user._id,
+									})
 
-							return res.status(200).json({
-								success: true,
-								data: {
-									token: `Bearer ${token}`,
-								},
-							})
+									res.cookie('refreshToken', refreshToken, {
+										secure:
+											process.env.NODE_ENV ===
+											'production',
+										httpOnly: true,
+										sameSite: 'lax',
+									})
+
+									return res.status(200).json({
+										success: true,
+										data: {
+											token: `Bearer ${token}`,
+										},
+									})
+								})
+								.catch(error => {
+									Logger.error(
+										'Login refresh token jwt failed',
+										{
+											id: user._id,
+											error,
+										}
+									)
+
+									return res.status(500).json({
+										success: false,
+										error: 'Internal server error',
+									})
+								})
 						})
 						.catch(error => {
 							Logger.error('Login jwt failed', {

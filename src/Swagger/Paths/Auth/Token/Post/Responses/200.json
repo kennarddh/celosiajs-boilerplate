@@ -1,0 +1,24 @@
+{
+	"description": "Generate token success",
+	"content": {
+		"application/json": {
+			"schema": {
+				"type": "object",
+				"properties": {
+					"success": {
+						"type": "boolean",
+						"default": true
+					},
+					"data": {
+						"type": "object",
+						"properties": {
+							"token": {
+								"type": "string"
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}

@@ -37,6 +37,7 @@ describe('Login', () => {
 		bcrypt.compare.mockResolvedValueOnce(true)
 
 		JWTSign.mockResolvedValueOnce('token')
+		JWTSign.mockResolvedValueOnce('refreshToken')
 
 		const res = await request(App).post('/api/auth/login').send({
 			email: 'test@test.com',
@@ -53,6 +54,40 @@ describe('Login', () => {
 		})
 	})
 
+	it('Should set refresh token cookie', async () => {
+		expect.assertions(4)
+		FindByEmail.mockResolvedValueOnce({
+			user: {
+				password: 'testtest',
+				_id: 'id',
+				username: 'testtest',
+			},
+		})
+
+		bcrypt.compare.mockResolvedValueOnce(true)
+
+		JWTSign.mockResolvedValueOnce('token')
+		JWTSign.mockResolvedValueOnce('refreshToken')
+
+		const res = await request(App).post('/api/auth/login').send({
+			email: 'test@test.com',
+			password: 'testtest',
+		})
+
+		expect(res.statusCode).toEqual(200)
+		expect(res.body).toHaveProperty('data')
+		expect(res.body).toEqual({
+			success: true,
+			data: {
+				token: `Bearer token`,
+			},
+		})
+
+		expect(res.header['set-cookie']).toEqual([
+			'refreshToken=refreshToken; Path=/; HttpOnly; SameSite=Lax',
+		])
+	})
+
 	it('Should fail with failed jwt sign', async () => {
 		FindByEmail.mockResolvedValueOnce({
 			user: {
@@ -64,6 +99,33 @@ describe('Login', () => {
 
 		bcrypt.compare.mockResolvedValueOnce(true)
 
+		JWTSign.mockRejectedValueOnce('error')
+
+		const res = await request(App).post('/api/auth/login').send({
+			email: 'test@test.com',
+			password: 'testtest',
+		})
+
+		expect(res.statusCode).toEqual(500)
+		expect(res.body).toHaveProperty('error')
+		expect(res.body).toEqual({
+			success: false,
+			error: 'Internal server error',
+		})
+	})
+
+	it('Should fail with failed refresh token jwt sign', async () => {
+		FindByEmail.mockResolvedValueOnce({
+			user: {
+				password: 'testtest',
+				_id: 'id',
+				username: 'testtest',
+			},
+		})
+
+		bcrypt.compare.mockResolvedValueOnce(true)
+
+		JWTSign.mockResolvedValueOnce('token')
 		JWTSign.mockRejectedValueOnce('error')
 
 		const res = await request(App).post('/api/auth/login').send({

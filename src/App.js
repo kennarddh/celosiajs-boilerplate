@@ -4,6 +4,8 @@ import express from 'express'
 import cors from 'cors'
 import compression from 'compression'
 import helmet from 'helmet'
+import cookieParser from 'cookie-parser'
+
 import RateLimiter from './Middlewares/RateLimiter'
 import MongoSanitize from './Middlewares/MongoSanitize'
 import LogHttpRequest from './Middlewares/LogHttpRequest'
@@ -27,6 +29,8 @@ app.use(helmet())
 
 app.use(express.urlencoded({ extended: false }))
 app.use(express.json())
+
+app.use(cookieParser())
 
 app.use(cors())
 

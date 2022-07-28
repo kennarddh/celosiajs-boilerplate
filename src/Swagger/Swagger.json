@@ -92,6 +92,32 @@
 					}
 				}
 			}
+		},
+		"/auth/token": {
+			"post": {
+				"tags": ["Authentication"],
+				"summary": "Refresh token",
+				"description": "Refresh token",
+				"parameters": [
+					{
+						"$ref": "./Paths/Auth/Token/Post/Parameters/RefreshToken.json"
+					}
+				],
+				"responses": {
+					"200": {
+						"$ref": "./Paths/Auth/Token/Post/Responses/200.json"
+					},
+					"400": {
+						"$ref": "./Paths/Auth/Token/Post/Responses/400.json"
+					},
+					"500": {
+						"$ref": "./Paths/Auth/Token/Post/Responses/500.json"
+					},
+					"401": {
+						"$ref": "./Paths/Auth/Token/Post/Responses/401.json"
+					}
+				}
+			}
 		}
 	}
 }

@@ -7,7 +7,7 @@ const GetUserData = (req, res) => {
 
 	FindUserById({ id })
 		.then(({ user }) => {
-			Logger.error('Get user data success', {
+			Logger.info('Get user data success', {
 				id: user._id,
 			})
 
