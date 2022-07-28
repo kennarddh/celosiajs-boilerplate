@@ -37,6 +37,7 @@ describe('Login', () => {
 		bcrypt.compare.mockResolvedValueOnce(true)
 
 		JWTSign.mockResolvedValueOnce('token')
+		JWTSign.mockResolvedValueOnce('refreshToken')
 
 		const res = await request(App).post('/api/auth/login').send({
 			email: 'test@test.com',
