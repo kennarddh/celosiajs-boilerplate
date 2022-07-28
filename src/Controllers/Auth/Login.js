@@ -53,7 +53,7 @@ const Login = (req, res) => {
 								})
 								.catch(error => {
 									Logger.error(
-										'Login refrest token jwt failed',
+										'Login refresh token jwt failed',
 										{
 											id: user._id,
 											error,
