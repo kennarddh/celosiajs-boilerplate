@@ -2,13 +2,11 @@ import { validationResult } from 'express-validator'
 
 import Logger from '../Utils/Logger/Logger'
 
-const CheckValidationErrorFactory = callback => {
+const CheckValidationErrorFactory = () => {
 	const CheckValidationError = (req, res, next) => {
 		const errors = validationResult(req)
 
 		if (!errors.isEmpty()) {
-			if (callback) callback(req)
-
 			const { method, url } = req
 
 			Logger.info('Validation failed', {
