@@ -100,12 +100,7 @@
 				"description": "Refresh token",
 				"parameters": [
 					{
-						"schema": {
-							"type": "string"
-						},
-						"in": "cookie",
-						"name": "refreshToken",
-						"required": true
+						"$ref": "./Paths/Auth/Token/Post/Parameters/RefreshToken.json"
 					}
 				],
 				"responses": {
