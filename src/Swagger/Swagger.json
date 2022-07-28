@@ -98,6 +98,16 @@
 				"tags": ["Authentication"],
 				"summary": "Refresh token",
 				"description": "Refresh token",
+				"parameters": [
+					{
+						"schema": {
+							"type": "string"
+						},
+						"in": "cookie",
+						"name": "refreshToken",
+						"required": true
+					}
+				],
 				"responses": {
 					"200": {
 						"$ref": "./Paths/Auth/Token/Post/Responses/200.json"
