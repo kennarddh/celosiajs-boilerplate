@@ -23,7 +23,6 @@ describe('Token', () => {
 
 		const payload = {
 			id: 'id',
-			username: 'username',
 		}
 
 		JWTVerify.mockResolvedValueOnce(payload)
@@ -81,7 +80,6 @@ describe('Token', () => {
 
 		const payload = {
 			id: 'id',
-			username: 'username',
 		}
 
 		JWTVerify.mockResolvedValueOnce(payload)
@@ -104,7 +102,6 @@ describe('Token', () => {
 
 		const payload = {
 			id: 'id',
-			username: 'username',
 		}
 
 		JWTVerify.mockResolvedValueOnce(payload)
@@ -131,7 +128,6 @@ describe('Token', () => {
 
 		const payload = {
 			id: 'id',
-			username: 'username',
 		}
 
 		JWTVerify.mockResolvedValueOnce(payload)
