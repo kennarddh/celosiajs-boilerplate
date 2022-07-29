@@ -23,7 +23,6 @@ const Login = (req, res) => {
 
 					const payload = {
 						id: user._id,
-						username: user.username.toLowerCase(),
 					}
 
 					JWTSign(payload, process.env.JWT_SECRET, {

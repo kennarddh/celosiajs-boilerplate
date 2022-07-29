@@ -29,7 +29,7 @@ describe('Verify JWT middleware', () => {
 	})
 
 	it('Should success', async () => {
-		expect.assertions(3)
+		expect.assertions(2)
 
 		mockRequest = {
 			headers: {
@@ -40,7 +40,6 @@ describe('Verify JWT middleware', () => {
 
 		const user = {
 			id: 'id',
-			username: 'username',
 		}
 
 		JWTVerify.mockResolvedValueOnce(user)
@@ -55,7 +54,6 @@ describe('Verify JWT middleware', () => {
 			expect(nextFunction).toHaveBeenCalled()
 
 			expect(mockRequest.user.id).toBe(user.id)
-			expect(mockRequest.user.username).toBe(user.username)
 		})
 
 		return promise

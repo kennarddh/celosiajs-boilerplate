@@ -15,7 +15,6 @@ const Token = (req, res) => {
 		.then(decoded => {
 			const payload = {
 				id: decoded.id,
-				username: decoded.username,
 			}
 
 			JWTSign(payload, process.env.JWT_SECRET, {
