@@ -13,7 +13,6 @@ const VerifyJWT = async (req, res, next) => {
 		.then(decoded => {
 			const user = {
 				id: decoded.id,
-				username: decoded.username,
 			}
 
 			req.user = user
