@@ -1,14 +1,12 @@
 import Logger from '../Utils/Logger/Logger'
 
-const RemoveXAccessToken = headers => {
-	const newHeaders = {}
-
-	Object.keys(headers).forEach(key => {
-		if (key === 'x-access-token') return
-
-		// eslint-disable-next-line security/detect-object-injection
-		newHeaders[key] = headers[key]
-	})
+const FilterHeaders = headers => {
+	const {
+		'x-access-token': _,
+		'set-cookie': __,
+		cookie: ___,
+		...newHeaders
+	} = headers
 
 	return newHeaders
 }
@@ -30,7 +28,7 @@ const LogHttpRequest = (req, res, next) => {
 
 		Logger.http({
 			processingTime: Date.now() - requestStart,
-			headers: RemoveXAccessToken(headers),
+			headers: FilterHeaders(headers),
 			httpVersion,
 			method,
 			remoteFamily,
@@ -38,7 +36,7 @@ const LogHttpRequest = (req, res, next) => {
 			response: {
 				statusCode,
 				statusMessage,
-				headers: responseHeaders,
+				headers: FilterHeaders(responseHeaders),
 			},
 		})
 	})
