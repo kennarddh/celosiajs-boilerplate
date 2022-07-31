@@ -1,14 +1,7 @@
 import Logger from '../Utils/Logger/Logger'
 
 const RemoveXAccessToken = headers => {
-	const newHeaders = {}
-
-	Object.keys(headers).forEach(key => {
-		if (key === 'x-access-token') return
-
-		// eslint-disable-next-line security/detect-object-injection
-		newHeaders[key] = headers[key]
-	})
+	const { 'x-access-token': _, ...newHeaders } = headers
 
 	return newHeaders
 }
