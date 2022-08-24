@@ -9,27 +9,26 @@ const Login = () => {
 			.trim()
 			.not()
 			.isEmpty()
+			.withMessage('Email cannot be empty')
 			.bail()
 			.escape()
 			.isEmail()
+			.withMessage('Invalid email')
 			.bail()
 			.normalizeEmail({ all_lowercase: true }),
 		body('password')
 			.trim()
 			.not()
 			.isEmpty()
+			.withMessage('Password cannot be empty')
 			.bail()
-			.isString()
-			.bail()
-			.custom(value => {
-				if (/\s/g.test(value)) {
-					throw new Error('Password cannot have whitespace')
-				} else {
-					return true
-				}
-			})
+			.matches(/^(?!.*\s)/g)
+			.withMessage('Password cannot have whitespace')
 			.bail()
 			.isLength({ min: 8, max: 32 })
+			.withMessage(
+				'Password must be a minimum of 8 characters and a maximum of 32 characters'
+			)
 			.bail()
 			.toLowerCase(),
 		CheckValidationError(),
