@@ -145,7 +145,7 @@ describe('Register', () => {
 			errors: [
 				{
 					location: 'body',
-					msg: 'Invalid value',
+					msg: 'Username must be a maximum of 32 characters',
 					param: 'username',
 					value: user.username,
 				},
@@ -173,7 +173,7 @@ describe('Register', () => {
 			errors: [
 				{
 					location: 'body',
-					msg: 'Invalid value',
+					msg: 'Name must be a maximum of 32 characters',
 					param: 'name',
 					value: user.name,
 				},
@@ -201,7 +201,7 @@ describe('Register', () => {
 			errors: [
 				{
 					location: 'body',
-					msg: 'Invalid value',
+					msg: 'Invalid email',
 					param: 'email',
 					value: user.email,
 				},
@@ -229,7 +229,7 @@ describe('Register', () => {
 			errors: [
 				{
 					location: 'body',
-					msg: 'Invalid value',
+					msg: 'Password must be a minimum of 8 characters and a maximum of 32 characters',
 					param: 'password',
 					value: user.password,
 				},
