@@ -261,7 +261,7 @@ describe('Login', () => {
 			errors: [
 				{
 					location: 'body',
-					msg: 'Invalid value',
+					msg: 'Password must be a minimum of 8 characters and a maximum of 32 characters',
 					param: 'password',
 					value: 'test',
 				},
@@ -295,7 +295,7 @@ describe('Login', () => {
 			errors: [
 				{
 					location: 'body',
-					msg: 'Invalid value',
+					msg: 'Invalid email',
 					param: 'email',
 					value: 'test',
 				},
@@ -329,13 +329,13 @@ describe('Login', () => {
 			errors: [
 				{
 					location: 'body',
-					msg: 'Invalid value',
+					msg: 'Invalid email',
 					param: 'email',
 					value: 'test',
 				},
 				{
 					location: 'body',
-					msg: 'Invalid value',
+					msg: 'Password must be a minimum of 8 characters and a maximum of 32 characters',
 					param: 'password',
 					value: 'test',
 				},

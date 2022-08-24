@@ -11,24 +11,30 @@ const Register = () => {
 			.trim()
 			.not()
 			.isEmpty()
+			.withMessage('Username cannot be empty')
 			.bail()
 			.escape()
 			.isLength({ max: 32 })
+			.withMessage('Username must be a maximum of 32 characters')
 			.bail(),
 		body('name')
 			.trim()
 			.not()
 			.isEmpty()
+			.withMessage('Name cannot be empty')
 			.bail()
 			.escape()
-			.isLength({ max: 32 }),
+			.isLength({ max: 32 })
+			.withMessage('Name must be a maximum of 32 characters'),
 		body('email')
 			.trim()
 			.not()
 			.isEmpty()
+			.withMessage('Email cannot be empty')
 			.bail()
 			.escape()
 			.isEmail()
+			.withMessage('Invalid email')
 			.bail()
 			.normalizeEmail({ all_lowercase: true })
 			.custom(async (value, { req }) => {
@@ -58,17 +64,17 @@ const Register = () => {
 			.trim()
 			.not()
 			.isEmpty()
+			.withMessage('Password cannot be empty')
 			.bail()
-			.isString()
-			.custom(value => {
-				if (/\s/g.test(value)) {
-					throw new Error('Password cannot have whitespace')
-				} else {
-					return true
-				}
-			})
+			.matches(/^(?!.*\s)/g)
+			.withMessage('Password cannot have whitespace')
 			.bail()
-			.isLength({ min: 8, max: 32 }),
+			.isLength({ min: 8, max: 32 })
+			.withMessage(
+				'Password must be a minimum of 8 characters and a maximum of 32 characters'
+			)
+			.bail()
+			.toLowerCase(),
 		CheckValidationError(),
 	]
 
