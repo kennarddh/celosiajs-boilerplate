@@ -21,7 +21,7 @@
 		"test:watch:all": "jest --watchAll",
 		"test:coverage": "jest --coverage",
 		"test:changed": "jest -o",
-		"pre-commit": "lint-staged -c \"./lintstagedrc.json\""
+		"pre-commit": "lint-staged -c \"./lintstagedrc.json\" --quiet"
 	},
 	"repository": {
 		"type": "git",
