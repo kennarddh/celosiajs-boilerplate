@@ -52,7 +52,7 @@
 		"express-validator": "^6.14.2",
 		"helmet": "^6.0.0",
 		"jsonwebtoken": "^8.5.1",
-		"mongoose": "^6.6.1",
+		"mongoose": "^6.6.2",
 		"swagger-ui-express": "^4.5.0",
 		"winston": "^3.8.2",
 		"winston-daily-rotate-file": "^4.7.1"
