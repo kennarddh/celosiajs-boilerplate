@@ -15,7 +15,7 @@
 		"lint:fix": "eslint --fix src/**/*.{js,json}",
 		"prettier:fix": "prettier -w \"src/**/*.{js,json}\"",
 		"prettier:check": "prettier -c \"src/**/*.{js,json}\"",
-		"prepare": "husky install",
+		"prepare": "husky install && npm run build:swagger",
 		"test": "jest",
 		"test:watch": "jest --watch",
 		"test:watch:all": "jest --watchAll",
