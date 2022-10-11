@@ -8,18 +8,7 @@
 		"error": {
 			"type": "array",
 			"items": {
-				"type": "object",
-				"properties": {
-					"location": {
-						"type": "string"
-					},
-					"msg": {
-						"type": "string"
-					},
-					"param": {
-						"type": "string"
-					}
-				}
+				"type": "string"
 			}
 		}
 	}
