@@ -2,7 +2,7 @@ import express from 'express'
 
 import swaggerUi from 'swagger-ui-express'
 
-import swaggerDocument from '../Swagger'
+import swaggerDocument from '../Swagger/Swagger'
 
 const Router = express.Router()
 
