@@ -15,10 +15,10 @@ describe('Get user data', () => {
 		const res = await request(App).get('/api/404')
 
 		expect(res.statusCode).toEqual(404)
-		expect(res.body).toHaveProperty('error')
+		expect(res.body).toHaveProperty('errors')
 		expect(res.body).toEqual({
-			success: false,
-			error: 'Not found',
+			data: {},
+			errors: ['Not found'],
 		})
 	})
 })
