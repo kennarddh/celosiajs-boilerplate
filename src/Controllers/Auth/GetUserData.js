@@ -23,9 +23,8 @@ const GetUserData = (req, res) => {
 		})
 		.catch(({ code }) => {
 			if (code === 404) {
-				return res.status(404).json({
-					errors: ['User not found'],
-					data: {},
+				Logger.info('Get user data not found user', {
+					id,
 				})
 			}
 

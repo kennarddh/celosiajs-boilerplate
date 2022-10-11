@@ -3,17 +3,7 @@
 	"content": {
 		"application/json": {
 			"schema": {
-				"type": "object",
-				"properties": {
-					"success": {
-						"type": "boolean",
-						"default": false
-					},
-					"error": {
-						"type": "string",
-						"default": "Internal server error"
-					}
-				}
+				"$ref": "../../../../../Components/Schemas/InternalServerError.json"
 			}
 		}
 	}

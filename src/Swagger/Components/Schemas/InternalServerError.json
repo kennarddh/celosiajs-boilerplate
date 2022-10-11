@@ -1,13 +1,13 @@
 {
 	"type": "object",
 	"properties": {
-		"success": {
-			"type": "boolean",
-			"default": false
+		"data": {
+			"type": "object",
+			"properties": {}
 		},
 		"error": {
-			"type": "string",
-			"default": "Internal Server Error"
+			"type": "array",
+			"default": ["Internal Server Error"]
 		}
 	}
 }
