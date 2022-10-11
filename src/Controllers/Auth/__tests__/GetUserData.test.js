@@ -53,7 +53,7 @@ describe('Get user data', () => {
 		expect(res.statusCode).toEqual(200)
 		expect(res.body).toHaveProperty('data')
 		expect(res.body).toEqual({
-			success: true,
+			errors: [],
 			data: {
 				id: user._id,
 				username: user.username,
@@ -84,10 +84,10 @@ describe('Get user data', () => {
 		expect(FindById).toHaveBeenCalledWith({ id: user._id })
 
 		expect(res.statusCode).toEqual(500)
-		expect(res.body).toHaveProperty('error')
+		expect(res.body).toHaveProperty('errors')
 		expect(res.body).toEqual({
-			success: false,
-			error: 'Internal server error',
+			data: {},
+			errors: ['Internal server error'],
 		})
 	})
 
@@ -111,11 +111,11 @@ describe('Get user data', () => {
 
 		expect(FindById).toHaveBeenCalledWith({ id: user._id })
 
-		expect(res.statusCode).toEqual(404)
-		expect(res.body).toHaveProperty('error')
+		expect(res.statusCode).toEqual(500)
+		expect(res.body).toHaveProperty('errors')
 		expect(res.body).toEqual({
-			success: false,
-			error: 'User not found',
+			data: {},
+			errors: ['Internal server error'],
 		})
 	})
 })

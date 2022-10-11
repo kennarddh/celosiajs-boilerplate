@@ -12,7 +12,7 @@ const GetUserData = (req, res) => {
 			})
 
 			return res.status(200).json({
-				success: true,
+				errors: [],
 				data: {
 					id: user._id,
 					username: user.username,
@@ -23,15 +23,14 @@ const GetUserData = (req, res) => {
 		})
 		.catch(({ code }) => {
 			if (code === 404) {
-				return res.status(404).json({
-					success: false,
-					error: 'User not found',
+				Logger.info('Get user data not found user', {
+					id,
 				})
 			}
 
 			return res.status(500).json({
-				success: false,
-				error: 'Internal server error',
+				errors: ['Internal server error'],
+				data: {},
 			})
 		})
 }

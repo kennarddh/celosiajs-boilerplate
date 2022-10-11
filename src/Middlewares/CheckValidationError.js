@@ -4,20 +4,19 @@ import Logger from '../Utils/Logger/Logger'
 
 const CheckValidationErrorFactory = () => {
 	const CheckValidationError = (req, res, next) => {
-		const errors = validationResult(req)
+		const result = validationResult(req)
 
-		if (!errors.isEmpty()) {
+		if (!result.isEmpty()) {
 			const { method, url } = req
 
-			Logger.info('Validation failed', {
+			const errors = result.array().map(({ msg }) => msg)
+
+			Logger.verbose('Validation failed', {
 				method,
 				url,
-				errors: errors.array(),
 			})
 
-			return res
-				.status(400)
-				.json({ success: false, errors: errors.array() })
+			return res.status(400).json({ errors, data: {} })
 		}
 
 		next()

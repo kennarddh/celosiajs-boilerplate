@@ -1,13 +1,13 @@
 {
 	"type": "object",
 	"properties": {
-		"success": {
-			"type": "boolean",
-			"default": false
+		"data": {
+			"type": "object",
+			"properties": {}
 		},
-		"error": {
-			"type": "string",
-			"default": "Failed to authenticate"
+		"errors": {
+			"type": "array",
+			"default": ["Failed to authenticate"]
 		}
 	}
 }

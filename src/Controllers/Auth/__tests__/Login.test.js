@@ -26,6 +26,7 @@ describe('Login', () => {
 
 	it('Should success', async () => {
 		expect.assertions(3)
+
 		FindByEmail.mockResolvedValueOnce({
 			user: {
 				password: 'testtest',
@@ -47,7 +48,7 @@ describe('Login', () => {
 		expect(res.statusCode).toEqual(200)
 		expect(res.body).toHaveProperty('data')
 		expect(res.body).toEqual({
-			success: true,
+			errors: [],
 			data: {
 				token: `Bearer token`,
 			},
@@ -56,6 +57,7 @@ describe('Login', () => {
 
 	it('Should set refresh token cookie', async () => {
 		expect.assertions(4)
+
 		FindByEmail.mockResolvedValueOnce({
 			user: {
 				password: 'testtest',
@@ -77,7 +79,7 @@ describe('Login', () => {
 		expect(res.statusCode).toEqual(200)
 		expect(res.body).toHaveProperty('data')
 		expect(res.body).toEqual({
-			success: true,
+			errors: [],
 			data: {
 				token: `Bearer token`,
 			},
@@ -89,6 +91,8 @@ describe('Login', () => {
 	})
 
 	it('Should fail with failed jwt sign', async () => {
+		expect.assertions(3)
+
 		FindByEmail.mockResolvedValueOnce({
 			user: {
 				password: 'testtest',
@@ -107,14 +111,16 @@ describe('Login', () => {
 		})
 
 		expect(res.statusCode).toEqual(500)
-		expect(res.body).toHaveProperty('error')
+		expect(res.body).toHaveProperty('errors')
 		expect(res.body).toEqual({
-			success: false,
-			error: 'Internal server error',
+			data: {},
+			errors: ['Internal server error'],
 		})
 	})
 
 	it('Should fail with failed refresh token jwt sign', async () => {
+		expect.assertions(3)
+
 		FindByEmail.mockResolvedValueOnce({
 			user: {
 				password: 'testtest',
@@ -134,15 +140,16 @@ describe('Login', () => {
 		})
 
 		expect(res.statusCode).toEqual(500)
-		expect(res.body).toHaveProperty('error')
+		expect(res.body).toHaveProperty('errors')
 		expect(res.body).toEqual({
-			success: false,
-			error: 'Internal server error',
+			data: {},
+			errors: ['Internal server error'],
 		})
 	})
 
 	it('Should fail with invalid password', async () => {
 		expect.assertions(3)
+
 		FindByEmail.mockResolvedValueOnce({
 			user: {
 				password: 'testtest2',
@@ -161,15 +168,16 @@ describe('Login', () => {
 		})
 
 		expect(res.statusCode).toEqual(403)
-		expect(res.body).toHaveProperty('error')
+		expect(res.body).toHaveProperty('errors')
 		expect(res.body).toEqual({
-			success: false,
-			error: 'Invalid email or password',
+			data: {},
+			errors: ['Invalid email or password'],
 		})
 	})
 
 	it('Should fail with invalid email', async () => {
 		expect.assertions(3)
+
 		FindByEmail.mockRejectedValueOnce({ code: 404 })
 
 		bcrypt.compare.mockResolvedValueOnce(false)
@@ -182,15 +190,16 @@ describe('Login', () => {
 		})
 
 		expect(res.statusCode).toEqual(403)
-		expect(res.body).toHaveProperty('error')
+		expect(res.body).toHaveProperty('errors')
 		expect(res.body).toEqual({
-			success: false,
-			error: 'Invalid email or password',
+			data: {},
+			errors: ['Invalid email or password'],
 		})
 	})
 
 	it('Should fail internal server error', async () => {
 		expect.assertions(3)
+
 		FindByEmail.mockRejectedValueOnce({ code: 500 })
 
 		bcrypt.compare.mockResolvedValueOnce(false)
@@ -203,10 +212,10 @@ describe('Login', () => {
 		})
 
 		expect(res.statusCode).toEqual(500)
-		expect(res.body).toHaveProperty('error')
+		expect(res.body).toHaveProperty('errors')
 		expect(res.body).toEqual({
-			success: false,
-			error: 'Internal server error',
+			data: {},
+			errors: ['Internal server error'],
 		})
 	})
 
@@ -229,15 +238,16 @@ describe('Login', () => {
 		})
 
 		expect(res.statusCode).toEqual(500)
-		expect(res.body).toHaveProperty('error')
+		expect(res.body).toHaveProperty('errors')
 		expect(res.body).toEqual({
-			success: false,
-			error: 'Internal server error',
+			data: {},
+			errors: ['Internal server error'],
 		})
 	})
 
 	it('Should fail with invalid password validation', async () => {
 		expect.assertions(3)
+
 		FindByEmail.mockResolvedValueOnce({
 			user: {
 				password: 'testtest',
@@ -259,19 +269,15 @@ describe('Login', () => {
 		expect(res.body).toHaveProperty('errors')
 		expect(res.body).toEqual({
 			errors: [
-				{
-					location: 'body',
-					msg: 'Password must be a minimum of 8 characters and a maximum of 32 characters',
-					param: 'password',
-					value: 'test',
-				},
+				'Password must be a minimum of 8 characters and a maximum of 32 characters',
 			],
-			success: false,
+			data: {},
 		})
 	})
 
 	it('Should fail with invalid email validation', async () => {
 		expect.assertions(3)
+
 		FindByEmail.mockResolvedValueOnce({
 			user: {
 				password: 'testtest',
@@ -292,20 +298,14 @@ describe('Login', () => {
 		expect(res.statusCode).toEqual(400)
 		expect(res.body).toHaveProperty('errors')
 		expect(res.body).toEqual({
-			errors: [
-				{
-					location: 'body',
-					msg: 'Invalid email',
-					param: 'email',
-					value: 'test',
-				},
-			],
-			success: false,
+			errors: ['Invalid email'],
+			data: {},
 		})
 	})
 
 	it('Should fail with invalid email and password validation', async () => {
 		expect.assertions(3)
+
 		FindByEmail.mockResolvedValueOnce({
 			user: {
 				password: 'testtest',
@@ -327,25 +327,16 @@ describe('Login', () => {
 		expect(res.body).toHaveProperty('errors')
 		expect(res.body).toEqual({
 			errors: [
-				{
-					location: 'body',
-					msg: 'Invalid email',
-					param: 'email',
-					value: 'test',
-				},
-				{
-					location: 'body',
-					msg: 'Password must be a minimum of 8 characters and a maximum of 32 characters',
-					param: 'password',
-					value: 'test',
-				},
+				'Invalid email',
+				'Password must be a minimum of 8 characters and a maximum of 32 characters',
 			],
-			success: false,
+			data: {},
 		})
 	})
 
 	it('Should fail with password whitespace validation', async () => {
 		expect.assertions(3)
+
 		FindByEmail.mockResolvedValueOnce({
 			user: {
 				password: 'testtest',
@@ -366,15 +357,8 @@ describe('Login', () => {
 		expect(res.statusCode).toEqual(400)
 		expect(res.body).toHaveProperty('errors')
 		expect(res.body).toEqual({
-			errors: [
-				{
-					location: 'body',
-					msg: 'Password cannot have whitespace',
-					param: 'password',
-					value: 'test test',
-				},
-			],
-			success: false,
+			errors: ['Password cannot have whitespace'],
+			data: {},
 		})
 	})
 })

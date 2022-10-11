@@ -9,7 +9,7 @@ const Token = (req, res) => {
 	if (!refreshToken)
 		return res
 			.status(400)
-			.json({ success: false, error: 'Refresh token is required' })
+			.json({ errors: ['Refresh token is required'], data: {} })
 
 	JWTVerify(refreshToken, process.env.REFRESH_JWT_SECRET)
 		.then(decoded => {
@@ -38,7 +38,7 @@ const Token = (req, res) => {
 							})
 
 							return res.status(200).json({
-								success: true,
+								errors: [],
 								data: {
 									token: `Bearer ${token}`,
 								},
@@ -51,8 +51,8 @@ const Token = (req, res) => {
 							})
 
 							return res.status(500).json({
-								success: false,
-								error: 'Internal server error',
+								errors: ['Internal server error'],
+								data: {},
 							})
 						})
 				})
@@ -63,15 +63,15 @@ const Token = (req, res) => {
 					})
 
 					return res.status(500).json({
-						success: false,
-						error: 'Internal server error',
+						errors: ['Internal server error'],
+						data: {},
 					})
 				})
 		})
 		.catch(() => {
 			return res.status(401).json({
-				success: false,
-				error: 'Failed to authenticate',
+				errors: ['Failed to authenticate'],
+				data: {},
 			})
 		})
 }

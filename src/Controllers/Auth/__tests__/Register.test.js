@@ -45,7 +45,7 @@ describe('Register', () => {
 		expect(res.statusCode).toEqual(201)
 		expect(res.body).toHaveProperty('data')
 		expect(res.body).toEqual({
-			success: true,
+			errors: [],
 			data: {
 				id: 'id',
 			},
@@ -64,10 +64,10 @@ describe('Register', () => {
 		const res = await request(App).post('/api/auth/register').send(user)
 
 		expect(res.statusCode).toEqual(500)
-		expect(res.body).toHaveProperty('error')
+		expect(res.body).toHaveProperty('errors')
 		expect(res.body).toEqual({
-			success: false,
-			error: 'Internal server error',
+			data: {},
+			errors: ['Internal server error'],
 		})
 	})
 
@@ -85,15 +85,8 @@ describe('Register', () => {
 		expect(res.statusCode).toEqual(400)
 		expect(res.body).toHaveProperty('errors')
 		expect(res.body).toEqual({
-			success: false,
-			errors: [
-				{
-					location: 'body',
-					msg: 'Username or email has already taken',
-					param: 'email',
-					value: user.email,
-				},
-			],
+			data: {},
+			errors: ['Username or email has already taken'],
 		})
 	})
 
@@ -113,15 +106,8 @@ describe('Register', () => {
 		expect(res.statusCode).toEqual(400)
 		expect(res.body).toHaveProperty('errors')
 		expect(res.body).toEqual({
-			success: false,
-			errors: [
-				{
-					location: 'body',
-					msg: 'Password cannot have whitespace',
-					param: 'password',
-					value: user.password,
-				},
-			],
+			data: {},
+			errors: ['Password cannot have whitespace'],
 		})
 	})
 
@@ -141,15 +127,8 @@ describe('Register', () => {
 		expect(res.statusCode).toEqual(400)
 		expect(res.body).toHaveProperty('errors')
 		expect(res.body).toEqual({
-			success: false,
-			errors: [
-				{
-					location: 'body',
-					msg: 'Username must be a maximum of 32 characters',
-					param: 'username',
-					value: user.username,
-				},
-			],
+			data: {},
+			errors: ['Username must be a maximum of 32 characters'],
 		})
 	})
 
@@ -169,15 +148,8 @@ describe('Register', () => {
 		expect(res.statusCode).toEqual(400)
 		expect(res.body).toHaveProperty('errors')
 		expect(res.body).toEqual({
-			success: false,
-			errors: [
-				{
-					location: 'body',
-					msg: 'Name must be a maximum of 32 characters',
-					param: 'name',
-					value: user.name,
-				},
-			],
+			data: {},
+			errors: ['Name must be a maximum of 32 characters'],
 		})
 	})
 
@@ -197,15 +169,8 @@ describe('Register', () => {
 		expect(res.statusCode).toEqual(400)
 		expect(res.body).toHaveProperty('errors')
 		expect(res.body).toEqual({
-			success: false,
-			errors: [
-				{
-					location: 'body',
-					msg: 'Invalid email',
-					param: 'email',
-					value: user.email,
-				},
-			],
+			data: {},
+			errors: ['Invalid email'],
 		})
 	})
 
@@ -225,14 +190,9 @@ describe('Register', () => {
 		expect(res.statusCode).toEqual(400)
 		expect(res.body).toHaveProperty('errors')
 		expect(res.body).toEqual({
-			success: false,
+			data: {},
 			errors: [
-				{
-					location: 'body',
-					msg: 'Password must be a minimum of 8 characters and a maximum of 32 characters',
-					param: 'password',
-					value: user.password,
-				},
+				'Password must be a minimum of 8 characters and a maximum of 32 characters',
 			],
 		})
 	})
@@ -251,15 +211,8 @@ describe('Register', () => {
 		expect(res.statusCode).toEqual(400)
 		expect(res.body).toHaveProperty('errors')
 		expect(res.body).toEqual({
-			success: false,
-			errors: [
-				{
-					location: 'body',
-					msg: 'Internal Server Error',
-					param: 'email',
-					value: user.email,
-				},
-			],
+			data: {},
+			errors: ['Internal Server Error'],
 		})
 	})
 })

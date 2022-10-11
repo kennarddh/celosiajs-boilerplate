@@ -42,7 +42,7 @@ describe('Token', () => {
 		expect(res.statusCode).toEqual(200)
 		expect(res.body).toHaveProperty('data')
 		expect(res.body).toEqual({
-			success: true,
+			errors: [],
 			data: {
 				token: `Bearer token`,
 			},
@@ -68,10 +68,10 @@ describe('Token', () => {
 		expect(JWTVerify.mock.calls[0][0]).toBe('refreshToken')
 
 		expect(res.statusCode).toEqual(401)
-		expect(res.body).toHaveProperty('error')
+		expect(res.body).toHaveProperty('errors')
 		expect(res.body).toEqual({
-			success: false,
-			error: 'Failed to authenticate',
+			data: {},
+			errors: ['Failed to authenticate'],
 		})
 	})
 
@@ -90,10 +90,10 @@ describe('Token', () => {
 		const res = await request(App).post('/api/auth/token')
 
 		expect(res.statusCode).toEqual(400)
-		expect(res.body).toHaveProperty('error')
+		expect(res.body).toHaveProperty('errors')
 		expect(res.body).toEqual({
-			success: false,
-			error: 'Refresh token is required',
+			data: {},
+			errors: ['Refresh token is required'],
 		})
 	})
 
@@ -116,10 +116,10 @@ describe('Token', () => {
 		expect(JWTVerify.mock.calls[0][0]).toBe('refreshToken')
 
 		expect(res.statusCode).toEqual(500)
-		expect(res.body).toHaveProperty('error')
+		expect(res.body).toHaveProperty('errors')
 		expect(res.body).toEqual({
-			success: false,
-			error: 'Internal server error',
+			data: {},
+			errors: ['Internal server error'],
 		})
 	})
 
@@ -144,10 +144,10 @@ describe('Token', () => {
 		expect(JWTSign.mock.calls[0][0]).toStrictEqual(payload)
 
 		expect(res.statusCode).toEqual(500)
-		expect(res.body).toHaveProperty('error')
+		expect(res.body).toHaveProperty('errors')
 		expect(res.body).toEqual({
-			success: false,
-			error: 'Internal server error',
+			data: {},
+			errors: ['Internal server error'],
 		})
 	})
 })

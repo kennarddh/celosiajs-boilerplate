@@ -76,8 +76,8 @@ describe('Verify JWT middleware', () => {
 		expect(statusFunction.mock.calls[0][0]).toBe(401)
 
 		expect(jsonFunction.mock.calls[0][0]).toEqual({
-			success: false,
-			error: 'Failed to authenticate',
+			data: {},
+			errors: ['Failed to authenticate'],
 		})
 	})
 
@@ -96,8 +96,8 @@ describe('Verify JWT middleware', () => {
 		expect(statusFunction.mock.calls[0][0]).toBe(401)
 
 		expect(jsonFunction.mock.calls[0][0]).toEqual({
-			success: false,
-			error: 'Failed to authenticate',
+			data: {},
+			errors: ['Failed to authenticate'],
 		})
 	})
 
@@ -113,8 +113,8 @@ describe('Verify JWT middleware', () => {
 		expect(statusFunction.mock.calls[0][0]).toBe(401)
 
 		expect(jsonFunction.mock.calls[0][0]).toEqual({
-			success: false,
-			error: 'Failed to authenticate',
+			data: {},
+			errors: ['Failed to authenticate'],
 		})
 	})
 })

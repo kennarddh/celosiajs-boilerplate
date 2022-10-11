@@ -1,25 +1,14 @@
 {
 	"type": "object",
 	"properties": {
-		"success": {
-			"type": "boolean",
-			"default": false
+		"data": {
+			"type": "object",
+			"properties": {}
 		},
-		"error": {
+		"errors": {
 			"type": "array",
 			"items": {
-				"type": "object",
-				"properties": {
-					"location": {
-						"type": "string"
-					},
-					"msg": {
-						"type": "string"
-					},
-					"param": {
-						"type": "string"
-					}
-				}
+				"type": "string"
 			}
 		}
 	}

@@ -5,13 +5,13 @@
 			"schema": {
 				"type": "object",
 				"properties": {
-					"success": {
-						"type": "boolean",
-						"default": false
+					"data": {
+						"type": "object",
+						"properties": {}
 					},
-					"error": {
-						"type": "string",
-						"value": "Refresh token is required"
+					"errors": {
+						"type": "array",
+						"default": ["Refresh token is required"]
 					}
 				}
 			}

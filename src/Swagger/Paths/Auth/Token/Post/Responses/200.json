@@ -5,9 +5,9 @@
 			"schema": {
 				"type": "object",
 				"properties": {
-					"success": {
-						"type": "boolean",
-						"default": true
+					"errors": {
+						"type": "array",
+						"default": []
 					},
 					"data": {
 						"type": "object",

@@ -22,10 +22,10 @@ const LoggerFormat = [
 	winston.format.json(),
 ]
 
-const Transports = []
+const transports = []
 
 if (process.env.NODE_ENV === 'development') {
-	Transports.push(
+	transports.push(
 		new WinstonDailyRotateFile({
 			dirname: path.resolve(logsRootDirectory, 'Debug'),
 			level: 'debug',
@@ -40,7 +40,7 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 if (process.env.NODE_ENV !== 'test') {
-	Transports.push(
+	transports.push(
 		new WinstonDailyRotateFile({
 			dirname: path.resolve(logsRootDirectory, 'Application'),
 			filename: 'Application-%DATE%.log',
@@ -80,7 +80,7 @@ const Logger = winston.createLogger({
 	level: process.env.LOG_LEVEL || 'info',
 	silent: process.env.NODE_ENV === 'test',
 	format: winston.format.combine(...LoggerFormat),
-	transports: Transports,
+	transports,
 })
 
 export default Logger
