@@ -16,7 +16,7 @@ const CheckValidationErrorFactory = () => {
 				url,
 			})
 
-			return res.status(400).json({ success: false, errors })
+			return res.status(400).json({ errors, data: {} })
 		}
 
 		next()

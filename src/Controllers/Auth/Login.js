@@ -16,8 +16,8 @@ const Login = (req, res) => {
 				.then(isPasswordCorrect => {
 					if (!isPasswordCorrect) {
 						return res.status(403).json({
-							success: false,
-							error: 'Invalid email or password',
+							errors: ['Invalid email or password'],
+							data: {},
 						})
 					}
 
@@ -50,7 +50,7 @@ const Login = (req, res) => {
 									})
 
 									return res.status(200).json({
-										success: true,
+										errors: [],
 										data: {
 											token: `Bearer ${token}`,
 										},
@@ -66,8 +66,8 @@ const Login = (req, res) => {
 									)
 
 									return res.status(500).json({
-										success: false,
-										error: 'Internal server error',
+										errors: ['Internal server error'],
+										data: {},
 									})
 								})
 						})
@@ -78,8 +78,8 @@ const Login = (req, res) => {
 							})
 
 							return res.status(500).json({
-								success: false,
-								error: 'Internal server error',
+								errors: ['Internal server error'],
+								data: {},
 							})
 						})
 				})
@@ -90,22 +90,22 @@ const Login = (req, res) => {
 					})
 
 					return res.status(500).json({
-						success: false,
-						error: 'Internal server error',
+						errors: ['Internal server error'],
+						data: {},
 					})
 				})
 		})
 		.catch(({ code }) => {
 			if (code === 404) {
 				return res.status(403).json({
-					success: false,
-					error: 'Invalid email or password',
+					errors: ['Invalid email or password'],
+					data: {},
 				})
 			}
 
 			return res.status(500).json({
-				success: false,
-				error: 'Internal server error',
+				errors: ['Internal server error'],
+				data: {},
 			})
 		})
 }

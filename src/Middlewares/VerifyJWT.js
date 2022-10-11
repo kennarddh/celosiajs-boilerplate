@@ -5,8 +5,8 @@ const VerifyJWT = async (req, res, next) => {
 
 	if (!token)
 		return res.status(401).json({
-			success: false,
-			error: 'Failed to authenticate',
+			errors: ['Failed to authenticate'],
+			data: {},
 		})
 
 	await JWTVerify(token, process.env.JWT_SECRET)
@@ -21,8 +21,8 @@ const VerifyJWT = async (req, res, next) => {
 		})
 		.catch(() => {
 			return res.status(401).json({
-				success: false,
-				error: 'Failed to authenticate',
+				errors: ['Failed to authenticate'],
+				data: {},
 			})
 		})
 }

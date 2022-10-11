@@ -6,7 +6,7 @@ const Register = (req, res) => {
 	CreateUser({ username, name, email, password })
 		.then(({ user }) => {
 			return res.status(201).json({
-				success: true,
+				errors: [],
 				data: {
 					id: user._id,
 				},
@@ -14,8 +14,8 @@ const Register = (req, res) => {
 		})
 		.catch(() => {
 			return res.status(500).json({
-				success: false,
-				error: 'Internal server error',
+				errors: ['Internal server error'],
+				data: {},
 			})
 		})
 }
