@@ -58,11 +58,6 @@ src/
  |--index.js        # Entry
 ```
 
-## Services Reject Code
-
--   500 Intenal server error
--   404 Not found
-
 ## Available Scripts
 
 In the project directory, you can run:
