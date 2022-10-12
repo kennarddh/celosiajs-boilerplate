@@ -30,5 +30,16 @@ module.exports = {
 		'no-unused-vars': 'warn',
 		'import/extensions': ['warn', { js: 'never', json: 'never' }],
 		'prefer-promise-reject-errors': 'off',
+		'import/no-extraneous-dependencies': [
+			'error',
+			{
+				devDependencies: [
+					'**/*.test.js',
+					'**/*.spec.js',
+					'**/__tests__/**/*.js',
+					'./scripts/**/*.js',
+				],
+			},
+		],
 	},
 }
