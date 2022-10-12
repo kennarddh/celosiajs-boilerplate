@@ -14,4 +14,5 @@ module.exports = {
 			statements: 90,
 		},
 	},
+	testRegex: '((__tests__)|(.(test|spec).[jt]s?$))',
 }
