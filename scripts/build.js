@@ -8,7 +8,7 @@ const { resolve } = require('node:path')
 const packageJson = require('../package')
 const { testRegex } = require('../jest.config')
 
-const env = process.argv[3]
+const env = process.argv[2]
 
 const base = './build/'
 
@@ -68,8 +68,10 @@ const recursive = root => {
 }
 
 const copyEnv = () => {
-	if (existsSync('./.env.production.local')) {
+	if (env === 'production' && existsSync('./.env.production.local')) {
 		copyFile('./.env.production.local', resolve(base, '.env'))
+	} else if (env === 'development' && existsSync('./.env')) {
+		copyFile('./.env', resolve(base, '.env'))
 	} else {
 		copyFile('./.env.example', resolve(base, '.env'))
 	}
