@@ -62,10 +62,10 @@ src/
 
 In the project directory, you can run:
 
-### Run dev
+### Start Development Server
 
 ```bash
-npm run dev
+npm start
 ```
 
 ### Build Production
@@ -106,14 +106,6 @@ Removes all logs.
 
 ```bash
 npm run clean:logs
-```
-
-### Start
-
-Start the production server.
-
-```bash
-npm start
 ```
 
 ### Lint Check
