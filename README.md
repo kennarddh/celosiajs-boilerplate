@@ -68,12 +68,20 @@ In the project directory, you can run:
 npm run dev
 ```
 
-### Build
+### Build Production
 
 build the project for production.
 
 ```bash
-npm run build
+npm run build:production
+```
+
+### Build Development
+
+build the project for production.
+
+```bash
+npm run build:development
 ```
 
 ### Build Swagger
@@ -82,14 +90,6 @@ Bundle open api spec.
 
 ```bash
 npm run build:swagger
-```
-
-### Build Swagger Production
-
-Bundle open api spec for production.
-
-```bash
-npm run build:swagger:production
 ```
 
 ### Clean
