@@ -4,7 +4,7 @@
 	"description": "Express boilerplate",
 	"main": "src/index.js",
 	"scripts": {
-		"loadtest:register": "node ./scripts/loadtest/register.js",
+		"loadtest": "node ./scripts/loadtest/loadtest.js",
 		"build:production": "node ./scripts/build.js production",
 		"build:development": "node ./scripts/build.js development",
 		"build:swagger": "swagger-cli bundle ./src/Swagger/Swagger.json --outfile ./src/Swagger.json --type json",
