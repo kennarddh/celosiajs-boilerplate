@@ -68,6 +68,12 @@ In the project directory, you can run:
 npm start
 ```
 
+### Load Test
+
+```bash
+npm run loadtest
+```
+
 ### Build Production
 
 build the project for production.
