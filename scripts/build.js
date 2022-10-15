@@ -8,13 +8,13 @@ const { resolve } = require('node:path')
 const packageJson = require('../package')
 const { testRegex } = require('../jest.config')
 
-const cleanCommand = 'npm run clean'
-const transpileCommand =
-	'cross-env NODE_ENV=production npx babel ./src --out-dir ./build/src/'
-const buildCodeCommand =
-	'npx swagger-cli bundle ./src/Swagger/Swagger.json --outfile ./build/src/Swagger.json --type json'
+const env = process.argv[3]
 
 const base = './build/'
+
+const cleanCommand = 'npm run clean'
+const transpileCommand = `cross-env NODE_ENV=${env} npx babel ./src --out-dir ./build/src/`
+const buildCodeCommand = `npx swagger-cli bundle ./src/Swagger/Swagger.json --outfile ${base}src/Swagger.json --type json`
 
 const {
 	devDependencies: _,
