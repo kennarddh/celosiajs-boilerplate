@@ -84,7 +84,7 @@ npm run build:production
 
 ### Build Development
 
-build the project for production.
+build the project for development.
 
 ```bash
 npm run build:development
