@@ -7,7 +7,7 @@
 				"properties": {
 					"errors": {
 						"type": "array",
-						"items": [],
+						"items": {},
 						"default": []
 					},
 					"data": {
