@@ -62,18 +62,32 @@ src/
 
 In the project directory, you can run:
 
-### Run dev
+### Start Development Server
 
 ```bash
-npm run dev
+npm start
 ```
 
-### Build
+### Load Test
+
+```bash
+npm run loadtest
+```
+
+### Build Production
 
 build the project for production.
 
 ```bash
-npm run build
+npm run build:production
+```
+
+### Build Development
+
+build the project for development.
+
+```bash
+npm run build:development
 ```
 
 ### Build Swagger
@@ -82,14 +96,6 @@ Bundle open api spec.
 
 ```bash
 npm run build:swagger
-```
-
-### Build Swagger Production
-
-Bundle open api spec for production.
-
-```bash
-npm run build:swagger:production
 ```
 
 ### Clean
@@ -108,17 +114,9 @@ Removes all logs.
 npm run clean:logs
 ```
 
-### Start
-
-Start the production server.
-
-```bash
-npm start
-```
-
 ### Lint Check
 
-Finds errors in your code.
+Finds lint errors in your code.
 
 ```bash
 npm run lint:check
@@ -126,7 +124,7 @@ npm run lint:check
 
 ### Lint Fix
 
-Fixes linting errors.
+Fix linting errors.
 
 ```bash
 npm run lint:fix

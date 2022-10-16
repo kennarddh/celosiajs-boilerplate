@@ -4,6 +4,7 @@ module.exports = {
 		'/node_modules/',
 		'./src/Swagger.json',
 		'./src/Swagger/',
+		'./scripts/**/*.[jt]s',
 	],
 	collectCoverageFrom: ['./src/**'],
 	coverageThreshold: {
@@ -14,4 +15,5 @@ module.exports = {
 			statements: 90,
 		},
 	},
+	testRegex: '((__tests__\\/)|(\\.(test|spec)\\.[jt]s$))',
 }

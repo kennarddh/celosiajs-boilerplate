@@ -11,10 +11,7 @@ import MongoSanitize from './Middlewares/MongoSanitize'
 import LogHttpRequest from './Middlewares/LogHttpRequest'
 
 // Database
-import db from './Database'
-
-// Utils
-import Logger from './Utils/Logger/Logger'
+import './Database'
 
 // Router
 import AuthRouter from './Routes/Auth'
@@ -39,11 +36,6 @@ app.use(RateLimiter)
 app.use(MongoSanitize)
 
 app.use(LogHttpRequest)
-
-// Database
-db.on('error', error => {
-	Logger.error('Mongo DB connection error', { error })
-})
 
 // Router
 app.use('/api/auth', AuthRouter)
