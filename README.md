@@ -116,7 +116,7 @@ npm run clean:logs
 
 ### Lint Check
 
-Finds errors in your code.
+Finds lint errors in your code.
 
 ```bash
 npm run lint:check
@@ -124,7 +124,7 @@ npm run lint:check
 
 ### Lint Fix
 
-Fixes linting errors.
+Fix linting errors.
 
 ```bash
 npm run lint:fix
