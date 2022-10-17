@@ -1,4 +1,4 @@
 {
-	"presets": ["@babel/preset-env", "minify"],
+	"presets": ["@babel/preset-typescript", "@babel/preset-env", "minify"],
 	"plugins": ["transform-node-env-inline"]
 }
