@@ -8,9 +8,16 @@ module.exports = {
 		'plugin:jest/recommended',
 		'plugin:import/recommended',
 	],
+	parser: '@typescript-eslint/parser',
 	plugins: ['prettier', 'jest'],
 	parserOptions: {
 		ecmaVersion: 2020,
+		project: './tsconfig.json',
+	},
+	settings: {
+		'import/resolver': {
+			typescript: {},
+		},
 	},
 	rules: {
 		'prettier/prettier': [
@@ -29,15 +36,15 @@ module.exports = {
 		'no-console': 'warn',
 		'consistent-return': 'off',
 		'no-unused-vars': 'warn',
-		'import/extensions': ['warn', { js: 'never', json: 'never' }],
+		'import/extensions': ['warn', { ts: 'never', json: 'never' }],
 		'prefer-promise-reject-errors': 'off',
 		'import/no-extraneous-dependencies': [
 			'error',
 			{
 				devDependencies: [
-					'**/*.test.js',
-					'**/*.spec.js',
-					'**/__tests__/**/*.js',
+					'**/*.test.ts',
+					'**/*.spec.ts',
+					'**/__tests__/**/*.ts',
 					'./scripts/**/*.js',
 				],
 			},

@@ -25,6 +25,7 @@
 		"allowUnreachableCode": true /* Disable error reporting for unreachable code. */,
 		"skipLibCheck": false,
 		"resolveJsonModule": true,
-		"outDir": "./dist/"
-	}
+		"outDir": "./dist/",
+	},
+	"include": [".eslintrc.js", "src"]
 }
