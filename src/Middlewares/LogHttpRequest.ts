@@ -1,6 +1,9 @@
+import { NextFunction, Request, Response } from 'express'
+import { IncomingHttpHeaders, OutgoingHttpHeaders } from 'http'
+
 import Logger from '../Utils/Logger/Logger'
 
-const FilterHeaders = headers => {
+const FilterHeaders = (headers: IncomingHttpHeaders | OutgoingHttpHeaders) => {
 	const {
 		'x-access-token': _,
 		'set-cookie': __,
@@ -11,7 +14,7 @@ const FilterHeaders = headers => {
 	return newHeaders
 }
 
-const LogHttpRequest = (req, res, next) => {
+const LogHttpRequest = (req: Request, res: Response, next: NextFunction) => {
 	const requestStart = Date.now()
 
 	res.on('finish', () => {

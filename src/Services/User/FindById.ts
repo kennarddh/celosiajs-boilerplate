@@ -1,9 +1,21 @@
-// Models
-import User from '../../Models/User'
+import { Types } from 'mongoose'
 
 import Logger from '../../Utils/Logger/Logger'
 
-const FindById = ({ id }) =>
+// Models
+import User, { IUser } from '../../Models/User'
+
+interface IFindByIdParameters {
+	id: string | Types.ObjectId
+}
+
+interface IResolve {
+	user: IUser
+}
+
+type IFindById = (options: IFindByIdParameters) => Promise<IResolve>
+
+const FindById: IFindById = ({ id }) =>
 	new Promise((resolve, reject) => {
 		User.findById(id)
 			.exec()

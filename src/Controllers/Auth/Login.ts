@@ -1,4 +1,5 @@
 import bcrypt from 'bcrypt'
+import { Request, Response } from 'express'
 
 import Logger from '../../Utils/Logger/Logger'
 
@@ -6,8 +7,13 @@ import FindUserByEmail from '../../Services/User/FindByEmail'
 
 import JWTSign from '../../Utils/Promises/JWTSign'
 
-const Login = (req, res) => {
-	const { email, password } = req.body
+interface IBody {
+	email: string
+	password: string
+}
+
+const Login = (req: Request, res: Response) => {
+	const { email, password }: IBody = req.body
 
 	FindUserByEmail({ email })
 		.then(({ user }) => {

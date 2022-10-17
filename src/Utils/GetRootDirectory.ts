@@ -1,6 +1,6 @@
-import path from 'path'
+import path from 'node:path'
 
-const GetRootDirectory = () => {
+const GetRootDirectory = (): string => {
 	return path.resolve(__dirname, '../..')
 }
 

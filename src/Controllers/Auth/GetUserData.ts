@@ -1,9 +1,13 @@
+import { Request, Response } from 'express'
+
 import Logger from '../../Utils/Logger/Logger'
 
 import FindUserById from '../../Services/User/FindById'
 
-const GetUserData = (req, res) => {
-	const { id } = req.user
+const GetUserData = (req: Request, res: Response) => {
+	const id = req.user?.id
+
+	if (!id) throw new Error('Undefined id GetUserData controller')
 
 	FindUserById({ id })
 		.then(({ user }) => {

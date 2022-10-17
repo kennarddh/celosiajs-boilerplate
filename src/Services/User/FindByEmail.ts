@@ -1,9 +1,19 @@
 // Models
-import User from '../../Models/User'
+import User, { IUser } from '../../Models/User'
 
 import Logger from '../../Utils/Logger/Logger'
 
-const FindByEmail = ({ email }) =>
+interface IFindByEmailParameters {
+	email: string
+}
+
+interface IResolve {
+	user: IUser
+}
+
+type IFindByEmail = (options: IFindByEmailParameters) => Promise<IResolve>
+
+const FindByEmail: IFindByEmail = ({ email }) =>
 	new Promise((resolve, reject) => {
 		User.findOne({ email: email.toLowerCase() })
 			.exec()

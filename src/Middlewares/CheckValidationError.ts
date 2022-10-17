@@ -1,15 +1,21 @@
+import { NextFunction, Request, Response } from 'express'
+
 import { validationResult } from 'express-validator'
 
 import Logger from '../Utils/Logger/Logger'
 
 const CheckValidationErrorFactory = () => {
-	const CheckValidationError = (req, res, next) => {
+	const CheckValidationError = (
+		req: Request,
+		res: Response,
+		next: NextFunction
+	) => {
 		const result = validationResult(req)
 
 		if (!result.isEmpty()) {
 			const { method, url } = req
 
-			const errors = result.array().map(({ msg }) => msg)
+			const errors: string[] = result.array().map(({ msg }) => msg)
 
 			Logger.verbose('Validation failed', {
 				method,

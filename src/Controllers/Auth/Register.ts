@@ -1,7 +1,16 @@
+import { Request, Response } from 'express'
+
 import CreateUser from '../../Services/User/Create'
 
-const Register = (req, res) => {
-	const { username, name, email, password } = req.body
+interface IBody {
+	username: string
+	name: string
+	email: string
+	password: string
+}
+
+const Register = (req: Request, res: Response) => {
+	const { username, name, email, password }: IBody = req.body
 
 	CreateUser({ username, name, email, password })
 		.then(({ user }) => {

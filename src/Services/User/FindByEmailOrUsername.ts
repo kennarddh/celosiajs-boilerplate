@@ -1,9 +1,22 @@
 // Models
-import User from '../../Models/User'
+import User, { IUser } from '../../Models/User'
 
 import Logger from '../../Utils/Logger/Logger'
 
-const FindByEmailOrUsername = ({ email, username }) =>
+interface IFindByEmailOrUsernameParameters {
+	email: string
+	username: string
+}
+
+interface IResolve {
+	user: IUser
+}
+
+type IFindByEmailOrUsername = (
+	options: IFindByEmailOrUsernameParameters
+) => Promise<IResolve>
+
+const FindByEmailOrUsername: IFindByEmailOrUsername = ({ email, username }) =>
 	new Promise((resolve, reject) => {
 		User.findOne({
 			$or: [

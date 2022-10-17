@@ -1,12 +1,25 @@
 import bcrypt from 'bcrypt'
 
 // Models
-import User from '../../Models/User'
+import User, { IUser } from '../../Models/User'
 
 import Logger from '../../Utils/Logger/Logger'
 
-const Create = ({ username, name, email, password }) =>
-	new Promise((resolve, reject) => {
+interface ICreateParameters {
+	username: string
+	name: string
+	email: string
+	password: string
+}
+
+interface IResolve {
+	user: IUser
+}
+
+type ICreate = (options: ICreateParameters) => Promise<IResolve>
+
+const Create: ICreate = ({ username, name, email, password }) =>
+	new Promise<IResolve>((resolve, reject) => {
 		bcrypt
 			.hash(password, 10)
 			.then(passwordHash => {
@@ -23,7 +36,15 @@ const Create = ({ username, name, email, password }) =>
 							id: user._id,
 						})
 
-						resolve({ user })
+						const userResolve: IUser = {
+							_id: user._id,
+							username: user.username,
+							name: user.name,
+							email: user.email,
+							password: user.password,
+						}
+
+						resolve({ user: userResolve })
 					})
 					.catch(error => {
 						Logger.error('Create user to database failed', {

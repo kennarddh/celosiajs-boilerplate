@@ -1,17 +1,25 @@
+import { Request, Response } from 'express'
+
 import Logger from '../../Utils/Logger/Logger'
 
 import JWTSign from '../../Utils/Promises/JWTSign'
 import JWTVerify from '../../Utils/Promises/JWTVerify'
 
-const Token = (req, res) => {
-	const { refreshToken } = req.cookies
+import { JWTPayload } from '../../Types/JWT'
+
+interface ICookies {
+	refreshToken: string
+}
+
+const Token = (req: Request, res: Response) => {
+	const { refreshToken }: ICookies = req.cookies
 
 	if (!refreshToken)
 		return res
 			.status(400)
 			.json({ errors: ['Refresh token is required'], data: {} })
 
-	JWTVerify(refreshToken, process.env.REFRESH_JWT_SECRET)
+	JWTVerify<JWTPayload>(refreshToken, process.env.REFRESH_JWT_SECRET)
 		.then(decoded => {
 			const payload = {
 				id: decoded.id,

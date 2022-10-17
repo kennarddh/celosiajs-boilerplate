@@ -6,6 +6,7 @@ module.exports = {
 		'plugin:security/recommended',
 		'plugin:json/recommended',
 		'plugin:jest/recommended',
+		'plugin:import/recommended',
 	],
 	plugins: ['prettier', 'jest'],
 	parserOptions: {
