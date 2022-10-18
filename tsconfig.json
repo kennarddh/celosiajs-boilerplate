@@ -32,5 +32,5 @@
 			"./node_modules/@types"
 		]
 	},
-	"include": [".eslintrc.js", "src"]
+	"include": ["src"]
 }

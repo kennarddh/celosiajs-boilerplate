@@ -1,5 +1,29 @@
 module.exports = {
 	env: { 'jest/globals': true, node: true },
+	overrides: [
+		{
+			files: ['*.ts'],
+			parser: '@typescript-eslint/parser',
+			parserOptions: {
+				project: './tsconfig.json',
+			},
+			settings: {
+				'import/resolver': {
+					typescript: {},
+				},
+			},
+			rules: {
+				'@typescript-eslint/no-unused-vars': [
+					'warn',
+					{ varsIgnorePattern: '^_' },
+				],
+			},
+			extends: [
+				'plugin:@typescript-eslint/eslint-recommended',
+				'plugin:@typescript-eslint/recommended',
+			],
+		},
+	],
 	extends: [
 		'airbnb-base',
 		'plugin:prettier/recommended',
@@ -8,19 +32,10 @@ module.exports = {
 		'plugin:jest/recommended',
 		'plugin:import/recommended',
 		'eslint:recommended',
-		'plugin:@typescript-eslint/eslint-recommended',
-		'plugin:@typescript-eslint/recommended',
 	],
-	parser: '@typescript-eslint/parser',
 	plugins: ['prettier', 'jest'],
 	parserOptions: {
 		ecmaVersion: 2020,
-		project: './tsconfig.json',
-	},
-	settings: {
-		'import/resolver': {
-			typescript: {},
-		},
 	},
 	rules: {
 		'prettier/prettier': [
@@ -50,10 +65,6 @@ module.exports = {
 					'./scripts/**/*.js',
 				],
 			},
-		],
-		'@typescript-eslint/no-unused-vars': [
-			'warn',
-			{ varsIgnorePattern: '^_' },
 		],
 	},
 }
