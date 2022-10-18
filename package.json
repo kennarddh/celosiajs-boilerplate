@@ -10,11 +10,11 @@
 		"build:swagger": "swagger-cli bundle ./src/Swagger/Swagger.json --outfile ./src/Swagger.json --type json",
 		"clean": "rimraf ./build",
 		"clean:logs": "rimraf ./Logs",
-		"start": "cross-env NODE_ENV=development nodemon --exec \"npx tsc --watch\" \"nodemon -q dist/index.js\" &&",
-		"lint:check": "eslint src/**/*.{js,json}",
-		"lint:fix": "eslint --fix src/**/*.{js,json}",
-		"prettier:fix": "prettier -w \"src/**/*.{js,json}\"",
-		"prettier:check": "prettier -c \"src/**/*.{js,json}\"",
+		"start": "cross-env NODE_ENV=development concurrently \"npx tsc --watch\" \"nodemon -q dist/index.js\"",
+		"lint:check": "eslint src/**/*.{ts,json} && tsc --noemit",
+		"lint:fix": "eslint --fix src/**/*.{ts,json} && tsc --noemit",
+		"prettier:fix": "prettier -w \"src/**/*.{ts,json}\"",
+		"prettier:check": "prettier -c \"src/**/*.{ts,json}\"",
 		"prepare": "husky install && npm run build:swagger",
 		"test": "jest",
 		"test:watch": "jest --watch",
@@ -72,6 +72,7 @@
 		"@types/node": "^18.11.0",
 		"@types/supertest": "^2.0.12",
 		"@types/swagger-ui-express": "^4.1.3",
+		"@typescript-eslint/eslint-plugin": "^5.40.1",
 		"@typescript-eslint/parser": "^5.40.0",
 		"babel-plugin-transform-node-env-inline": "^0.4.3",
 		"babel-preset-minify": "^0.5.2",
@@ -96,6 +97,7 @@
 		"rimraf": "^3.0.2",
 		"supertest": "^6.2.4",
 		"swagger-cli": "^4.0.4",
+		"ts-node": "^10.9.1",
 		"typescript": "^4.8.4"
 	}
 }

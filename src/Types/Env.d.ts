@@ -10,6 +10,7 @@ declare global {
 			RATE_LIMITER_MAX: string
 			RATE_LIMITER_WINDOW_MS: string
 			LOG_LEVEL: string
+			NODE_ENV: string
 		}
 	}
 }

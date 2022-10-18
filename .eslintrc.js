@@ -7,6 +7,9 @@ module.exports = {
 		'plugin:json/recommended',
 		'plugin:jest/recommended',
 		'plugin:import/recommended',
+		'eslint:recommended',
+		'plugin:@typescript-eslint/eslint-recommended',
+		'plugin:@typescript-eslint/recommended',
 	],
 	parser: '@typescript-eslint/parser',
 	plugins: ['prettier', 'jest'],
@@ -35,7 +38,6 @@ module.exports = {
 		],
 		'no-console': 'warn',
 		'consistent-return': 'off',
-		'no-unused-vars': 'warn',
 		'import/extensions': ['warn', { ts: 'never', json: 'never' }],
 		'prefer-promise-reject-errors': 'off',
 		'import/no-extraneous-dependencies': [
@@ -48,6 +50,10 @@ module.exports = {
 					'./scripts/**/*.js',
 				],
 			},
+		],
+		'@typescript-eslint/no-unused-vars': [
+			'warn',
+			{ varsIgnorePattern: '^_' },
 		],
 	},
 }

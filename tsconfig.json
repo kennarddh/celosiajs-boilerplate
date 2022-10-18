@@ -26,6 +26,11 @@
 		"skipLibCheck": false,
 		"resolveJsonModule": true,
 		"outDir": "./dist/",
+		"typeRoots": [
+			"./src/Types/Env.d.ts",
+			"./src/Types/Http.d.ts",
+			"./node_modules/@types"
+		]
 	},
 	"include": [".eslintrc.js", "src"]
 }
