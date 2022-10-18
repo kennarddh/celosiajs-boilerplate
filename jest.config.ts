@@ -1,10 +1,11 @@
-module.exports = {
+import type { JestConfigWithTsJest } from 'ts-jest'
+
+const jestConfig: JestConfigWithTsJest = {
 	testEnvironment: 'node',
 	coveragePathIgnorePatterns: [
 		'/node_modules/',
 		'./src/Swagger.json',
 		'./src/Swagger/',
-		'./scripts/**/*.[jt]s',
 	],
 	collectCoverageFrom: ['./src/**'],
 	coverageThreshold: {
@@ -16,4 +17,7 @@ module.exports = {
 		},
 	},
 	testRegex: '((__tests__\\/)|(\\.(test|spec)\\.[jt]s$))',
+	preset: 'ts-jest',
 }
+
+export default jestConfig

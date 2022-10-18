@@ -13,7 +13,7 @@ module.exports = {
 	],
 	overrides: [
 		{
-			files: ['scripts/**/*.js', '.eslintrc.js'],
+			files: ['scripts/**/*', '.eslintrc.js', 'jest.config.ts'],
 			parserOptions: {
 				project: './tsconfig.eslint.json',
 			},
