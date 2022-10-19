@@ -43,7 +43,7 @@ describe('JWT sign', () => {
 		})
 
 		expect(mock).toHaveBeenCalledTimes(1)
-		expect(mock).toBeCalledWith(payload, secret, options)
+		expect(mock).toHaveBeenCalledWith(payload, secret, options)
 	})
 
 	it('Should failed', async () => {
@@ -59,7 +59,7 @@ describe('JWT sign', () => {
 				optionsImplementation,
 				callback
 			) => {
-				callback(new Error('error'), null)
+				callback(new Error('error'), undefined)
 
 				mock(
 					payloadImplementation,
@@ -72,8 +72,8 @@ describe('JWT sign', () => {
 		await JWTSign(payload, secret, options).catch(mock2)
 
 		expect(mock).toHaveBeenCalledTimes(1)
-		expect(mock).toBeCalledWith(payload, secret, options)
+		expect(mock).toHaveBeenCalledWith(payload, secret, options)
 
-		expect(mock2).toBeCalledWith(new Error('error'))
+		expect(mock2).toHaveBeenCalledWith(new Error('error'))
 	})
 })
