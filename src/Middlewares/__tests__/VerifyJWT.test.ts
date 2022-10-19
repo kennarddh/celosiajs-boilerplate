@@ -1,17 +1,21 @@
+import { Request, Response, NextFunction } from 'express'
+
 import JWTVerify from '../../Utils/Promises/JWTVerify'
 
 import VerifyJWT from '../VerifyJWT'
 
 jest.mock('../../Utils/Promises/JWTVerify')
 
+const MockedJWTVerify = jest.mocked(JWTVerify)
+
 describe('Verify JWT middleware', () => {
-	const nextFunction = jest.fn()
+	const nextFunction: NextFunction = jest.fn()
 	const jsonFunction = jest.fn()
 	const statusFunction = jest.fn()
 
-	let mockRequest
+	let mockRequest: Partial<Request>
 
-	let mockResponse
+	let mockResponse: Partial<Response>
 
 	beforeEach(() => {
 		mockRequest = {}
@@ -25,7 +29,7 @@ describe('Verify JWT middleware', () => {
 	afterEach(() => {
 		jest.clearAllMocks()
 
-		JWTVerify.mockRestore()
+		MockedJWTVerify.mockRestore()
 	})
 
 	it('Should success', async () => {
@@ -42,18 +46,22 @@ describe('Verify JWT middleware', () => {
 			id: 'id',
 		}
 
-		JWTVerify.mockResolvedValueOnce(user)
+		MockedJWTVerify.mockResolvedValueOnce(user)
 
 		const promise = new Promise(resolve => {
-			VerifyJWT(mockRequest, mockResponse, () => {
-				nextFunction()
+			VerifyJWT(
+				mockRequest as unknown as Request,
+				mockResponse as unknown as Response,
+				() => {
+					nextFunction()
 
-				resolve()
-			})
+					resolve(true)
+				}
+			)
 		}).then(() => {
 			expect(nextFunction).toHaveBeenCalled()
 
-			expect(mockRequest.user.id).toBe(user.id)
+			expect(mockRequest?.user?.id).toBe(user.id)
 		})
 
 		return promise
@@ -69,9 +77,13 @@ describe('Verify JWT middleware', () => {
 			},
 		}
 
-		JWTVerify.mockRejectedValueOnce()
+		MockedJWTVerify.mockRejectedValueOnce(new Error())
 
-		await VerifyJWT(mockRequest, mockResponse)
+		await VerifyJWT(
+			mockRequest as unknown as Request,
+			mockResponse as unknown as Response,
+			nextFunction
+		)
 
 		expect(statusFunction.mock.calls[0][0]).toBe(401)
 
@@ -91,7 +103,11 @@ describe('Verify JWT middleware', () => {
 			},
 		}
 
-		await VerifyJWT(mockRequest, mockResponse)
+		await VerifyJWT(
+			mockRequest as unknown as Request,
+			mockResponse as unknown as Response,
+			nextFunction
+		)
 
 		expect(statusFunction.mock.calls[0][0]).toBe(401)
 
@@ -108,7 +124,11 @@ describe('Verify JWT middleware', () => {
 			headers: {},
 		}
 
-		await VerifyJWT(mockRequest, mockResponse)
+		await VerifyJWT(
+			mockRequest as unknown as Request,
+			mockResponse as unknown as Response,
+			nextFunction
+		)
 
 		expect(statusFunction.mock.calls[0][0]).toBe(401)
 
