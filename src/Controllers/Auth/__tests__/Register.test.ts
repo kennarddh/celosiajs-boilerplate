@@ -1,5 +1,7 @@
 import request from 'supertest'
 
+import { Types } from 'mongoose'
+
 import Create from '../../../Services/User/Create'
 import FindByEmailOrUsername from '../../../Services/User/FindByEmailOrUsername'
 
@@ -8,11 +10,23 @@ import App from '../../../App'
 jest.mock('../../../Services/User/Create')
 jest.mock('../../../Services/User/FindByEmailOrUsername')
 
+const MockedCreate = jest.mocked(Create)
+const MockedFindByEmailOrUsername = jest.mocked(FindByEmailOrUsername)
+
+interface IUser {
+	_id: string | Types.ObjectId
+	username: string
+	name: string
+	email: string
+	password: string
+}
+
 describe('Register', () => {
-	let user
+	let user: IUser
 
 	beforeEach(() => {
 		user = {
+			_id: 'id',
 			username: 'testtest1234',
 			name: 'Testtest1234',
 			email: 'testtest1234@gmail.com',
@@ -25,20 +39,24 @@ describe('Register', () => {
 		jest.restoreAllMocks()
 		jest.resetModules()
 
-		Create.mockRestore()
-		FindByEmailOrUsername.mockRestore()
+		MockedCreate.mockRestore()
+		MockedFindByEmailOrUsername.mockRestore()
 	})
 
 	it('Should success', async () => {
 		expect.assertions(3)
 
-		Create.mockResolvedValueOnce({
+		MockedCreate.mockResolvedValueOnce({
 			user: {
-				_id: 'id',
+				_id: 'id' as unknown as Types.ObjectId,
+				username: 'testtest1234',
+				name: 'Testtest1234',
+				email: 'testtest1234@gmail.com',
+				password: 'testtest1234',
 			},
 		})
 
-		FindByEmailOrUsername.mockRejectedValueOnce({ code: 404 })
+		MockedFindByEmailOrUsername.mockRejectedValueOnce({ code: 404 })
 
 		const res = await request(App).post('/api/auth/register').send(user)
 
@@ -52,14 +70,14 @@ describe('Register', () => {
 		})
 	})
 
-	it('Should fail with failed create user', async () => {
+	it('Should fail with failed MockedCreate user', async () => {
 		expect.assertions(3)
 
-		Create.mockRejectedValueOnce({
+		MockedCreate.mockRejectedValueOnce({
 			code: 500,
 		})
 
-		FindByEmailOrUsername.mockRejectedValueOnce({ code: 404 })
+		MockedFindByEmailOrUsername.mockRejectedValueOnce({ code: 404 })
 
 		const res = await request(App).post('/api/auth/register').send(user)
 
@@ -74,11 +92,13 @@ describe('Register', () => {
 	it('Should fail with already exist email or username', async () => {
 		expect.assertions(3)
 
-		Create.mockRejectedValueOnce({
+		MockedCreate.mockRejectedValueOnce({
 			code: 500,
 		})
 
-		FindByEmailOrUsername.mockResolvedValueOnce({ user })
+		MockedFindByEmailOrUsername.mockResolvedValueOnce({ user } as {
+			user: Omit<IUser, '_id'> & { _id: Types.ObjectId }
+		})
 
 		const res = await request(App).post('/api/auth/register').send(user)
 
@@ -95,11 +115,11 @@ describe('Register', () => {
 
 		user.password = 'test test1234'
 
-		Create.mockRejectedValueOnce({
+		MockedCreate.mockRejectedValueOnce({
 			code: 500,
 		})
 
-		FindByEmailOrUsername.mockRejectedValueOnce({ code: 404 })
+		MockedFindByEmailOrUsername.mockRejectedValueOnce({ code: 404 })
 
 		const res = await request(App).post('/api/auth/register').send(user)
 
@@ -116,11 +136,11 @@ describe('Register', () => {
 
 		user.username = 'testtest1234testtest1234testtest1234testtest1234'
 
-		Create.mockRejectedValueOnce({
+		MockedCreate.mockRejectedValueOnce({
 			code: 500,
 		})
 
-		FindByEmailOrUsername.mockRejectedValueOnce({ code: 404 })
+		MockedFindByEmailOrUsername.mockRejectedValueOnce({ code: 404 })
 
 		const res = await request(App).post('/api/auth/register').send(user)
 
@@ -137,11 +157,11 @@ describe('Register', () => {
 
 		user.name = 'Testtest1234testtest1234testtest1234testtest1234'
 
-		Create.mockRejectedValueOnce({
+		MockedCreate.mockRejectedValueOnce({
 			code: 500,
 		})
 
-		FindByEmailOrUsername.mockRejectedValueOnce({ code: 404 })
+		MockedFindByEmailOrUsername.mockRejectedValueOnce({ code: 404 })
 
 		const res = await request(App).post('/api/auth/register').send(user)
 
@@ -158,11 +178,11 @@ describe('Register', () => {
 
 		user.email = 'testtest1234@ gmail.com'
 
-		Create.mockRejectedValueOnce({
+		MockedCreate.mockRejectedValueOnce({
 			code: 500,
 		})
 
-		FindByEmailOrUsername.mockRejectedValueOnce({ code: 404 })
+		MockedFindByEmailOrUsername.mockRejectedValueOnce({ code: 404 })
 
 		const res = await request(App).post('/api/auth/register').send(user)
 
@@ -179,11 +199,11 @@ describe('Register', () => {
 
 		user.password = 'test'
 
-		Create.mockRejectedValueOnce({
+		MockedCreate.mockRejectedValueOnce({
 			code: 500,
 		})
 
-		FindByEmailOrUsername.mockRejectedValueOnce({ code: 404 })
+		MockedFindByEmailOrUsername.mockRejectedValueOnce({ code: 404 })
 
 		const res = await request(App).post('/api/auth/register').send(user)
 
@@ -200,11 +220,11 @@ describe('Register', () => {
 	it('Should fail with invalid find user by email or username 500 validation', async () => {
 		expect.assertions(3)
 
-		Create.mockRejectedValueOnce({
+		MockedCreate.mockRejectedValueOnce({
 			code: 500,
 		})
 
-		FindByEmailOrUsername.mockRejectedValueOnce({ code: 500 })
+		MockedFindByEmailOrUsername.mockRejectedValueOnce({ code: 500 })
 
 		const res = await request(App).post('/api/auth/register').send(user)
 

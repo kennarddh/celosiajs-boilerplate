@@ -1,4 +1,5 @@
 import request from 'supertest'
+import { Types } from 'mongoose'
 
 import FindById from '../../../Services/User/FindById'
 import JWTVerify from '../../../Utils/Promises/JWTVerify'
@@ -8,8 +9,19 @@ import App from '../../../App'
 jest.mock('../../../Services/User/FindById')
 jest.mock('../../../Utils/Promises/JWTVerify')
 
+interface IUser {
+	_id: string | Types.ObjectId
+	username: string
+	name: string
+	email: string
+	password: string
+}
+
+const MockedJWTVerify = jest.mocked(JWTVerify)
+const MockedFindById = jest.mocked(FindById)
+
 describe('Get user data', () => {
-	let user
+	let user: IUser
 
 	beforeEach(() => {
 		user = {
@@ -26,8 +38,8 @@ describe('Get user data', () => {
 		jest.restoreAllMocks()
 		jest.resetModules()
 
-		FindById.mockRestore()
-		JWTVerify.mockRestore()
+		MockedFindById.mockRestore()
+		MockedJWTVerify.mockRestore()
 	})
 
 	it('Should success', async () => {
@@ -35,18 +47,20 @@ describe('Get user data', () => {
 
 		const token = 'Bearer token'
 
-		JWTVerify.mockResolvedValueOnce({
+		MockedJWTVerify.mockResolvedValueOnce({
 			id: user._id,
 			username: user.username,
 		})
 
-		FindById.mockResolvedValueOnce({ user })
+		MockedFindById.mockResolvedValueOnce({ user } as {
+			user: Omit<IUser, '_id'> & { _id: Types.ObjectId }
+		})
 
 		const res = await request(App)
 			.get('/api/auth/user')
 			.set('x-access-token', token)
 
-		expect(JWTVerify).toHaveBeenCalledWith('token', undefined)
+		expect(MockedJWTVerify).toHaveBeenCalledWith('token', undefined)
 
 		expect(FindById).toHaveBeenCalledWith({ id: user._id })
 
@@ -68,18 +82,18 @@ describe('Get user data', () => {
 
 		const token = 'Bearer token'
 
-		JWTVerify.mockResolvedValueOnce({
+		MockedJWTVerify.mockResolvedValueOnce({
 			id: user._id,
 			username: user.username,
 		})
 
-		FindById.mockRejectedValueOnce({ code: 500 })
+		MockedFindById.mockRejectedValueOnce({ code: 500 })
 
 		const res = await request(App)
 			.get('/api/auth/user')
 			.set('x-access-token', token)
 
-		expect(JWTVerify).toHaveBeenCalledWith('token', undefined)
+		expect(MockedJWTVerify).toHaveBeenCalledWith('token', undefined)
 
 		expect(FindById).toHaveBeenCalledWith({ id: user._id })
 
@@ -96,18 +110,18 @@ describe('Get user data', () => {
 
 		const token = 'Bearer token'
 
-		JWTVerify.mockResolvedValueOnce({
+		MockedJWTVerify.mockResolvedValueOnce({
 			id: user._id,
 			username: user.username,
 		})
 
-		FindById.mockRejectedValueOnce({ code: 404 })
+		MockedFindById.mockRejectedValueOnce({ code: 404 })
 
 		const res = await request(App)
 			.get('/api/auth/user')
 			.set('x-access-token', token)
 
-		expect(JWTVerify).toHaveBeenCalledWith('token', undefined)
+		expect(MockedJWTVerify).toHaveBeenCalledWith('token', undefined)
 
 		expect(FindById).toHaveBeenCalledWith({ id: user._id })
 

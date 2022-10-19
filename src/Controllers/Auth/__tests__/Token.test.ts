@@ -8,14 +8,17 @@ import App from '../../../App'
 jest.mock('../../../Utils/Promises/JWTSign')
 jest.mock('../../../Utils/Promises/JWTVerify')
 
+const MockedJWTSign = jest.mocked(JWTSign)
+const MockedJWTVerify = jest.mocked(JWTVerify)
+
 describe('Token', () => {
 	afterEach(() => {
 		jest.clearAllMocks()
 		jest.restoreAllMocks()
 		jest.resetModules()
 
-		JWTSign.mockRestore()
-		JWTVerify.mockRestore()
+		MockedJWTSign.mockRestore()
+		MockedJWTVerify.mockRestore()
 	})
 
 	it('Should success', async () => {
@@ -25,19 +28,19 @@ describe('Token', () => {
 			id: 'id',
 		}
 
-		JWTVerify.mockResolvedValueOnce(payload)
+		MockedJWTVerify.mockResolvedValueOnce(payload)
 
-		JWTSign.mockResolvedValueOnce('token')
-		JWTSign.mockResolvedValueOnce('refreshToken')
+		MockedJWTSign.mockResolvedValueOnce('token')
+		MockedJWTSign.mockResolvedValueOnce('refreshToken')
 
 		const res = await request(App)
 			.post('/api/auth/token')
 			.set('Cookie', ['refreshToken=refreshToken'])
 
-		expect(JWTVerify.mock.calls[0][0]).toBe('refreshToken')
+		expect(MockedJWTVerify.mock.calls?.[0]?.[0]).toBe('refreshToken')
 
-		expect(JWTSign.mock.calls[0][0]).toStrictEqual(payload)
-		expect(JWTSign.mock.calls[1][0]).toStrictEqual(payload)
+		expect(MockedJWTSign.mock.calls?.[0]?.[0]).toStrictEqual(payload)
+		expect(MockedJWTSign.mock.calls?.[1]?.[0]).toStrictEqual(payload)
 
 		expect(res.statusCode).toEqual(200)
 		expect(res.body).toHaveProperty('data')
@@ -56,16 +59,16 @@ describe('Token', () => {
 	it('Should fail if jwt verify failed', async () => {
 		expect.assertions(4)
 
-		JWTVerify.mockRejectedValueOnce()
+		MockedJWTVerify.mockRejectedValueOnce(new Error())
 
-		JWTSign.mockResolvedValueOnce('token')
-		JWTSign.mockResolvedValueOnce('refreshToken')
+		MockedJWTSign.mockResolvedValueOnce('token')
+		MockedJWTSign.mockResolvedValueOnce('refreshToken')
 
 		const res = await request(App)
 			.post('/api/auth/token')
 			.set('Cookie', ['refreshToken=refreshToken'])
 
-		expect(JWTVerify.mock.calls[0][0]).toBe('refreshToken')
+		expect(MockedJWTVerify.mock.calls?.[0]?.[0]).toBe('refreshToken')
 
 		expect(res.statusCode).toEqual(401)
 		expect(res.body).toHaveProperty('errors')
@@ -82,10 +85,10 @@ describe('Token', () => {
 			id: 'id',
 		}
 
-		JWTVerify.mockResolvedValueOnce(payload)
+		MockedJWTVerify.mockResolvedValueOnce(payload)
 
-		JWTSign.mockResolvedValueOnce('token')
-		JWTSign.mockResolvedValueOnce('refreshToken')
+		MockedJWTSign.mockResolvedValueOnce('token')
+		MockedJWTSign.mockResolvedValueOnce('refreshToken')
 
 		const res = await request(App).post('/api/auth/token')
 
@@ -104,16 +107,16 @@ describe('Token', () => {
 			id: 'id',
 		}
 
-		JWTVerify.mockResolvedValueOnce(payload)
+		MockedJWTVerify.mockResolvedValueOnce(payload)
 
-		JWTSign.mockRejectedValueOnce()
-		JWTSign.mockResolvedValueOnce('refreshToken')
+		MockedJWTSign.mockRejectedValueOnce(new Error())
+		MockedJWTSign.mockResolvedValueOnce('refreshToken')
 
 		const res = await request(App)
 			.post('/api/auth/token')
 			.set('Cookie', ['refreshToken=refreshToken'])
 
-		expect(JWTVerify.mock.calls[0][0]).toBe('refreshToken')
+		expect(MockedJWTVerify.mock.calls?.[0]?.[0]).toBe('refreshToken')
 
 		expect(res.statusCode).toEqual(500)
 		expect(res.body).toHaveProperty('errors')
@@ -130,18 +133,18 @@ describe('Token', () => {
 			id: 'id',
 		}
 
-		JWTVerify.mockResolvedValueOnce(payload)
+		MockedJWTVerify.mockResolvedValueOnce(payload)
 
-		JWTSign.mockResolvedValueOnce('token')
-		JWTSign.mockRejectedValueOnce()
+		MockedJWTSign.mockResolvedValueOnce('token')
+		MockedJWTSign.mockRejectedValueOnce(new Error())
 
 		const res = await request(App)
 			.post('/api/auth/token')
 			.set('Cookie', ['refreshToken=refreshToken'])
 
-		expect(JWTVerify.mock.calls[0][0]).toBe('refreshToken')
+		expect(MockedJWTVerify.mock.calls?.[0]?.[0]).toBe('refreshToken')
 
-		expect(JWTSign.mock.calls[0][0]).toStrictEqual(payload)
+		expect(MockedJWTSign.mock.calls?.[0]?.[0]).toStrictEqual(payload)
 
 		expect(res.statusCode).toEqual(500)
 		expect(res.body).toHaveProperty('errors')

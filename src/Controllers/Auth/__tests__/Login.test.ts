@@ -2,6 +2,8 @@ import bcrypt from 'bcrypt'
 
 import request from 'supertest'
 
+import { Types } from 'mongoose'
+
 import FindByEmail from '../../../Services/User/FindByEmail'
 
 import JWTSign from '../../../Utils/Promises/JWTSign'
@@ -12,33 +14,39 @@ jest.mock('bcrypt')
 jest.mock('../../../Services/User/FindByEmail')
 jest.mock('../../../Utils/Promises/JWTSign')
 
+const MockedJWTSign = jest.mocked(JWTSign)
+const MockedFindByEmail = jest.mocked(FindByEmail)
+const MockedBcryptCompare = jest.mocked(bcrypt.compare)
+
 describe('Login', () => {
 	afterEach(() => {
 		jest.clearAllMocks()
 		jest.restoreAllMocks()
 		jest.resetModules()
 
-		FindByEmail.mockRestore()
-		JWTSign.mockRestore()
+		MockedFindByEmail.mockRestore()
+		MockedJWTSign.mockRestore()
 
-		bcrypt.compare.mockRestore()
+		MockedBcryptCompare.mockRestore()
 	})
 
 	it('Should success', async () => {
 		expect.assertions(3)
 
-		FindByEmail.mockResolvedValueOnce({
+		MockedFindByEmail.mockResolvedValueOnce({
 			user: {
+				name: 'testtest',
+				email: 'email@provider.com',
 				password: 'testtest',
-				_id: 'id',
+				_id: 'id' as unknown as Types.ObjectId,
 				username: 'testtest',
 			},
 		})
 
-		bcrypt.compare.mockResolvedValueOnce(true)
+		MockedBcryptCompare.mockImplementationOnce(() => Promise.resolve(true))
 
-		JWTSign.mockResolvedValueOnce('token')
-		JWTSign.mockResolvedValueOnce('refreshToken')
+		MockedJWTSign.mockResolvedValueOnce('token')
+		MockedJWTSign.mockResolvedValueOnce('refreshToken')
 
 		const res = await request(App).post('/api/auth/login').send({
 			email: 'test@test.com',
@@ -58,18 +66,20 @@ describe('Login', () => {
 	it('Should set refresh token cookie', async () => {
 		expect.assertions(4)
 
-		FindByEmail.mockResolvedValueOnce({
+		MockedFindByEmail.mockResolvedValueOnce({
 			user: {
+				name: 'testtest',
+				email: 'email@provider.com',
 				password: 'testtest',
-				_id: 'id',
+				_id: 'id' as unknown as Types.ObjectId,
 				username: 'testtest',
 			},
 		})
 
-		bcrypt.compare.mockResolvedValueOnce(true)
+		MockedBcryptCompare.mockImplementationOnce(() => Promise.resolve(true))
 
-		JWTSign.mockResolvedValueOnce('token')
-		JWTSign.mockResolvedValueOnce('refreshToken')
+		MockedJWTSign.mockResolvedValueOnce('token')
+		MockedJWTSign.mockResolvedValueOnce('refreshToken')
 
 		const res = await request(App).post('/api/auth/login').send({
 			email: 'test@test.com',
@@ -93,17 +103,19 @@ describe('Login', () => {
 	it('Should fail with failed jwt sign', async () => {
 		expect.assertions(3)
 
-		FindByEmail.mockResolvedValueOnce({
+		MockedFindByEmail.mockResolvedValueOnce({
 			user: {
+				name: 'testtest',
+				email: 'email@provider.com',
 				password: 'testtest',
-				_id: 'id',
+				_id: 'id' as unknown as Types.ObjectId,
 				username: 'testtest',
 			},
 		})
 
-		bcrypt.compare.mockResolvedValueOnce(true)
+		MockedBcryptCompare.mockImplementationOnce(() => Promise.resolve(true))
 
-		JWTSign.mockRejectedValueOnce('error')
+		MockedJWTSign.mockRejectedValueOnce('error')
 
 		const res = await request(App).post('/api/auth/login').send({
 			email: 'test@test.com',
@@ -121,18 +133,20 @@ describe('Login', () => {
 	it('Should fail with failed refresh token jwt sign', async () => {
 		expect.assertions(3)
 
-		FindByEmail.mockResolvedValueOnce({
+		MockedFindByEmail.mockResolvedValueOnce({
 			user: {
+				name: 'testtest',
+				email: 'email@provider.com',
 				password: 'testtest',
-				_id: 'id',
+				_id: 'id' as unknown as Types.ObjectId,
 				username: 'testtest',
 			},
 		})
 
-		bcrypt.compare.mockResolvedValueOnce(true)
+		MockedBcryptCompare.mockImplementationOnce(() => Promise.resolve(true))
 
-		JWTSign.mockResolvedValueOnce('token')
-		JWTSign.mockRejectedValueOnce('error')
+		MockedJWTSign.mockResolvedValueOnce('token')
+		MockedJWTSign.mockRejectedValueOnce('error')
 
 		const res = await request(App).post('/api/auth/login').send({
 			email: 'test@test.com',
@@ -150,17 +164,19 @@ describe('Login', () => {
 	it('Should fail with invalid password', async () => {
 		expect.assertions(3)
 
-		FindByEmail.mockResolvedValueOnce({
+		MockedFindByEmail.mockResolvedValueOnce({
 			user: {
+				name: 'testtest',
+				email: 'email@provider.com',
 				password: 'testtest2',
-				_id: 'id',
+				_id: 'id' as unknown as Types.ObjectId,
 				username: 'testtest',
 			},
 		})
 
-		bcrypt.compare.mockResolvedValueOnce(false)
+		MockedBcryptCompare.mockImplementationOnce(() => Promise.resolve(false))
 
-		JWTSign.mockResolvedValueOnce('token')
+		MockedJWTSign.mockResolvedValueOnce('token')
 
 		const res = await request(App).post('/api/auth/login').send({
 			email: 'test@test.com',
@@ -178,11 +194,11 @@ describe('Login', () => {
 	it('Should fail with invalid email', async () => {
 		expect.assertions(3)
 
-		FindByEmail.mockRejectedValueOnce({ code: 404 })
+		MockedFindByEmail.mockRejectedValueOnce({ code: 404 })
 
-		bcrypt.compare.mockResolvedValueOnce(false)
+		MockedBcryptCompare.mockImplementationOnce(() => Promise.resolve(false))
 
-		JWTSign.mockResolvedValueOnce('token')
+		MockedJWTSign.mockResolvedValueOnce('token')
 
 		const res = await request(App).post('/api/auth/login').send({
 			email: 'test@test.com',
@@ -200,11 +216,11 @@ describe('Login', () => {
 	it('Should fail internal server error', async () => {
 		expect.assertions(3)
 
-		FindByEmail.mockRejectedValueOnce({ code: 500 })
+		MockedFindByEmail.mockRejectedValueOnce({ code: 500 })
 
-		bcrypt.compare.mockResolvedValueOnce(false)
+		MockedBcryptCompare.mockImplementationOnce(() => Promise.resolve(false))
 
-		JWTSign.mockResolvedValueOnce('token')
+		MockedJWTSign.mockResolvedValueOnce('token')
 
 		const res = await request(App).post('/api/auth/login').send({
 			email: 'test@test.com',
@@ -219,18 +235,22 @@ describe('Login', () => {
 		})
 	})
 
-	it('Should fail with failed bcrypt', async () => {
-		FindByEmail.mockResolvedValueOnce({
+	it('Should fail with failed MockedBcrypt', async () => {
+		MockedFindByEmail.mockResolvedValueOnce({
 			user: {
+				name: 'testtest',
+				email: 'email@provider.com',
 				password: 'testtest',
-				_id: 'id',
+				_id: 'id' as unknown as Types.ObjectId,
 				username: 'testtest',
 			},
 		})
 
-		bcrypt.compare.mockRejectedValueOnce('error')
+		MockedBcryptCompare.mockImplementationOnce(() =>
+			Promise.resolve(new Error('error'))
+		)
 
-		JWTSign.mockResolvedValueOnce('token')
+		MockedJWTSign.mockResolvedValueOnce('token')
 
 		const res = await request(App).post('/api/auth/login').send({
 			email: 'test@test.com',
@@ -248,17 +268,19 @@ describe('Login', () => {
 	it('Should fail with invalid password validation', async () => {
 		expect.assertions(3)
 
-		FindByEmail.mockResolvedValueOnce({
+		MockedFindByEmail.mockResolvedValueOnce({
 			user: {
+				name: 'testtest',
+				email: 'email@provider.com',
 				password: 'testtest',
-				_id: 'id',
+				_id: 'id' as unknown as Types.ObjectId,
 				username: 'testtest',
 			},
 		})
 
-		bcrypt.compare.mockResolvedValueOnce(true)
+		MockedBcryptCompare.mockImplementationOnce(() => Promise.resolve(true))
 
-		JWTSign.mockResolvedValueOnce('token')
+		MockedJWTSign.mockResolvedValueOnce('token')
 
 		const res = await request(App).post('/api/auth/login').send({
 			email: 'test@test.com',
@@ -278,17 +300,19 @@ describe('Login', () => {
 	it('Should fail with invalid email validation', async () => {
 		expect.assertions(3)
 
-		FindByEmail.mockResolvedValueOnce({
+		MockedFindByEmail.mockResolvedValueOnce({
 			user: {
+				name: 'testtest',
+				email: 'email@provider.com',
 				password: 'testtest',
-				_id: 'id',
+				_id: 'id' as unknown as Types.ObjectId,
 				username: 'testtest',
 			},
 		})
 
-		bcrypt.compare.mockResolvedValueOnce(true)
+		MockedBcryptCompare.mockImplementationOnce(() => Promise.resolve(true))
 
-		JWTSign.mockResolvedValueOnce('token')
+		MockedJWTSign.mockResolvedValueOnce('token')
 
 		const res = await request(App).post('/api/auth/login').send({
 			email: 'test',
@@ -306,17 +330,19 @@ describe('Login', () => {
 	it('Should fail with invalid email and password validation', async () => {
 		expect.assertions(3)
 
-		FindByEmail.mockResolvedValueOnce({
+		MockedFindByEmail.mockResolvedValueOnce({
 			user: {
+				name: 'testtest',
+				email: 'email@provider.com',
 				password: 'testtest',
-				_id: 'id',
+				_id: 'id' as unknown as Types.ObjectId,
 				username: 'testtest',
 			},
 		})
 
-		bcrypt.compare.mockResolvedValueOnce(true)
+		MockedBcryptCompare.mockImplementationOnce(() => Promise.resolve(true))
 
-		JWTSign.mockResolvedValueOnce('token')
+		MockedJWTSign.mockResolvedValueOnce('token')
 
 		const res = await request(App).post('/api/auth/login').send({
 			email: 'test',
@@ -337,17 +363,19 @@ describe('Login', () => {
 	it('Should fail with password whitespace validation', async () => {
 		expect.assertions(3)
 
-		FindByEmail.mockResolvedValueOnce({
+		MockedFindByEmail.mockResolvedValueOnce({
 			user: {
+				name: 'testtest',
+				email: 'email@provider.com',
 				password: 'testtest',
-				_id: 'id',
+				_id: 'id' as unknown as Types.ObjectId,
 				username: 'testtest',
 			},
 		})
 
-		bcrypt.compare.mockResolvedValueOnce(true)
+		MockedBcryptCompare.mockImplementationOnce(() => Promise.resolve(true))
 
-		JWTSign.mockResolvedValueOnce('token')
+		MockedJWTSign.mockResolvedValueOnce('token')
 
 		const res = await request(App).post('/api/auth/login').send({
 			email: 'test@test.com',
