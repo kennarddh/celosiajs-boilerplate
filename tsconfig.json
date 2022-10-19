@@ -28,6 +28,7 @@
 		"outDir": "./dist/",
 		"typeRoots": [
 			"./src/Types/Env.d.ts",
+			"./src/Types/Mockingoose.d.ts",
 			"./src/Types/Http.d.ts",
 			"./node_modules/@types"
 		]
