@@ -60,29 +60,28 @@ declare module 'mockingoose' {
 	}
 
 	interface Target {
-		__mocks: any // eslint-disable-line @typescript-eslint/no-explicit-any
+		__mocks: any // eslint-disable-line @typescript-eslint/no-explicit-any, no-underscore-dangle
 
 		/**
 		 * Resets all mocks.
 		 */
-		resetAll(): void
+		resetAll: () => void
 
 		/**
 		 * Returns an object of mocks for all models. Only serializable if all mock results are primitives, not functions.
 		 */
-		toJSON(): string | undefined
+		toJSON: () => string | undefined
 	}
 
 	/**
 	 * Returns a helper with which you can set up mocks for a particular Model
-	 * @param {string | mongoose.Model} model either a string model name, or a mongoose.Model instance
+	 * @param {mongoose.Model} model either a string model name, or a mongoose.Model instance
 	 */
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	type MockModel = (model: Model<any, any, any, any>) => Mock
+	type MockModel = (model: Model<any, any, any, any>) => Mock // eslint-disable-line @typescript-eslint/no-explicit-any
 
-	type Proxy = Target & MockModel
+	type Proxy = MockModel & Target
 
 	const mockingoose: Proxy
 
-	export default mockingoose
+	export = mockingoose
 }

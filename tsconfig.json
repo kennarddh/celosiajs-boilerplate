@@ -27,9 +27,7 @@
 		"resolveJsonModule": true,
 		"outDir": "./dist/",
 		"typeRoots": [
-			"./src/Types/Env.d.ts",
-			"./src/Types/Mockingoose.d.ts",
-			"./src/Types/Http.d.ts",
+			"./src/Types",
 			"./node_modules/@types"
 		]
 	},

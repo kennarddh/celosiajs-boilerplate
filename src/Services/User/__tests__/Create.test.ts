@@ -24,7 +24,7 @@ describe('Create user service', () => {
 
 		const hash = jest.spyOn(bcrypt, 'hash')
 
-		hash.mockResolvedValueOnce('passwordHash')
+		hash.mockImplementationOnce(() => Promise.resolve('passwordHash'))
 
 		mockingoose(User).toReturn(user, 'save')
 
@@ -50,7 +50,7 @@ describe('Create user service', () => {
 
 		const hash = jest.spyOn(bcrypt, 'hash')
 
-		hash.mockRejectedValueOnce({ code: 500 })
+		hash.mockImplementationOnce(() => Promise.reject({ code: 500 }))
 
 		mockingoose(User).toReturn(user, 'save')
 
@@ -62,7 +62,7 @@ describe('Create user service', () => {
 			mock(error)
 		}
 
-		expect(mock).toBeCalledWith({
+		expect(mock).toHaveBeenCalledWith({
 			code: 500,
 		})
 	})
@@ -79,7 +79,7 @@ describe('Create user service', () => {
 
 		const hash = jest.spyOn(bcrypt, 'hash')
 
-		hash.mockResolvedValueOnce('passwordHash')
+		hash.mockImplementationOnce(() => Promise.resolve('passwordHash'))
 
 		mockingoose(User).toReturn(new Error(), 'save')
 
@@ -91,7 +91,7 @@ describe('Create user service', () => {
 			mock(error)
 		}
 
-		expect(mock).toBeCalledWith({
+		expect(mock).toHaveBeenCalledWith({
 			code: 500,
 		})
 	})
