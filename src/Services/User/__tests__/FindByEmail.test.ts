@@ -1,6 +1,6 @@
-import * as mockingoose from 'mockingoose'
-
 import mongoose from 'mongoose'
+
+import MockMongoose, { ResetAll } from '../../../Utils/Tests/MockMongoose'
 
 import FindByEmail from '../FindByEmail'
 
@@ -9,24 +9,24 @@ import User from '../../../Models/User'
 
 describe('Find by email user service', () => {
 	afterEach(() => {
-		mockingoose.resetAll()
+		ResetAll()
 	})
 
 	it('Should get user', () => {
 		expect.assertions(6)
 
 		const user = {
-			_id: mongoose.Types.ObjectId('62c526bb503a77b155f6eba5'),
+			_id: new mongoose.Types.ObjectId('62c526bb503a77b155f6eba5'),
 			username: 'username',
 			name: 'Name',
 			email: 'email@example.com',
 			password: 'password',
 		}
 
-		mockingoose(User).toReturn(query => {
-			expect(query.getQuery().email).toBe('email@example.com')
+		MockMongoose(User).toReturnOnce(query => {
+			expect(query.email).toBe('email@example.com')
 
-			if (query.getQuery().email === user.email) return user
+			if (query.email === user.email) return user
 		}, 'findOne')
 
 		const findByIdPromise = FindByEmail({ email: user.email }).then(
@@ -46,17 +46,17 @@ describe('Find by email user service', () => {
 		expect.assertions(2)
 
 		const user = {
-			_id: mongoose.Types.ObjectId('62c526bb503a77b155f6eba6'),
+			_id: new mongoose.Types.ObjectId('62c526bb503a77b155f6eba6'),
 			username: 'username1',
 			name: 'Name1',
 			email: 'email1@example.com',
 			password: 'password1',
 		}
 
-		mockingoose(User).toReturn(query => {
-			expect(query.getQuery().email).toBe('email2@example.com')
+		MockMongoose(User).toReturnOnce(query => {
+			expect(query.email).toBe('email2@example.com')
 
-			if (query.getQuery()._id === user._id) return user
+			if (query.email === user.email) return user
 		}, 'findOne')
 
 		const mock = jest.fn()
@@ -73,7 +73,7 @@ describe('Find by email user service', () => {
 	it('Should reject with 500', async () => {
 		expect.assertions(1)
 
-		mockingoose(User).toReturn(new Error(), 'findOne')
+		MockMongoose(User).toReturnOnce(new Error(), 'findOne')
 
 		const mock = jest.fn()
 
