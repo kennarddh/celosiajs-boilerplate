@@ -12,7 +12,7 @@ mongoose.createConnection = jest.fn().mockReturnValue({
 	},
 })
 
-const operations = ['save'] as const
+const operations = ['save', 'findOne'] as const
 
 export type ExpectedReturnType =
 	| string
@@ -20,10 +20,14 @@ export type ExpectedReturnType =
 	| boolean
 	| symbol
 	| object
-	| Record<string, string>
+	| Record<string, any> // eslint-disable-line @typescript-eslint/no-explicit-any
 	| void
 	| null
 	| undefined
+
+export type ReturnTypeFunction = (
+	query: Record<string, any> // eslint-disable-line @typescript-eslint/no-explicit-any
+) => ExpectedReturnType
 
 export type IOperation = typeof operations[number]
 
@@ -32,10 +36,11 @@ type ModelType = Model<any, any, any, any, any>
 
 interface PendingReturn {
 	once: boolean
-	expected: ExpectedReturnType
+	expected: ExpectedReturnType | ReturnTypeFunction
 }
 
 const PromiseByDefaultOperation: string[] = ['save']
+const ModelTypeOperation: string[] = ['save']
 
 const mocks = new Map<ModelType, Map<IOperation, PendingReturn[]>>()
 
@@ -59,51 +64,52 @@ class MockBase {
 		operations.forEach((operation: IOperation) => {
 			mocks.get(this.model)?.set(operation, [])
 
-			let mockReturnValue
-
-			if (PromiseByDefaultOperation.includes(operation)) {
-				mockReturnValue = this.#implementation(operation)
-			} else {
-				mockReturnValue = {
-					exec: () => this.#implementation(operation),
-				}
-			}
-
-			const spy = jest
-				.spyOn(
-					this.model.prototype,
-					operation as any // eslint-disable-line @typescript-eslint/no-explicit-any
-				)
-				.mockReturnValue(mockReturnValue as any) // eslint-disable-line @typescript-eslint/no-explicit-any
-
-			spies.push(spy)
+			this.#reDefineSpy(operation)
 		})
 	}
 
 	#reDefineSpy(operation: IOperation) {
-		let mockReturnValue
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		let mockReturnValue: (args: unknown[]) => any
 
 		if (PromiseByDefaultOperation.includes(operation)) {
-			mockReturnValue = this.#implementation(operation)
+			mockReturnValue = (args: unknown[]) =>
+				this.#implementation(operation, args)
 		} else {
-			mockReturnValue = {
-				exec: () => this.#implementation(operation),
-			}
+			mockReturnValue = (args: unknown[]) => ({
+				exec: () => this.#implementation(operation, args),
+			})
+		}
+
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		let spyTarget: any
+
+		if (ModelTypeOperation.includes(operation)) {
+			spyTarget = this.model.prototype
+		} else {
+			spyTarget = mongoose.Query.prototype
 		}
 
 		const spy = jest
 			.spyOn(
-				this.model.prototype,
+				spyTarget,
 				operation as any // eslint-disable-line @typescript-eslint/no-explicit-any
 			)
-			.mockReturnValue(mockReturnValue as any) // eslint-disable-line @typescript-eslint/no-explicit-any
+			.mockImplementation((...args) => {
+				return mockReturnValue(args)
+			})
 
 		spies.push(spy)
 	}
 
-	#implementation(operation: IOperation): Promise<ExpectedReturnType> {
+	#implementation(
+		operation: IOperation,
+		args: unknown[]
+	): Promise<ExpectedReturnType> {
+		const { model } = this
+
 		return new Promise((resolve, reject) => {
-			const returnsArray = mocks.get(this.model)?.get(operation)
+			const returnsArray = mocks.get(model)?.get(operation)
 
 			if (!returnsArray) {
 				resolve({})
@@ -128,13 +134,24 @@ class MockBase {
 			if (expectedReturn?.expected instanceof Error) {
 				reject(expectedReturn)
 			} else {
+				if (typeof expectedReturn?.expected === 'function') {
+					const expected: ExpectedReturnType =
+						expectedReturn?.expected(
+							args[0] as Record<string, string>
+						)
+
+					resolve(expected)
+
+					return
+				}
+
 				resolve(expectedReturn)
 			}
 		})
 	}
 
 	toReturnBase(
-		expected: ExpectedReturnType,
+		expected: ExpectedReturnType | ReturnTypeFunction,
 		operation: IOperation,
 		once: boolean
 	) {
@@ -145,13 +162,19 @@ class MockBase {
 		return this
 	}
 
-	toReturn(expected: ExpectedReturnType, operation: IOperation) {
+	toReturn(
+		expected: ExpectedReturnType | ReturnTypeFunction,
+		operation: IOperation
+	) {
 		this.toReturnBase(expected, operation, false)
 
 		return this
 	}
 
-	toReturnOnce(expected: ExpectedReturnType, operation: IOperation) {
+	toReturnOnce(
+		expected: ExpectedReturnType | ReturnTypeFunction,
+		operation: IOperation
+	) {
 		this.toReturnBase(expected, operation, true)
 
 		return this
