@@ -1,6 +1,6 @@
-import * as mockingoose from 'mockingoose'
-
 import mongoose from 'mongoose'
+
+import MockMongoose, { ResetAll } from '../../../Utils/Tests/MockMongoose'
 
 import FindByEmailOrUsername from '../FindByEmailOrUsername'
 
@@ -9,27 +9,27 @@ import User from '../../../Models/User'
 
 describe('Find by email or username user service', () => {
 	afterEach(() => {
-		mockingoose.resetAll()
+		ResetAll()
 	})
 
 	it('Should get user', () => {
 		expect.assertions(7)
 
 		const user = {
-			_id: mongoose.Types.ObjectId('62c526bb503a77b155f6eba5'),
+			_id: new mongoose.Types.ObjectId('62c526bb503a77b155f6eba5'),
 			username: 'username',
 			name: 'Name',
 			email: 'email@example.com',
 			password: 'password',
 		}
 
-		mockingoose(User).toReturn(query => {
-			expect(query.getQuery().$or[0].email).toBe(user.email)
-			expect(query.getQuery().$or[1].username).toBe(user.username)
+		MockMongoose(User).toReturn(query => {
+			expect(query.$or[0].email).toBe(user.email)
+			expect(query.$or[1].username).toBe(user.username)
 
 			if (
-				query.getQuery().$or[0].email === user.email ||
-				query.getQuery().$or[1].username === user.username
+				query.$or[0].email === user.email ||
+				query.$or[1].username === user.username
 			)
 				return user
 		}, 'findOne')
@@ -52,20 +52,20 @@ describe('Find by email or username user service', () => {
 		expect.assertions(3)
 
 		const user = {
-			_id: mongoose.Types.ObjectId('62c526bb503a77b155f6eba6'),
+			_id: new mongoose.Types.ObjectId('62c526bb503a77b155f6eba6'),
 			username: 'username1',
 			name: 'Name1',
 			email: 'email1@example.com',
 			password: 'password1',
 		}
 
-		mockingoose(User).toReturn(query => {
-			expect(query.getQuery().$or[0].email).toBe('email2@example.com')
-			expect(query.getQuery().$or[1].username).toBe('username2')
+		MockMongoose(User).toReturn(query => {
+			expect(query.$or[0].email).toBe('email2@example.com')
+			expect(query.$or[1].username).toBe('username2')
 
 			if (
-				query.getQuery().$or[0].email === user.email ||
-				query.getQuery().$or[1].username === user.username
+				query.$or[0].email === user.email ||
+				query.$or[1].username === user.username
 			)
 				return user
 		}, 'findOne')
@@ -87,7 +87,7 @@ describe('Find by email or username user service', () => {
 	it('Should reject with 500', async () => {
 		expect.assertions(1)
 
-		mockingoose(User).toReturn(new Error(), 'findOne')
+		MockMongoose(User).toReturn(new Error(), 'findOne')
 
 		const mock = jest.fn()
 
