@@ -5,7 +5,7 @@ import Logger from '../../Utils/Logger/Logger'
 import JWTSign from '../../Utils/Promises/JWTSign'
 import JWTVerify from '../../Utils/Promises/JWTVerify'
 
-import { JWTPayload } from '../../Types/JWT'
+import { IUser } from '../../Types/Http'
 
 interface ICookies {
 	refreshToken: string
@@ -19,7 +19,7 @@ const Token = (req: Request, res: Response) => {
 			.status(400)
 			.json({ errors: ['Refresh token is required'], data: {} })
 
-	JWTVerify<JWTPayload>(refreshToken, process.env.REFRESH_JWT_SECRET)
+	JWTVerify<IUser>(refreshToken, process.env.REFRESH_JWT_SECRET)
 		.then(decoded => {
 			const payload = {
 				id: decoded.id,

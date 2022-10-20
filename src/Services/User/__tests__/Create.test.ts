@@ -1,6 +1,6 @@
-import * as mockingoose from 'mockingoose'
-
 import bcrypt from 'bcrypt'
+
+import MockMongoose, { ResetAll } from '../../../Utils/Tests/MockMongoose'
 
 import Create from '../Create'
 
@@ -9,7 +9,7 @@ import User from '../../../Models/User'
 
 describe('Create user service', () => {
 	afterEach(() => {
-		mockingoose.resetAll()
+		ResetAll()
 	})
 
 	it('Should create new user', () => {
@@ -26,7 +26,7 @@ describe('Create user service', () => {
 
 		hash.mockImplementationOnce(() => Promise.resolve('passwordHash'))
 
-		mockingoose(User).toReturn(user, 'save')
+		MockMongoose(User).toReturnOnce(user, 'save')
 
 		const createPromise = Create(user).then(({ user: newUser }) => {
 			expect(newUser.username).toBe(user.username)
@@ -52,7 +52,7 @@ describe('Create user service', () => {
 
 		hash.mockImplementationOnce(() => Promise.reject({ code: 500 }))
 
-		mockingoose(User).toReturn(user, 'save')
+		MockMongoose(User).toReturnOnce(user, 'save')
 
 		const mock = jest.fn()
 
@@ -81,7 +81,7 @@ describe('Create user service', () => {
 
 		hash.mockImplementationOnce(() => Promise.resolve('passwordHash'))
 
-		mockingoose(User).toReturn(new Error(), 'save')
+		MockMongoose(User).toReturnOnce(new Error(), 'save')
 
 		const mock = jest.fn()
 

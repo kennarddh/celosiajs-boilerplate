@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express'
 
-import { JWTPayload } from '../Types/JWT'
+import { IUser } from '../Types/Http'
 import JWTVerify from '../Utils/Promises/JWTVerify'
 
 const VerifyJWT = async (req: Request, res: Response, next: NextFunction) => {
@@ -21,7 +21,7 @@ const VerifyJWT = async (req: Request, res: Response, next: NextFunction) => {
 			data: {},
 		})
 
-	await JWTVerify<JWTPayload>(token, process.env.JWT_SECRET)
+	await JWTVerify<IUser>(token, process.env.JWT_SECRET)
 		.then(user => {
 			req.user = user
 
