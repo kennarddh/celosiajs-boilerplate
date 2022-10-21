@@ -1,13 +1,13 @@
 import request from 'supertest'
 import { Types } from 'mongoose'
 
-import FindById from '../../../Services/User/FindById'
-import JWTVerify from '../../../Utils/Promises/JWTVerify'
+import FindById from '../../../../../Services/User/FindById'
+import JWTVerify from '../../../../../Utils/Promises/JWTVerify'
 
-import App from '../../../App'
+import App from '../../../../../App'
 
-jest.mock('../../../Services/User/FindById')
-jest.mock('../../../Utils/Promises/JWTVerify')
+jest.mock('../../../../../Services/User/FindById')
+jest.mock('../../../../../Utils/Promises/JWTVerify')
 
 interface IUser {
 	_id: string | Types.ObjectId

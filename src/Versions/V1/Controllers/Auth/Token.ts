@@ -1,11 +1,11 @@
 import { Request, Response } from 'express'
 
-import Logger from '../../Utils/Logger/Logger'
+import Logger from '../../../../Utils/Logger/Logger'
 
-import JWTSign from '../../Utils/Promises/JWTSign'
-import JWTVerify from '../../Utils/Promises/JWTVerify'
+import JWTSign from '../../../../Utils/Promises/JWTSign'
+import JWTVerify from '../../../../Utils/Promises/JWTVerify'
 
-import { IUser } from '../../Types/Http'
+import { IUser } from '../../../../Types/Http'
 
 interface ICookies {
 	refreshToken: string

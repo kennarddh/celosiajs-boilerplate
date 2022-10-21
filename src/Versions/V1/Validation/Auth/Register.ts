@@ -1,9 +1,9 @@
 import { body } from 'express-validator'
 
 // Middleware
-import CheckValidationError from '../../Middlewares/CheckValidationError'
+import CheckValidationError from '../../../../Middlewares/CheckValidationError'
 
-import FindUserByEmailOrUsername from '../../Services/User/FindByEmailOrUsername'
+import FindUserByEmailOrUsername from '../../../../Services/User/FindByEmailOrUsername'
 
 const Register = () => {
 	const validator = [
