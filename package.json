@@ -10,6 +10,8 @@
 		"build:swagger": "swagger-cli bundle ./src/Swagger/Swagger.json --outfile ./src/Swagger.json --type json",
 		"clean": "rimraf ./build",
 		"clean:logs": "rimraf ./Logs",
+		"clean:dist": "rimraf ./dist",
+		"clean:coverage": "rimraf ./coverage",
 		"start": "cross-env NODE_ENV=development concurrently \"npx tsc --watch\" \"nodemon -q dist/index.js\"",
 		"lint:check": "eslint src/**/*.{ts,json} && tsc --noemit",
 		"lint:fix": "eslint --fix src/**/*.{ts,json} && tsc --noemit",
