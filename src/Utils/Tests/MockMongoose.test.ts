@@ -208,4 +208,12 @@ describe('Mock Mongoose', () => {
 
 		expect(res).toEqual(data)
 	})
+
+	it('empty mock', async () => {
+		MockMongoose(User)
+
+		const res = await User.replaceOne({ _id: 'a' }, { name: 'x' }).exec()
+
+		expect(res).toEqual({})
+	})
 })

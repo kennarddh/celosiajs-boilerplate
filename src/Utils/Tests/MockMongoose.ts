@@ -7,9 +7,7 @@ mongoose.createConnection = jest.fn().mockReturnValue({
 	model: jest.fn(),
 	on: jest.fn(),
 	once: jest.fn(),
-	then(resolve: (instance: typeof mongoose) => void) {
-		resolve(this)
-	},
+	then: jest.fn(),
 })
 
 const operations = [
