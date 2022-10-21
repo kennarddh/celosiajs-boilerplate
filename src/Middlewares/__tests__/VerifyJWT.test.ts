@@ -137,4 +137,30 @@ describe('Verify JWT middleware', () => {
 			errors: ['Failed to authenticate'],
 		})
 	})
+
+	it('Should fail with array header', async () => {
+		expect.assertions(2)
+
+		mockRequest = {
+			headers: {
+				'x-access-token': [
+					'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyYzQ1N2RmNjhhZDc0NTRjNTRhNWFjOSIsInVzZXJuYW1lIjoidGVzdHRlc3QxMiIsImlhdCI6MTY1NzEwMTIzMSwiZXhwIjoxNjU3MTg3NjMxfQ.-YlQ95KUSFaxGZLvTlQLkAEkXBLHmSqzIeJspzSw5vM',
+					'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyYzQ1N2RmNjhhZDc0NTRjNTRhNWFjOSIsInVzZXJuYW1lIjoidGVzdHRlc3QxMiIsImlhdCI6MTY1NzEwMTIzMSwiZXhwIjoxNjU3MTg3NjMxfQ.-YlQ95KUSFaxGZLvTlQLkAEkXBLHmSqzIeJspzSw5vM',
+				],
+			},
+		}
+
+		await VerifyJWT(
+			mockRequest as unknown as Request,
+			mockResponse as unknown as Response,
+			nextFunction
+		)
+
+		expect(statusFunction.mock.calls[0][0]).toBe(401)
+
+		expect(jsonFunction.mock.calls[0][0]).toEqual({
+			data: {},
+			errors: ['Failed to authenticate'],
+		})
+	})
 })
