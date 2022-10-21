@@ -235,7 +235,7 @@ describe('Login', () => {
 		})
 	})
 
-	it('Should fail with failed MockedBcrypt', async () => {
+	it('Should fail with failed bcrypt', async () => {
 		MockedFindByEmail.mockResolvedValueOnce({
 			user: {
 				name: 'testtest',
@@ -247,7 +247,7 @@ describe('Login', () => {
 		})
 
 		MockedBcryptCompare.mockImplementationOnce(() =>
-			Promise.resolve(new Error('error'))
+			Promise.reject(new Error('error'))
 		)
 
 		MockedJWTSign.mockResolvedValueOnce('token')
