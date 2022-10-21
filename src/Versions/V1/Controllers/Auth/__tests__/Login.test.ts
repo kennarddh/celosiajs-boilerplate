@@ -4,15 +4,15 @@ import request from 'supertest'
 
 import { Types } from 'mongoose'
 
-import FindByEmail from '../../../Services/User/FindByEmail'
+import FindByEmail from '../../../../../Services/User/FindByEmail'
 
-import JWTSign from '../../../Utils/Promises/JWTSign'
+import JWTSign from '../../../../../Utils/Promises/JWTSign'
 
-import App from '../../../App'
+import App from '../../../../../App'
 
 jest.mock('bcrypt')
-jest.mock('../../../Services/User/FindByEmail')
-jest.mock('../../../Utils/Promises/JWTSign')
+jest.mock('../../../../../Services/User/FindByEmail')
+jest.mock('../../../../../Utils/Promises/JWTSign')
 
 const MockedJWTSign = jest.mocked(JWTSign)
 const MockedFindByEmail = jest.mocked(FindByEmail)
@@ -48,7 +48,7 @@ describe('Login', () => {
 		MockedJWTSign.mockResolvedValueOnce('token')
 		MockedJWTSign.mockResolvedValueOnce('refreshToken')
 
-		const res = await request(App).post('/api/auth/login').send({
+		const res = await request(App).post('/api/v1/auth/login').send({
 			email: 'test@test.com',
 			password: 'testtest',
 		})
@@ -81,7 +81,7 @@ describe('Login', () => {
 		MockedJWTSign.mockResolvedValueOnce('token')
 		MockedJWTSign.mockResolvedValueOnce('refreshToken')
 
-		const res = await request(App).post('/api/auth/login').send({
+		const res = await request(App).post('/api/v1/auth/login').send({
 			email: 'test@test.com',
 			password: 'testtest',
 		})
@@ -117,7 +117,7 @@ describe('Login', () => {
 
 		MockedJWTSign.mockRejectedValueOnce('error')
 
-		const res = await request(App).post('/api/auth/login').send({
+		const res = await request(App).post('/api/v1/auth/login').send({
 			email: 'test@test.com',
 			password: 'testtest',
 		})
@@ -148,7 +148,7 @@ describe('Login', () => {
 		MockedJWTSign.mockResolvedValueOnce('token')
 		MockedJWTSign.mockRejectedValueOnce('error')
 
-		const res = await request(App).post('/api/auth/login').send({
+		const res = await request(App).post('/api/v1/auth/login').send({
 			email: 'test@test.com',
 			password: 'testtest',
 		})
@@ -178,7 +178,7 @@ describe('Login', () => {
 
 		MockedJWTSign.mockResolvedValueOnce('token')
 
-		const res = await request(App).post('/api/auth/login').send({
+		const res = await request(App).post('/api/v1/auth/login').send({
 			email: 'test@test.com',
 			password: 'testtest',
 		})
@@ -200,7 +200,7 @@ describe('Login', () => {
 
 		MockedJWTSign.mockResolvedValueOnce('token')
 
-		const res = await request(App).post('/api/auth/login').send({
+		const res = await request(App).post('/api/v1/auth/login').send({
 			email: 'test@test.com',
 			password: 'testtest',
 		})
@@ -222,7 +222,7 @@ describe('Login', () => {
 
 		MockedJWTSign.mockResolvedValueOnce('token')
 
-		const res = await request(App).post('/api/auth/login').send({
+		const res = await request(App).post('/api/v1/auth/login').send({
 			email: 'test@test.com',
 			password: 'testtest',
 		})
@@ -252,7 +252,7 @@ describe('Login', () => {
 
 		MockedJWTSign.mockResolvedValueOnce('token')
 
-		const res = await request(App).post('/api/auth/login').send({
+		const res = await request(App).post('/api/v1/auth/login').send({
 			email: 'test@test.com',
 			password: 'testtest',
 		})
@@ -282,7 +282,7 @@ describe('Login', () => {
 
 		MockedJWTSign.mockResolvedValueOnce('token')
 
-		const res = await request(App).post('/api/auth/login').send({
+		const res = await request(App).post('/api/v1/auth/login').send({
 			email: 'test@test.com',
 			password: 'test',
 		})
@@ -314,7 +314,7 @@ describe('Login', () => {
 
 		MockedJWTSign.mockResolvedValueOnce('token')
 
-		const res = await request(App).post('/api/auth/login').send({
+		const res = await request(App).post('/api/v1/auth/login').send({
 			email: 'test',
 			password: 'testtest',
 		})
@@ -344,7 +344,7 @@ describe('Login', () => {
 
 		MockedJWTSign.mockResolvedValueOnce('token')
 
-		const res = await request(App).post('/api/auth/login').send({
+		const res = await request(App).post('/api/v1/auth/login').send({
 			email: 'test',
 			password: 'test',
 		})
@@ -377,7 +377,7 @@ describe('Login', () => {
 
 		MockedJWTSign.mockResolvedValueOnce('token')
 
-		const res = await request(App).post('/api/auth/login').send({
+		const res = await request(App).post('/api/v1/auth/login').send({
 			email: 'test@test.com',
 			password: 'test test',
 		})

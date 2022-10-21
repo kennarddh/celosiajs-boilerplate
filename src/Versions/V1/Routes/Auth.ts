@@ -4,7 +4,7 @@ import express from 'express'
 import { Register, Login, GetUserData, Token } from '../Controllers/Auth'
 
 // Middleware
-import VerifyJWT from '../Middlewares/VerifyJWT'
+import VerifyJWT from '../../../Middlewares/VerifyJWT'
 
 // Validation
 import RegisterValidation from '../Validation/Auth/Register'

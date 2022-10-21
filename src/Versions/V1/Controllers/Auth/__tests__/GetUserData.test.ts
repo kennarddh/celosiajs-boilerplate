@@ -1,13 +1,13 @@
 import request from 'supertest'
 import { Types } from 'mongoose'
 
-import FindById from '../../../Services/User/FindById'
-import JWTVerify from '../../../Utils/Promises/JWTVerify'
+import FindById from '../../../../../Services/User/FindById'
+import JWTVerify from '../../../../../Utils/Promises/JWTVerify'
 
-import App from '../../../App'
+import App from '../../../../../App'
 
-jest.mock('../../../Services/User/FindById')
-jest.mock('../../../Utils/Promises/JWTVerify')
+jest.mock('../../../../../Services/User/FindById')
+jest.mock('../../../../../Utils/Promises/JWTVerify')
 
 interface IUser {
 	_id: string | Types.ObjectId
@@ -57,7 +57,7 @@ describe('Get user data', () => {
 		})
 
 		const res = await request(App)
-			.get('/api/auth/user')
+			.get('/api/v1/auth/user')
 			.set('x-access-token', token)
 
 		expect(MockedJWTVerify).toHaveBeenCalledWith('token', undefined)
@@ -90,7 +90,7 @@ describe('Get user data', () => {
 		MockedFindById.mockRejectedValueOnce({ code: 500 })
 
 		const res = await request(App)
-			.get('/api/auth/user')
+			.get('/api/v1/auth/user')
 			.set('x-access-token', token)
 
 		expect(MockedJWTVerify).toHaveBeenCalledWith('token', undefined)
@@ -118,7 +118,7 @@ describe('Get user data', () => {
 		MockedFindById.mockRejectedValueOnce({ code: 404 })
 
 		const res = await request(App)
-			.get('/api/auth/user')
+			.get('/api/v1/auth/user')
 			.set('x-access-token', token)
 
 		expect(MockedJWTVerify).toHaveBeenCalledWith('token', undefined)
@@ -143,7 +143,7 @@ describe('Get user data', () => {
 		MockedFindById.mockRejectedValueOnce({ code: 404 })
 
 		const res = await request(App)
-			.get('/api/auth/user')
+			.get('/api/v1/auth/user')
 			.set('x-access-token', token)
 
 		expect(res.statusCode).toEqual(500)

@@ -2,13 +2,13 @@ import request from 'supertest'
 
 import { Types } from 'mongoose'
 
-import Create from '../../../Services/User/Create'
-import FindByEmailOrUsername from '../../../Services/User/FindByEmailOrUsername'
+import Create from '../../../../../Services/User/Create'
+import FindByEmailOrUsername from '../../../../../Services/User/FindByEmailOrUsername'
 
-import App from '../../../App'
+import App from '../../../../../App'
 
-jest.mock('../../../Services/User/Create')
-jest.mock('../../../Services/User/FindByEmailOrUsername')
+jest.mock('../../../../../Services/User/Create')
+jest.mock('../../../../../Services/User/FindByEmailOrUsername')
 
 const MockedCreate = jest.mocked(Create)
 const MockedFindByEmailOrUsername = jest.mocked(FindByEmailOrUsername)
@@ -58,7 +58,7 @@ describe('Register', () => {
 
 		MockedFindByEmailOrUsername.mockRejectedValueOnce({ code: 404 })
 
-		const res = await request(App).post('/api/auth/register').send(user)
+		const res = await request(App).post('/api/v1/auth/register').send(user)
 
 		expect(res.statusCode).toEqual(201)
 		expect(res.body).toHaveProperty('data')
@@ -79,7 +79,7 @@ describe('Register', () => {
 
 		MockedFindByEmailOrUsername.mockRejectedValueOnce({ code: 404 })
 
-		const res = await request(App).post('/api/auth/register').send(user)
+		const res = await request(App).post('/api/v1/auth/register').send(user)
 
 		expect(res.statusCode).toEqual(500)
 		expect(res.body).toHaveProperty('errors')
@@ -100,7 +100,7 @@ describe('Register', () => {
 			user: Omit<IUser, '_id'> & { _id: Types.ObjectId }
 		})
 
-		const res = await request(App).post('/api/auth/register').send(user)
+		const res = await request(App).post('/api/v1/auth/register').send(user)
 
 		expect(res.statusCode).toEqual(400)
 		expect(res.body).toHaveProperty('errors')
@@ -121,7 +121,7 @@ describe('Register', () => {
 
 		MockedFindByEmailOrUsername.mockRejectedValueOnce({ code: 404 })
 
-		const res = await request(App).post('/api/auth/register').send(user)
+		const res = await request(App).post('/api/v1/auth/register').send(user)
 
 		expect(res.statusCode).toEqual(400)
 		expect(res.body).toHaveProperty('errors')
@@ -142,7 +142,7 @@ describe('Register', () => {
 
 		MockedFindByEmailOrUsername.mockRejectedValueOnce({ code: 404 })
 
-		const res = await request(App).post('/api/auth/register').send(user)
+		const res = await request(App).post('/api/v1/auth/register').send(user)
 
 		expect(res.statusCode).toEqual(400)
 		expect(res.body).toHaveProperty('errors')
@@ -163,7 +163,7 @@ describe('Register', () => {
 
 		MockedFindByEmailOrUsername.mockRejectedValueOnce({ code: 404 })
 
-		const res = await request(App).post('/api/auth/register').send(user)
+		const res = await request(App).post('/api/v1/auth/register').send(user)
 
 		expect(res.statusCode).toEqual(400)
 		expect(res.body).toHaveProperty('errors')
@@ -184,7 +184,7 @@ describe('Register', () => {
 
 		MockedFindByEmailOrUsername.mockRejectedValueOnce({ code: 404 })
 
-		const res = await request(App).post('/api/auth/register').send(user)
+		const res = await request(App).post('/api/v1/auth/register').send(user)
 
 		expect(res.statusCode).toEqual(400)
 		expect(res.body).toHaveProperty('errors')
@@ -205,7 +205,7 @@ describe('Register', () => {
 
 		MockedFindByEmailOrUsername.mockRejectedValueOnce({ code: 404 })
 
-		const res = await request(App).post('/api/auth/register').send(user)
+		const res = await request(App).post('/api/v1/auth/register').send(user)
 
 		expect(res.statusCode).toEqual(400)
 		expect(res.body).toHaveProperty('errors')
@@ -226,7 +226,7 @@ describe('Register', () => {
 
 		MockedFindByEmailOrUsername.mockRejectedValueOnce({ code: 500 })
 
-		const res = await request(App).post('/api/auth/register').send(user)
+		const res = await request(App).post('/api/v1/auth/register').send(user)
 
 		expect(res.statusCode).toEqual(400)
 		expect(res.body).toHaveProperty('errors')

@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 
-import CreateUser from '../../Services/User/Create'
+import CreateUser from '../../../../Services/User/Create'
 
 interface IBody {
 	username: string
