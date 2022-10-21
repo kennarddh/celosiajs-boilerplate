@@ -5,8 +5,8 @@
 	"main": "src/index.js",
 	"scripts": {
 		"loadtest": "node ./scripts/loadtest/loadtest.js",
-		"build:production": "node ./scripts/build.js production",
-		"build:development": "node ./scripts/build.js development",
+		"build:production": "ts-node ./scripts/build.ts production",
+		"build:development": "ts-node ./scripts/build.ts development",
 		"build:swagger": "swagger-cli bundle ./src/Swagger/Swagger.json --outfile ./src/Swagger.json --type json",
 		"clean": "rimraf ./build",
 		"clean:logs": "rimraf ./Logs",

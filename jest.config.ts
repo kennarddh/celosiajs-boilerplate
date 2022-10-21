@@ -17,7 +17,7 @@ const jestConfig: JestConfigWithTsJest = {
 		},
 	},
 	testPathIgnorePatterns: ['./build', './dist', './Logs', './scripts'],
-	testRegex: '((__tests__\\/)|(\\.(test|spec)\\.[jt]s$))',
+	testRegex: '((__tests__)|(\\.(test|spec)\\.[jt]s$))',
 	preset: 'ts-jest',
 }
 
