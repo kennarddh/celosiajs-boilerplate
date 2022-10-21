@@ -92,7 +92,7 @@ const generateBody = () => {
 }
 
 const options = {
-	url: 'http://localhost:8080/api/auth/register',
+	url: 'http://localhost:8080/api/v1/auth/register',
 	maxRequests,
 	concurrency: 1000,
 	contentType: 'application/json',
