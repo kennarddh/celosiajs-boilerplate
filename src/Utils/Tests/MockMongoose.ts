@@ -130,7 +130,6 @@ class MockBase {
 					return {
 						exec: () => this.#implementation(operation, args),
 						populate: () => this.#populate(operation, args),
-						depopulate: () => this.#populate(operation, args),
 					}
 				}
 				return {
@@ -175,7 +174,6 @@ class MockBase {
 		return {
 			exec: () => this.#implementation(operation, args),
 			populate: () => this.#populate(operation, args),
-			depopulate: () => this.#populate(operation, args),
 		}
 	}
 
@@ -216,17 +214,17 @@ class MockBase {
 			const expectedReturn = returnsArray[0]
 
 			if (expectedReturn.once) {
-				returnsArray?.shift()
+				returnsArray.shift()
 
 				this.#reDefineSpy(operation)
 			}
 
-			if (expectedReturn?.expected instanceof Error) {
+			if (expectedReturn.expected instanceof Error) {
 				reject(expectedReturn)
 			} else {
-				if (typeof expectedReturn?.expected === 'function') {
+				if (typeof expectedReturn.expected === 'function') {
 					const expected: ExpectedReturnType =
-						expectedReturn?.expected(...args)
+						expectedReturn.expected(...args)
 
 					resolve(expected)
 
