@@ -1,22 +1,60 @@
 /* eslint-disable no-console */
-const loadtest = require('loadtest')
-const { resolve } = require('node:path')
-const fs = require('node:fs')
-const { stringRandomLength } = require('./utils/random')
+import loadtest from 'loadtest'
+import { resolve } from 'node:path'
+import fs from 'node:fs'
+import { stringRandomLength } from './utils/random'
 
-const maxRequests = 10000
+const maxRequests = 10
 
-const results = { count: 0 }
-const body = {}
+interface IBodyValue {
+	username: string
+	email: string
+	name: string
+	password: string
+}
 
-const statusCallback = (_, result, latency) => {
+type IBody = Record<number, IBodyValue>
+
+interface IResult {
+	requestJsonBody: IBodyValue | undefined
+	[key: string]: number | string | IBodyValue | undefined
+}
+
+interface IResults {
+	count: number
+	[key: number]: IResult[]
+}
+
+const results: IResults = { count: 0 }
+const body: IBody = {}
+
+const statusCallback = (
+	_: Error,
+	result: {
+		statusCode: number
+		requestIndex: number
+	},
+	latency: {
+		totalRequests: number
+		meanLatencyMs: number
+		minLatencyMs: number
+		maxLatencyMs: number
+		totalErrors: number
+		totalTimeSeconds: number
+		errorCodes: number
+		rps: number
+	}
+) => {
 	if (!result) return
 
 	if (!Object.keys(results).includes(`${result.statusCode}`)) {
 		results[result.statusCode] = []
 	}
 
-	results[result.statusCode].push({
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	const anyResults = results as any
+
+	anyResults[result.statusCode].push({
 		...result,
 		requestJsonBody: body[result.requestIndex],
 	})
@@ -59,17 +97,30 @@ const options = {
 	concurrency: 1000,
 	contentType: 'application/json',
 	statusCallback,
-	method: 'POST',
+	method: 'POST' as 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE',
 	body: generateBody.bind(this),
 }
 
-loadtest.loadTest(options, error => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+loadtest.loadTest(options as any, (error: Error) => {
 	if (error) return console.error('Got an error: %s', error)
 
 	console.log('Tests run successfully')
 	console.log('Writing result')
 
-	const path = resolve(__dirname, `./${stringRandomLength(10, 10)}.json`)
+	const resultsDir = 'results'
+	const resolvedResultsDir = resolve(__dirname, resultsDir)
+
+	// eslint-disable-next-line security/detect-non-literal-fs-filename
+	if (!fs.existsSync(resolvedResultsDir)) {
+		// eslint-disable-next-line security/detect-non-literal-fs-filename
+		fs.mkdirSync(resolvedResultsDir)
+	}
+
+	const path = resolve(
+		__dirname,
+		`./results/${stringRandomLength(10, 10)}.json`
+	)
 
 	// eslint-disable-next-line security/detect-non-literal-fs-filename
 	fs.writeFile(path, JSON.stringify(results, null, '\t'), err => {

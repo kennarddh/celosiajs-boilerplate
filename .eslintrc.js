@@ -55,7 +55,7 @@ module.exports = {
 					'**/*.test.ts',
 					'**/*.spec.ts',
 					'**/__tests__/**/*.ts',
-					'./scripts/**/*.js',
+					'./scripts/**/*.ts',
 				],
 			},
 		],

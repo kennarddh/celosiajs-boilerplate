@@ -283,3 +283,4 @@ dist
 # build
 /build
 /src/Swagger.json
+/scripts/loadtest/results/
