@@ -52,6 +52,7 @@ src/
  |--Routes/         # Routes
  |--Utils/          # Utility classes and functions
  |--Swagger/        # Open Api 3 spec
+ |--Types/          # Typescript types definition
  |--Validations/    # Request data validation schemas
  |--Services/       # Services
  |--App.js          # Express app
