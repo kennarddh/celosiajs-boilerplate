@@ -55,8 +55,8 @@ src/
  |--Types/          # Typescript types definition
  |--Validations/    # Request data validation schemas
  |--Services/       # Services
- |--App.js          # Express app
- |--index.js        # Entry
+ |--App.ts          # Express app
+ |--index.ts        # Entry
 ```
 
 ## Available Scripts
