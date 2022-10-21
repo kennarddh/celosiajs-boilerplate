@@ -52,10 +52,11 @@ src/
  |--Routes/         # Routes
  |--Utils/          # Utility classes and functions
  |--Swagger/        # Open Api 3 spec
+ |--Types/          # Typescript types definition
  |--Validations/    # Request data validation schemas
  |--Services/       # Services
- |--App.js          # Express app
- |--index.js        # Entry
+ |--App.ts          # Express app
+ |--index.ts        # Entry
 ```
 
 ## Available Scripts
@@ -112,6 +113,23 @@ Removes all logs.
 
 ```bash
 npm run clean:logs
+```
+
+### Clean Dist
+
+Removes dist directory.
+Directory created to temporarily store tsc compiled output
+
+```bash
+npm run clean:dist
+```
+
+### Clean Coverage
+
+Removes jest coverage result.
+
+```bash
+npm run clean:coverage
 ```
 
 ### Lint Check
