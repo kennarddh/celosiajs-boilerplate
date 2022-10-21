@@ -132,4 +132,25 @@ describe('Get user data', () => {
 			errors: ['Internal server error'],
 		})
 	})
+
+	it('Should fail with no user', async () => {
+		expect.assertions(3)
+
+		const token = 'Bearer token'
+
+		MockedJWTVerify.mockResolvedValueOnce(undefined as unknown as object)
+
+		MockedFindById.mockRejectedValueOnce({ code: 404 })
+
+		const res = await request(App)
+			.get('/api/auth/user')
+			.set('x-access-token', token)
+
+		expect(res.statusCode).toEqual(500)
+		expect(res.body).toHaveProperty('errors')
+		expect(res.body).toEqual({
+			data: {},
+			errors: ['Internal server error'],
+		})
+	})
 })

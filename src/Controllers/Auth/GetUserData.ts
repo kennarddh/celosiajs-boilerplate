@@ -7,7 +7,16 @@ import FindUserById from '../../Services/User/FindById'
 const GetUserData = (req: Request, res: Response) => {
 	const id = req.user?.id
 
-	if (!id) throw new Error('Undefined id GetUserData controller')
+	if (!id) {
+		Logger.error('Undefined id GetUserData controller', {
+			id,
+		})
+
+		return res.status(500).json({
+			errors: ['Internal server error'],
+			data: {},
+		})
+	}
 
 	FindUserById({ id })
 		.then(({ user }) => {
