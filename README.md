@@ -45,18 +45,21 @@ LOG_LEVEL=info
 
 ```
 src/
- |--Controllers/    # Route controllers (controller layer)
- |--Database/       # Database configuration
- |--Middlewares/    # Custom express middlewares
- |--Models/         # Mongoose models (data layer)
- |--Routes/         # Routes
- |--Utils/          # Utility classes and functions
- |--Swagger/        # Open Api 3 spec
- |--Types/          # Typescript types definition
- |--Validations/    # Request data validation schemas
- |--Services/       # Services
- |--App.ts          # Express app
- |--index.ts        # Entry
+ |--Versions/             # Versions List
+ |  |--V{/\d+/}/          # Version (Example: V1, V2, V3)
+ |  |  |--Controllers/    # Controllers logic
+ |  |  |--Routes/         # Routes
+ |  |  |--Validations/    # Request data validation schemas
+ |--Routes/               # Main Routes
+ |--Database/             # Database configuration
+ |--Middlewares/          # Custom express middlewares
+ |--Models/               # Mongoose models (data layer)
+ |--Utils/                # Utility classes and functions
+ |--Swagger/              # Open Api 3 spec
+ |--Types/                # Typescript types definition
+ |--Services/             # Services
+ |--App.ts                # Express app
+ |--index.ts              # Entry
 ```
 
 ## Available Scripts
