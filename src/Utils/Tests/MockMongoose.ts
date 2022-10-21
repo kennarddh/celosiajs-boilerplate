@@ -12,22 +12,34 @@ mongoose.createConnection = jest.fn().mockReturnValue({
 	},
 })
 
-const operations = ['save', 'findOne'] as const
+const operations = [
+	'save',
+	'findOne',
+	'find',
+	'countDocuments',
+	'estimatedDocumentCount',
+	'distinct',
+	'findOneAndUpdate',
+	'findOneAndDelete',
+	'findOneAndReplace',
+	'updateOne',
+	'updateMany',
+	'deleteOne',
+	'deleteMany',
+	'aggregate',
+	'replaceOne',
+] as const
 
-export type ExpectedReturnType =
-	| string
-	| number
-	| boolean
-	| symbol
-	| object
-	| Record<string, any> // eslint-disable-line @typescript-eslint/no-explicit-any
-	| void
-	| null
-	| undefined
+type All = string | number | boolean | symbol | object | void | null | undefined
 
-export type ReturnTypeFunction = (
-	query: Record<string, any> // eslint-disable-line @typescript-eslint/no-explicit-any
-) => ExpectedReturnType
+type NestedRecord = {
+	[key: string]: NestedRecord | All
+}
+
+export type ExpectedReturnType = All | NestedRecord
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type ReturnTypeFunction = (...x: any[]) => ExpectedReturnType
 
 export type IOperation = typeof operations[number]
 
@@ -39,8 +51,47 @@ interface PendingReturn {
 	expected: ExpectedReturnType | ReturnTypeFunction
 }
 
-const PromiseByDefaultOperation: string[] = ['save']
-const ModelTypeOperation: string[] = ['save']
+const PromiseByDefaultOperation: IOperation[] = ['save']
+const ModelTypeOperation: IOperation[] = ['save']
+const PopulatableOperation: IOperation[] = ['find', 'findOne']
+
+const AggregateMethod: string[] = [
+	'match',
+	'group',
+	'addFields',
+	'allowDiskUse',
+	'append',
+	'catch',
+	'collation',
+	'count',
+	'cursor',
+	'densify',
+	'explain',
+	'facet',
+	'graphLookup',
+	'group',
+	'hint',
+	'limit',
+	'lookup',
+	'match',
+	'model',
+	'near',
+	'option',
+	'pipeline',
+	'project',
+	'read',
+	'readConcern',
+	'redact',
+	'replaceRoot',
+	'sample',
+	'search',
+	'session',
+	'skip',
+	'sort',
+	'sortByCount',
+	'unionWith',
+	'unwind',
+]
 
 const mocks = new Map<ModelType, Map<IOperation, PendingReturn[]>>()
 
@@ -76,9 +127,18 @@ class MockBase {
 			mockReturnValue = (args: unknown[]) =>
 				this.#implementation(operation, args)
 		} else {
-			mockReturnValue = (args: unknown[]) => ({
-				exec: () => this.#implementation(operation, args),
-			})
+			mockReturnValue = (args: unknown[]) => {
+				if (PopulatableOperation.includes(operation)) {
+					return {
+						exec: () => this.#implementation(operation, args),
+						populate: () => this.#populate(operation, args),
+						depopulate: () => this.#populate(operation, args),
+					}
+				}
+				return {
+					exec: () => this.#implementation(operation, args),
+				}
+			}
 		}
 
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -86,20 +146,52 @@ class MockBase {
 
 		if (ModelTypeOperation.includes(operation)) {
 			spyTarget = this.model.prototype
+		} else if (operation === 'aggregate') {
+			spyTarget = mongoose.Aggregate.prototype
 		} else {
 			spyTarget = mongoose.Query.prototype
 		}
 
-		const spy = jest
-			.spyOn(
-				spyTarget,
-				operation as any // eslint-disable-line @typescript-eslint/no-explicit-any
-			)
-			.mockImplementation((...args) => {
-				return mockReturnValue(args)
-			})
+		if (operation !== 'aggregate') {
+			const spy = jest
+				.spyOn(spyTarget, operation)
+				.mockImplementation((...args) => {
+					return mockReturnValue(args)
+				})
 
-		spies.push(spy)
+			spies.push(spy)
+		} else {
+			AggregateMethod.forEach(method => {
+				const spy = jest
+					.spyOn(spyTarget, method)
+					.mockImplementation((...args) => {
+						return this.#aggregate(operation, args)
+					})
+
+				spies.push(spy)
+			})
+		}
+	}
+
+	#populate(operation: IOperation, args: unknown[]) {
+		return {
+			exec: () => this.#implementation(operation, args),
+			populate: () => this.#populate(operation, args),
+			depopulate: () => this.#populate(operation, args),
+		}
+	}
+
+	#aggregate(operation: IOperation, args: unknown[]) {
+		const returnObject: Record<string, unknown> = {
+			exec: () => this.#implementation(operation, args),
+		}
+
+		AggregateMethod.forEach(method => {
+			// eslint-disable-next-line security/detect-object-injection
+			returnObject[method] = () => this.#aggregate(operation, args)
+		})
+
+		return returnObject
 	}
 
 	#implementation(
@@ -136,16 +228,14 @@ class MockBase {
 			} else {
 				if (typeof expectedReturn?.expected === 'function') {
 					const expected: ExpectedReturnType =
-						expectedReturn?.expected(
-							args[0] as Record<string, string>
-						)
+						expectedReturn?.expected(...args)
 
 					resolve(expected)
 
 					return
 				}
 
-				resolve(expectedReturn)
+				resolve(expectedReturn.expected)
 			}
 		})
 	}
