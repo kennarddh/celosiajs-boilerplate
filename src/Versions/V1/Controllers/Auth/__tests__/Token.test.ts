@@ -34,7 +34,7 @@ describe('Token', () => {
 		MockedJWTSign.mockResolvedValueOnce('refreshToken')
 
 		const res = await request(App)
-			.post('/api/auth/token')
+			.post('/api/v1/auth/token')
 			.set('Cookie', ['refreshToken=refreshToken'])
 
 		expect(MockedJWTVerify.mock.calls?.[0]?.[0]).toBe('refreshToken')
@@ -65,7 +65,7 @@ describe('Token', () => {
 		MockedJWTSign.mockResolvedValueOnce('refreshToken')
 
 		const res = await request(App)
-			.post('/api/auth/token')
+			.post('/api/v1/auth/token')
 			.set('Cookie', ['refreshToken=refreshToken'])
 
 		expect(MockedJWTVerify.mock.calls?.[0]?.[0]).toBe('refreshToken')
@@ -90,7 +90,7 @@ describe('Token', () => {
 		MockedJWTSign.mockResolvedValueOnce('token')
 		MockedJWTSign.mockResolvedValueOnce('refreshToken')
 
-		const res = await request(App).post('/api/auth/token')
+		const res = await request(App).post('/api/v1/auth/token')
 
 		expect(res.statusCode).toEqual(400)
 		expect(res.body).toHaveProperty('errors')
@@ -113,7 +113,7 @@ describe('Token', () => {
 		MockedJWTSign.mockResolvedValueOnce('refreshToken')
 
 		const res = await request(App)
-			.post('/api/auth/token')
+			.post('/api/v1/auth/token')
 			.set('Cookie', ['refreshToken=refreshToken'])
 
 		expect(MockedJWTVerify.mock.calls?.[0]?.[0]).toBe('refreshToken')
@@ -139,7 +139,7 @@ describe('Token', () => {
 		MockedJWTSign.mockRejectedValueOnce(new Error())
 
 		const res = await request(App)
-			.post('/api/auth/token')
+			.post('/api/v1/auth/token')
 			.set('Cookie', ['refreshToken=refreshToken'])
 
 		expect(MockedJWTVerify.mock.calls?.[0]?.[0]).toBe('refreshToken')
