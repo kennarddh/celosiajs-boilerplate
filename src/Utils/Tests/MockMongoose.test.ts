@@ -216,4 +216,16 @@ describe('Mock Mongoose', () => {
 
 		expect(res).toEqual({})
 	})
+
+	it('multiple find 1 mock', async () => {
+		const data = [{ __v: 0 }, { __v: 1 }]
+
+		MockMongoose(User).toReturnOnce(data, 'find')
+
+		const res = await User.find().exec()
+		const res2 = await User.find().exec()
+
+		expect(res).toEqual(data)
+		expect(res2).toEqual({})
+	})
 })
