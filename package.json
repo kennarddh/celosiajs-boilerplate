@@ -2,7 +2,7 @@
 	"name": "express-boilerplate",
 	"version": "1.0.0",
 	"description": "Express boilerplate",
-	"main": "src/index.js",
+	"main": "src/index.ts",
 	"scripts": {
 		"loadtest": "ts-node ./scripts/loadtest/loadtest.ts",
 		"build:production": "ts-node ./scripts/build.ts production",
