@@ -10,7 +10,7 @@
 						"default": []
 					},
 					"data": {
-						"$ref": "../../../../../Components/Schemas/User.json"
+						"$ref": "../../../../../../../Components/Schemas/User.json"
 					}
 				}
 			}

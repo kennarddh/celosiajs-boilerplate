@@ -22,7 +22,7 @@
 		}
 	],
 	"paths": {
-		"/auth/user": {
+		"/v1/auth/user": {
 			"get": {
 				"tags": ["Authentication"],
 				"summary": "Get the current user",
@@ -34,84 +34,84 @@
 				],
 				"responses": {
 					"200": {
-						"$ref": "./Paths/Auth/User/Get/Responses/200.json"
+						"$ref": "./Versions/V1/Paths/Auth/User/Get/Responses/200.json"
 					},
 					"401": {
-						"$ref": "./Paths/Auth/User/Get/Responses/401.json"
+						"$ref": "./Versions/V1/Paths/Auth/User/Get/Responses/401.json"
 					},
 					"500": {
-						"$ref": "./Paths/Auth/User/Get/Responses/500.json"
+						"$ref": "./Versions/V1/Paths/Auth/User/Get/Responses/500.json"
 					}
 				}
 			}
 		},
-		"/auth/register": {
+		"/v1/auth/register": {
 			"post": {
 				"tags": ["Authentication"],
 				"summary": "Register new user",
 				"description": "Register new user",
 				"requestBody": {
-					"$ref": "./Paths/Auth/Register/Post/RequestBody.json"
+					"$ref": "./Versions/V1/Paths/Auth/Register/Post/RequestBody.json"
 				},
 				"responses": {
 					"201": {
-						"$ref": "./Paths/Auth/Register/Post/Responses/201.json"
+						"$ref": "./Versions/V1/Paths/Auth/Register/Post/Responses/201.json"
 					},
 					"400": {
-						"$ref": "./Paths/Auth/Register/Post/Responses/400.json"
+						"$ref": "./Versions/V1/Paths/Auth/Register/Post/Responses/400.json"
 					},
 					"500": {
-						"$ref": "./Paths/Auth/Register/Post/Responses/500.json"
+						"$ref": "./Versions/V1/Paths/Auth/Register/Post/Responses/500.json"
 					}
 				}
 			}
 		},
-		"/auth/login": {
+		"/v1/auth/login": {
 			"post": {
 				"tags": ["Authentication"],
 				"summary": "Login",
 				"description": "Login",
 				"requestBody": {
-					"$ref": "./Paths/Auth/Login/Post/RequestBody.json"
+					"$ref": "./Versions/V1/Paths/Auth/Login/Post/RequestBody.json"
 				},
 				"responses": {
 					"200": {
-						"$ref": "./Paths/Auth/Login/Post/Responses/200.json"
+						"$ref": "./Versions/V1/Paths/Auth/Login/Post/Responses/200.json"
 					},
 					"400": {
-						"$ref": "./Paths/Auth/Login/Post/Responses/400.json"
+						"$ref": "./Versions/V1/Paths/Auth/Login/Post/Responses/400.json"
 					},
 					"403": {
-						"$ref": "./Paths/Auth/Login/Post/Responses/403.json"
+						"$ref": "./Versions/V1/Paths/Auth/Login/Post/Responses/403.json"
 					},
 					"500": {
-						"$ref": "./Paths/Auth/Login/Post/Responses/500.json"
+						"$ref": "./Versions/V1/Paths/Auth/Login/Post/Responses/500.json"
 					}
 				}
 			}
 		},
-		"/auth/token": {
+		"/v1/auth/token": {
 			"post": {
 				"tags": ["Authentication"],
 				"summary": "Refresh token",
 				"description": "Refresh token",
 				"parameters": [
 					{
-						"$ref": "./Paths/Auth/Token/Post/Parameters/RefreshToken.json"
+						"$ref": "./Versions/V1/Paths/Auth/Token/Post/Parameters/RefreshToken.json"
 					}
 				],
 				"responses": {
 					"200": {
-						"$ref": "./Paths/Auth/Token/Post/Responses/200.json"
+						"$ref": "./Versions/V1/Paths/Auth/Token/Post/Responses/200.json"
 					},
 					"400": {
-						"$ref": "./Paths/Auth/Token/Post/Responses/400.json"
+						"$ref": "./Versions/V1/Paths/Auth/Token/Post/Responses/400.json"
 					},
 					"500": {
-						"$ref": "./Paths/Auth/Token/Post/Responses/500.json"
+						"$ref": "./Versions/V1/Paths/Auth/Token/Post/Responses/500.json"
 					},
 					"401": {
-						"$ref": "./Paths/Auth/Token/Post/Responses/401.json"
+						"$ref": "./Versions/V1/Paths/Auth/Token/Post/Responses/401.json"
 					}
 				}
 			}

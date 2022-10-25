@@ -3,7 +3,7 @@
 	"content": {
 		"application/json": {
 			"schema": {
-				"$ref": "../../../../../Components/Schemas/InvalidEmailOrPassword.json"
+				"$ref": "../../../../../../../Components/Schemas/InvalidEmailOrPassword.json"
 			}
 		}
 	}
