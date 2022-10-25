@@ -41,7 +41,7 @@
 		"typescript"
 	],
 	"author": "kennarddh",
-	"license": "ISC",
+	"license": "MIT",
 	"dependencies": {
 		"bcrypt": "^5.0.1",
 		"compression": "^1.7.4",
