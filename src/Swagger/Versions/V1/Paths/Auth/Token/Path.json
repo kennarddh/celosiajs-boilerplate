@@ -1,0 +1,26 @@
+{
+	"post": {
+		"tags": ["Authentication"],
+		"summary": "Refresh token",
+		"description": "Refresh token",
+		"parameters": [
+			{
+				"$ref": "./Post/Parameters/RefreshToken.json"
+			}
+		],
+		"responses": {
+			"200": {
+				"$ref": "./Post/Responses/200.json"
+			},
+			"400": {
+				"$ref": "./Post/Responses/400.json"
+			},
+			"500": {
+				"$ref": "./Post/Responses/500.json"
+			},
+			"401": {
+				"$ref": "./Post/Responses/401.json"
+			}
+		}
+	}
+}

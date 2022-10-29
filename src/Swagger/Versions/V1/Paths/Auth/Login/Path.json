@@ -1,0 +1,24 @@
+{
+	"post": {
+		"tags": ["Authentication"],
+		"summary": "Login",
+		"description": "Login",
+		"requestBody": {
+			"$ref": "./Post/RequestBody.json"
+		},
+		"responses": {
+			"200": {
+				"$ref": "./Post/Responses/200.json"
+			},
+			"400": {
+				"$ref": "./Post/Responses/400.json"
+			},
+			"403": {
+				"$ref": "./Post/Responses/403.json"
+			},
+			"500": {
+				"$ref": "./Post/Responses/500.json"
+			}
+		}
+	}
+}
