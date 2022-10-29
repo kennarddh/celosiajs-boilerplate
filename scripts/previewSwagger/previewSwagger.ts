@@ -1,15 +1,17 @@
 import express, { Response } from 'express'
 
-import { watch } from 'node:fs/promises'
-import { readFileSync } from 'node:fs'
+import { watch, readFile } from 'node:fs/promises'
 import path from 'node:path'
-import { execSync } from 'node:child_process'
+import { promisify } from 'node:util'
+import { exec as originalExec } from 'node:child_process'
 
 import cors from 'cors'
 import open from 'open'
 import swaggerUIDist from 'swagger-ui-dist'
 
 import debounce from '../utils/debouce'
+
+const exec = promisify(originalExec)
 
 const app = express()
 
@@ -21,20 +23,35 @@ app.use(express.json())
 
 let clients: Response[] = []
 
-const getNewestSpec = () => {
-	execSync('npm run build:swagger')
-
-	const text = JSON.stringify(
-		JSON.parse(
-			readFileSync(path.resolve(__dirname, '../../src/Swagger.json'), {
-				encoding: 'utf8',
-				flag: 'r',
+const getNewestSpec = () =>
+	new Promise(resolve => {
+		exec('npm run build:swagger')
+			.then(() => {
+				return readFile(
+					path.resolve(__dirname, '../../src/Swagger.json'),
+					{
+						encoding: 'utf8',
+						flag: 'r',
+					}
+				)
 			})
-		)
-	)
+			.then((data: string) => {
+				const text = JSON.stringify({
+					error: false,
+					message: JSON.parse(data),
+				})
 
-	return text
-}
+				resolve(text)
+			})
+			.catch((err: Error & { stderr: string }) => {
+				const text = JSON.stringify({
+					error: true,
+					message: err.stderr,
+				})
+
+				resolve(text)
+			})
+	})
 
 app.get('/events', (req, res) => {
 	res.setHeader('Cache-Control', 'no-cache')
@@ -50,7 +67,13 @@ app.get('/events', (req, res) => {
 })
 
 app.get('/data', (_, res) => {
-	res.send(getNewestSpec())
+	getNewestSpec().then(text => {
+		clients.forEach(res2 => {
+			res2.write(`data: ${text} \n\n`)
+		})
+
+		res.status(204).end()
+	})
 })
 
 app.get('/', (_, res) => {
@@ -60,12 +83,12 @@ app.get('/', (_, res) => {
 app.use(express.static(swaggerUIDist.absolutePath()))
 
 const debounced = debounce(() => {
-	const text = getNewestSpec()
-
-	clients.forEach(res => {
-		res.write(`data: ${text} \n\n`)
+	getNewestSpec().then(text => {
+		clients.forEach(res => {
+			res.write(`data: ${text} \n\n`)
+		})
 	})
-}, 1000)
+}, 500)
 
 const watcher = watch(path.resolve(__dirname, '../../src/Swagger/'), {
 	recursive: true,

@@ -21,33 +21,56 @@
 		/>
 
 		<title>Swagger Preview</title>
+		<style>
+			#error {
+				box-sizing: border-box;
+				padding: 10px 30px;
+				margin: 0 5%;
+				background-color: #ff0000;
+				border-radius: 15px;
+				width: 90%;
+				display: none;
+				position: fixed;
+				top: 10px;
+				z-index: 9999;
+			}
+		</style>
 	</head>
 	<body>
+		<p id="error"></p>
 		<div id="root"></div>
 
 		<script src="./swagger-ui-bundle.js"></script>
 		<script>
 			const host = 'http://localhost:8888'
 
-			const root = document.querySelector('#root')
+			const error = document.querySelector('#error')
 
 			const eventSource = new EventSource(`${host}/events`)
 
-			fetch(`${host}/data`)
-				.then(response => response.json())
-				.then(firstData => {
-					SwaggerUIBundle({
-						dom_id: '#root',
-						spec: firstData,
-					})
+			eventSource.addEventListener('message', ({ data: raw }) => {
+				const data = JSON.parse(raw)
 
-					eventSource.addEventListener('message', ({ data }) => {
-						SwaggerUIBundle({
-							dom_id: '#root',
-							spec: JSON.parse(data),
-						})
-					})
+				if (data.error) {
+					console.log(data.message)
+					error.innerText = data.message
+					error.style.display = 'block'
+
+					return
+				}
+
+				error.innerText = ''
+				error.style.display = 'none'
+
+				SwaggerUIBundle({
+					dom_id: '#root',
+					spec: data.message,
 				})
+			})
+
+			eventSource.addEventListener('open', () => {
+				fetch(`${host}/data`)
+			})
 		</script>
 	</body>
 </html>
