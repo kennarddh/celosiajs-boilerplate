@@ -2,7 +2,7 @@
 import loadtest from 'loadtest'
 import { resolve } from 'node:path'
 import fs from 'node:fs'
-import { stringRandomLength } from './utils/random'
+import { stringRandomLength } from '../utils/random'
 
 const maxRequests = 10
 

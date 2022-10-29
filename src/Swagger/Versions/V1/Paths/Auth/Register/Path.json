@@ -1,0 +1,21 @@
+{
+	"post": {
+		"tags": ["Authentication"],
+		"summary": "Register new user",
+		"description": "Register new user",
+		"requestBody": {
+			"$ref": "./Post/RequestBody.json"
+		},
+		"responses": {
+			"201": {
+				"$ref": "./Post/Responses/201.json"
+			},
+			"400": {
+				"$ref": "./Post/Responses/400.json"
+			},
+			"500": {
+				"$ref": "./Post/Responses/500.json"
+			}
+		}
+	}
+}
