@@ -11,6 +11,7 @@
 					},
 					"errors": {
 						"type": "array",
+						"items": { "type": "string" },
 						"default": ["Refresh token is required"]
 					}
 				}

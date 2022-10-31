@@ -34,5 +34,10 @@
 		"/v1/auth/token": {
 			"$ref": "./Versions/V1/Paths/Auth/Token/Path.json"
 		}
+	},
+	"components": {
+		"securitySchemes": {
+			"$ref": "./Components/SecuritySchemes.json"
+		}
 	}
 }
