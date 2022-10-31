@@ -7,6 +7,7 @@
 		},
 		"error": {
 			"type": "array",
+			"items": { "type": "string" },
 			"default": ["Internal Server Error"]
 		}
 	}
