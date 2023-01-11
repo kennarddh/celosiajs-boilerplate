@@ -209,7 +209,7 @@ npm run test:coverage
 
 ### Test changed
 
-Run tests related to changed files based on hg/git (uncommitted files)
+Run tests related to changed files based on git (uncommitted files)
 
 ```bash
 npm run test:changed
