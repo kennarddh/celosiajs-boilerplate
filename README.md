@@ -53,7 +53,7 @@ src/
  |--Routes/               # Main Routes
  |--Database/             # Database configuration
  |--Middlewares/          # Custom express middlewares
- |--Models/               # Mongoose models (data layer)
+ |--Models/               # Mongoose models (Data layer)
  |--Utils/                # Utility classes and functions
  |--Swagger/              # Open Api 3 spec
  |--Types/                # Typescript types definition
