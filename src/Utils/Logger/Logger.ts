@@ -29,7 +29,7 @@ if (process.env.NODE_ENV === 'development') {
 		new WinstonDailyRotateFile({
 			dirname: path.resolve(logsRootDirectory, 'Debug'),
 			level: 'debug',
-			filename: 'Debug.log-%DATE%',
+			filename: 'Debug.log-%DATE%.log',
 			zippedArchive: true,
 			maxSize: '1m',
 			maxFiles: '14d',
@@ -51,7 +51,7 @@ if (process.env.NODE_ENV !== 'test') {
 		new WinstonDailyRotateFile({
 			dirname: path.resolve(logsRootDirectory, 'Error'),
 			level: 'error',
-			filename: 'Error.log-%DATE%',
+			filename: 'Error.log-%DATE%.log',
 			zippedArchive: true,
 			maxSize: '1m',
 			maxFiles: '14d',
@@ -61,7 +61,7 @@ if (process.env.NODE_ENV !== 'test') {
 		new WinstonDailyRotateFile({
 			dirname: path.resolve(logsRootDirectory, 'Http'),
 			level: 'http',
-			filename: 'Http.log-%DATE%',
+			filename: 'Http.log-%DATE%.log',
 			zippedArchive: true,
 			maxSize: '1m',
 			maxFiles: '14d',
