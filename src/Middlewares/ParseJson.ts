@@ -1,0 +1,21 @@
+import express, { Request, Response, NextFunction } from 'express'
+
+const ParseJson = (req: Request, res: Response, next: NextFunction) => {
+	const errorHandler = (err: Error | null) => {
+		if (err instanceof Error) {
+			// Invalid Json
+
+			res.status(400).json({
+				errors: ['Invalid json'],
+				data: {},
+			})
+
+			return
+		}
+
+		next()
+	}
+
+	express.json()(req, res, errorHandler)
+}
+export default ParseJson
