@@ -1,4 +1,4 @@
-import MockRequestGet from './MockRequestGet'
+import MockRequestGet from '../MockRequestGet'
 
 describe('Mock Request Get', () => {
 	it('Should success', () => {
