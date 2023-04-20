@@ -14,7 +14,7 @@
 		"clean:logs": "rimraf ./Logs",
 		"clean:dist": "rimraf ./dist",
 		"clean:coverage": "rimraf ./coverage",
-		"start": "cross-env NODE_ENV=development concurrently \"npx tsc --watch\" \"nodemon -q dist/index.js\"",
+		"start": "cross-env NODE_ENV=development concurrently \"npm run watch:swagger\" \"npx tsc --watch\" \"nodemon -q dist/index.js\"",
 		"lint:check": "eslint src/**/*.{ts,json} && tsc --noemit",
 		"lint:fix": "eslint --fix src/**/*.{ts,json} && tsc --noemit",
 		"prettier:fix": "prettier -w \"src/**/*.{ts,json}\"",
