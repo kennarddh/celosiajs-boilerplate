@@ -9,6 +9,7 @@ import cookieParser from 'cookie-parser'
 import RateLimiter from './Middlewares/RateLimiter'
 import MongoSanitize from './Middlewares/MongoSanitize'
 import LogHttpRequest from './Middlewares/LogHttpRequest'
+import ParseJson from './Middlewares/ParseJson'
 
 // Database
 import './Database'
@@ -26,7 +27,7 @@ app.use(compression())
 app.use(helmet())
 
 app.use(express.urlencoded({ extended: false }))
-app.use(express.json())
+app.use(ParseJson)
 
 app.use(cookieParser())
 
