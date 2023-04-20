@@ -4,7 +4,7 @@ import { IUser } from '../Types/Http'
 import JWTVerify from '../Utils/Promises/JWTVerify'
 
 const VerifyJWT = async (req: Request, res: Response, next: NextFunction) => {
-	const tokenHeader = req.headers['x-access-token']
+	const tokenHeader = req.get('Access-Token')
 
 	if (Array.isArray(tokenHeader)) {
 		return res.status(401).json({

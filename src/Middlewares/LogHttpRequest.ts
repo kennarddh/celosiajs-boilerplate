@@ -5,7 +5,7 @@ import Logger from '../Utils/Logger/Logger'
 
 const FilterHeaders = (headers: IncomingHttpHeaders | OutgoingHttpHeaders) => {
 	const {
-		'x-access-token': _,
+		'access-token': _,
 		'set-cookie': __,
 		cookie: ___,
 		...newHeaders
