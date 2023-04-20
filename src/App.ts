@@ -18,6 +18,9 @@ import IndexRouter from './Routes'
 
 const app = express()
 
+// Settings
+app.disable('x-powered-by')
+
 // Middleware
 app.use(compression())
 app.use(helmet())
