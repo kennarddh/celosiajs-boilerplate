@@ -2,7 +2,7 @@ import express, { NextFunction, Request, Response } from 'express'
 
 import ParseJson from '../ParseJson'
 
-describe('Parse json', () => {
+describe('Parse json middleware', () => {
 	afterEach(() => {
 		jest.clearAllMocks()
 		jest.restoreAllMocks()
