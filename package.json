@@ -90,7 +90,7 @@
 		"jest": "^29.5.0",
 		"lint-staged": "^13.2.1",
 		"loadtest": "^5.2.0",
-		"mockingoose": "^2.15.2",
+		"mockingoose": "^2.16.2",
 		"nodemon": "^2.0.22",
 		"open": "^8.4.0",
 		"prettier": "^2.8.4",
