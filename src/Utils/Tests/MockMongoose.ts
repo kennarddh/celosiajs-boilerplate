@@ -39,7 +39,7 @@ export type ExpectedReturnType = All | NestedRecord
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type ReturnTypeFunction = (...x: any[]) => ExpectedReturnType
 
-export type IOperation = typeof operations[number]
+export type IOperation = (typeof operations)[number]
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type ModelType = Model<any, any, any, any, any>
