@@ -5,7 +5,7 @@
 		"description": "Get the current user",
 		"security": [
 			{
-				"x-access-token": []
+				"Access-Token": []
 			}
 		],
 		"responses": {

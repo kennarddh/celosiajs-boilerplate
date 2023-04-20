@@ -58,7 +58,7 @@ describe('Get user data', () => {
 
 		const res = await request(App)
 			.get('/api/v1/auth/user')
-			.set('x-access-token', token)
+			.set('Access-Token', token)
 
 		expect(MockedJWTVerify).toHaveBeenCalledWith('token', undefined)
 
@@ -91,7 +91,7 @@ describe('Get user data', () => {
 
 		const res = await request(App)
 			.get('/api/v1/auth/user')
-			.set('x-access-token', token)
+			.set('Access-Token', token)
 
 		expect(MockedJWTVerify).toHaveBeenCalledWith('token', undefined)
 
@@ -119,7 +119,7 @@ describe('Get user data', () => {
 
 		const res = await request(App)
 			.get('/api/v1/auth/user')
-			.set('x-access-token', token)
+			.set('Access-Token', token)
 
 		expect(MockedJWTVerify).toHaveBeenCalledWith('token', undefined)
 
@@ -144,7 +144,7 @@ describe('Get user data', () => {
 
 		const res = await request(App)
 			.get('/api/v1/auth/user')
-			.set('x-access-token', token)
+			.set('Access-Token', token)
 
 		expect(res.statusCode).toEqual(500)
 		expect(res.body).toHaveProperty('errors')
