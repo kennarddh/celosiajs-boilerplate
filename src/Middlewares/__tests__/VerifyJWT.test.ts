@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express'
 
 import JWTVerify from '../../Utils/Promises/JWTVerify'
+import MockRequestGet from '../../Utils/Tests/MockRequestGet'
 
 import VerifyJWT from '../VerifyJWT'
 
@@ -36,10 +37,12 @@ describe('Verify JWT middleware', () => {
 		expect.assertions(2)
 
 		mockRequest = {
-			headers: {
-				'x-access-token':
+			get: MockRequestGet([
+				[
+					'Access-Token',
 					'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyYzQ1N2RmNjhhZDc0NTRjNTRhNWFjOSIsInVzZXJuYW1lIjoidGVzdHRlc3QxMiIsImlhdCI6MTY1NzEwMTIzMSwiZXhwIjoxNjU3MTg3NjMxfQ.-YlQ95KUSFaxGZLvTlQLkAEkXBLHmSqzIeJspzSw5vM',
-			},
+				],
+			]),
 		}
 
 		const user = {
@@ -71,10 +74,12 @@ describe('Verify JWT middleware', () => {
 		expect.assertions(2)
 
 		mockRequest = {
-			headers: {
-				'x-access-token':
+			get: MockRequestGet([
+				[
+					'Access-Token',
 					'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyYzQ1N2RmNjhhZDc0NTRjNTRhNWFjOSIsInVzZXJuYW1lIjoidGVzdHRlc3QxMiIsImlhdCI6MTY1NzEwMTIzMSwiZXhwIjoxNjU3MTg3NjMxfQ.-YlQ95KUSFaxGZLvTlQLkAEkXBLHmSqzIeJspzSw5vM',
-			},
+				],
+			]),
 		}
 
 		MockedJWTVerify.mockRejectedValueOnce(new Error())
@@ -97,10 +102,12 @@ describe('Verify JWT middleware', () => {
 		expect.assertions(2)
 
 		mockRequest = {
-			headers: {
-				'x-access-token':
+			get: MockRequestGet([
+				[
+					'Access-Token',
 					'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyYzQ1N2RmNjhhZDc0NTRjNTRhNWFjOSIsInVzZXJuYW1lIjoidGVzdHRlc3QxMiIsImlhdCI6MTY1NzEwMTIzMSwiZXhwIjoxNjU3MTg3NjMxfQ.-YlQ95KUSFaxGZLvTlQLkAEkXBLHmSqzIeJspzSw5vM',
-			},
+				],
+			]),
 		}
 
 		await VerifyJWT(
@@ -121,7 +128,7 @@ describe('Verify JWT middleware', () => {
 		expect.assertions(2)
 
 		mockRequest = {
-			headers: {},
+			get: MockRequestGet([]),
 		}
 
 		await VerifyJWT(
@@ -142,12 +149,15 @@ describe('Verify JWT middleware', () => {
 		expect.assertions(2)
 
 		mockRequest = {
-			headers: {
-				'x-access-token': [
-					'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyYzQ1N2RmNjhhZDc0NTRjNTRhNWFjOSIsInVzZXJuYW1lIjoidGVzdHRlc3QxMiIsImlhdCI6MTY1NzEwMTIzMSwiZXhwIjoxNjU3MTg3NjMxfQ.-YlQ95KUSFaxGZLvTlQLkAEkXBLHmSqzIeJspzSw5vM',
-					'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyYzQ1N2RmNjhhZDc0NTRjNTRhNWFjOSIsInVzZXJuYW1lIjoidGVzdHRlc3QxMiIsImlhdCI6MTY1NzEwMTIzMSwiZXhwIjoxNjU3MTg3NjMxfQ.-YlQ95KUSFaxGZLvTlQLkAEkXBLHmSqzIeJspzSw5vM',
+			get: MockRequestGet([
+				[
+					'Access-Token',
+					[
+						'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyYzQ1N2RmNjhhZDc0NTRjNTRhNWFjOSIsInVzZXJuYW1lIjoidGVzdHRlc3QxMiIsImlhdCI6MTY1NzEwMTIzMSwiZXhwIjoxNjU3MTg3NjMxfQ.-YlQ95KUSFaxGZLvTlQLkAEkXBLHmSqzIeJspzSw5vM',
+						'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyYzQ1N2RmNjhhZDc0NTRjNTRhNWFjOSIsInVzZXJuYW1lIjoidGVzdHRlc3QxMiIsImlhdCI6MTY1NzEwMTIzMSwiZXhwIjoxNjU3MTg3NjMxfQ.-YlQ95KUSFaxGZLvTlQLkAEkXBLHmSqzIeJspzSw5vM',
+					],
 				],
-			},
+			]),
 		}
 
 		await VerifyJWT(
