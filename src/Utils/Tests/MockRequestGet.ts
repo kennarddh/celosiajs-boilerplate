@@ -1,5 +1,5 @@
 const MockRequestGet = (pair: [string, string | string[]][]) =>
-	jest.fn().mockImplementationOnce((keyInput: string) => {
+	jest.fn().mockImplementation((keyInput: string) => {
 		const result = pair.find(([key]) => key === keyInput)
 
 		if (!result) return null
