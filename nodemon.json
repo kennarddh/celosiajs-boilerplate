@@ -1,5 +1,5 @@
 {
 	"delay": 5000,
-	"ext": "js,json",
+	"ext": "ts,js,json",
 	"ignore": ["((__tests__\\/)|(\\.(test|spec)\\.[jt]s$))"]
 }
