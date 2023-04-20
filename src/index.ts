@@ -4,7 +4,7 @@ import App from './App'
 
 import Logger from './Utils/Logger/Logger'
 
-import Database from './Database'
+import OnShutdown from './Utils/OnShutdown/OnShutdown'
 
 const PORT = process.env.PORT || 8080
 
@@ -17,28 +17,5 @@ const server = App.listen(PORT, () =>
 )
 
 // Graceful Shutdown
-const OnShutdown = (signal: string) => () => {
-	Logger.info(`${signal} signal received: Stopping server`, {
-		port: PORT,
-		pid: process.pid,
-		env: process.env.NODE_ENV,
-	})
-
-	server.close(() => {
-		Logger.info('Server Stopped', {
-			port: PORT,
-			pid: process.pid,
-			env: process.env.NODE_ENV,
-		})
-
-		Database.close(false).then(() => {
-			Logger.info('Database connection closed')
-
-			process.exit(0)
-		})
-	})
-}
-
-process.on('SIGTERM', OnShutdown('SIGTERM'))
-
-process.on('SIGINT', OnShutdown('SIGINT'))
+process.on('SIGTERM', OnShutdown(server, PORT, 'SIGTERM'))
+process.on('SIGINT', OnShutdown(server, PORT, 'SIGINT'))
