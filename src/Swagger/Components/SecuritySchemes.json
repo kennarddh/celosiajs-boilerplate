@@ -1,7 +1,7 @@
 {
-	"x-access-token": {
+	"Access-Token": {
 		"type": "apiKey",
-		"name": "x-access-token",
+		"name": "Access-Token",
 		"in": "header",
 		"description": "Bearer token"
 	}
