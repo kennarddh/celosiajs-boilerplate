@@ -1,7 +1,6 @@
 import express from 'express'
 
 // Middleware
-import cors from 'cors'
 import compression from 'compression'
 import helmet from 'helmet'
 import cookieParser from 'cookie-parser'
@@ -10,6 +9,7 @@ import RateLimiter from './Middlewares/RateLimiter'
 import MongoSanitize from './Middlewares/MongoSanitize'
 import LogHttpRequest from './Middlewares/LogHttpRequest'
 import ParseJson from './Middlewares/ParseJson'
+import Cors from './Middlewares/Cors'
 
 // Database
 import './Database'
@@ -31,7 +31,7 @@ app.use(ParseJson)
 
 app.use(cookieParser())
 
-app.use(cors())
+app.use(Cors)
 
 app.use(RateLimiter)
 
