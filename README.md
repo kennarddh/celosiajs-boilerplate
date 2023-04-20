@@ -39,6 +39,9 @@ RATE_LIMITER_WINDOW_MS=60000
 
 # Logger level (optional, default: info)
 LOG_LEVEL=info
+
+# Cors origin separated with comma (default: http://localhost:3000,http://127.0.0.1:3000,http://localhost:8888,http://127.0.0.1:8888)
+CORS_ORIGIN="http://localhost:3000,http://127.0.0.1:3000,http://localhost:8888,http://127.0.0.1:8888"
 ```
 
 ### Project Structure
