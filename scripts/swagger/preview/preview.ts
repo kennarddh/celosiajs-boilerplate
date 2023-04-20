@@ -2,16 +2,10 @@ import express, { Response } from 'express'
 
 import { watch, readFile } from 'node:fs/promises'
 import path from 'node:path'
-import { promisify } from 'node:util'
-import { exec as originalExec } from 'node:child_process'
 
 import cors from 'cors'
 import open from 'open'
 import swaggerUIDist from 'swagger-ui-dist'
-
-import debounce from '../utils/debouce'
-
-const exec = promisify(originalExec)
 
 const app = express()
 
@@ -23,18 +17,12 @@ app.use(express.json())
 
 let clients: Response[] = []
 
-const getNewestSpec = () =>
+const getSpec = () =>
 	new Promise(resolve => {
-		exec('npm run build:swagger')
-			.then(() => {
-				return readFile(
-					path.resolve(__dirname, '../../src/Swagger.json'),
-					{
-						encoding: 'utf8',
-						flag: 'r',
-					}
-				)
-			})
+		readFile(path.resolve(__dirname, '../../../src/Swagger.json'), {
+			encoding: 'utf8',
+			flag: 'r',
+		})
 			.then((data: string) => {
 				const text = JSON.stringify({
 					error: false,
@@ -67,7 +55,7 @@ app.get('/events', (req, res) => {
 })
 
 app.get('/data', (_, res) => {
-	getNewestSpec().then(text => {
+	getSpec().then(text => {
 		clients.forEach(res2 => {
 			res2.write(`data: ${text} \n\n`)
 		})
@@ -82,22 +70,22 @@ app.get('/', (_, res) => {
 
 app.use(express.static(swaggerUIDist.absolutePath()))
 
-const debounced = debounce(() => {
-	getNewestSpec().then(text => {
+const update = () => {
+	getSpec().then(text => {
 		clients.forEach(res => {
 			res.write(`data: ${text} \n\n`)
 		})
 	})
-}, 500)
+}
 
-const watcher = watch(path.resolve(__dirname, '../../src/Swagger/'), {
+const watcher = watch(path.resolve(__dirname, '../../../src/Swagger.json'), {
 	recursive: true,
 })
 
 const main = async () => {
 	// eslint-disable-next-line no-restricted-syntax
 	for await (const _ of watcher) {
-		debounced()
+		update()
 	}
 }
 
@@ -110,5 +98,5 @@ app.listen(PORT, () => {
 		pid: process.pid,
 	})
 
-	open(`http://127.0.0.1:${PORT}`)
+	open(`http://localhost:${PORT}`)
 })

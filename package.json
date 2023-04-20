@@ -5,10 +5,11 @@
 	"main": "src/index.ts",
 	"scripts": {
 		"loadtest": "ts-node ./scripts/loadtest/loadtest.ts",
-		"preview:swagger": "ts-node ./scripts/previewSwagger/previewSwagger.ts",
 		"build:production": "ts-node ./scripts/build.ts production",
 		"build:development": "ts-node ./scripts/build.ts development",
 		"build:swagger": "swagger-cli bundle ./src/Swagger/Swagger.json --outfile ./src/Swagger.json --type json",
+		"watch:swagger": "ts-node ./scripts/swagger/watch/watch.ts",
+		"preview:swagger": "concurrently \"npm run watch:swagger\" \"ts-node ./scripts/swagger/preview/preview.ts\"",
 		"clean": "rimraf ./build",
 		"clean:logs": "rimraf ./Logs",
 		"clean:dist": "rimraf ./dist",
