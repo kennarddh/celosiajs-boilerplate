@@ -93,8 +93,11 @@ const AggregateMethod: string[] = [
 
 const mocks = new Map<ModelType, Map<IOperation, PendingReturn[]>>()
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const spies: jest.SpyInstance<any, unknown[]>[] = []
+const spies = new Map<
+	ModelType,
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	Map<IOperation, jest.SpyInstance<any, unknown[]> | undefined>
+>()
 
 class MockBase {
 	model: ModelType
@@ -107,11 +110,22 @@ class MockBase {
 
 			this.#setup()
 		}
+
+		if (!spies.has(this.model)) {
+			spies.set(
+				this.model,
+				// eslint-disable-next-line @typescript-eslint/no-explicit-any
+				new Map<IOperation, undefined>()
+			)
+
+			this.#setup()
+		}
 	}
 
 	#setup() {
 		operations.forEach((operation: IOperation) => {
 			mocks.get(this.model)?.set(operation, [])
+			spies.get(this.model)?.set(operation, undefined)
 
 			this.#reDefineSpy(operation)
 		})
@@ -156,7 +170,7 @@ class MockBase {
 					return mockReturnValue(args)
 				})
 
-			spies.push(spy)
+			spies.get(this.model)?.set(operation, spy)
 		} else {
 			AggregateMethod.forEach(method => {
 				const spy = jest
@@ -165,7 +179,7 @@ class MockBase {
 						return this.#aggregate(operation, args)
 					})
 
-				spies.push(spy)
+				spies.get(this.model)?.set(operation, spy)
 			})
 		}
 	}
@@ -269,13 +283,11 @@ class MockBase {
 
 // eslint-disable-next-line @typescript-eslint/no-empty-function
 export const ResetAll = () => {
-	spies.forEach(spy => {
-		spy.mockClear()
+	spies.forEach(model => {
+		model.forEach(spy => spy?.mockClear())
 	})
 
-	// Clear spies array
-	spies.splice(0, spies.length)
-
+	mocks.clear()
 	mocks.clear()
 }
 
