@@ -211,13 +211,9 @@ class MockBase {
 		const { model } = this
 
 		return new Promise((resolve, reject) => {
-			const returnsArray = mocks.get(model)?.get(operation)
-
-			if (!returnsArray) {
-				resolve({})
-
-				return
-			}
+			const returnsArray = mocks
+				.get(model)
+				?.get(operation) as PendingReturn[]
 
 			if (!returnsArray[0]) {
 				resolve({})
