@@ -77,8 +77,8 @@ describe('Find by email or username user service', () => {
 				email: 'email2@example.com',
 				username: 'username2',
 			})
-		} catch ({ code }) {
-			mock(code)
+		} catch (result) {
+			mock((result as { code: number }).code)
 		}
 
 		expect(mock).toHaveBeenCalledWith(404)
@@ -96,8 +96,8 @@ describe('Find by email or username user service', () => {
 				email: 'email2@example.com',
 				username: 'username2',
 			})
-		} catch ({ code }) {
-			mock(code)
+		} catch (result) {
+			mock((result as { code: number }).code)
 		}
 
 		expect(mock).toHaveBeenCalledWith(500)

@@ -63,8 +63,8 @@ describe('Find by email user service', () => {
 
 		try {
 			await FindByEmail({ email: 'email2@example.com' })
-		} catch ({ code }) {
-			mock(code)
+		} catch (result) {
+			mock((result as { code: number }).code)
 		}
 
 		expect(mock).toHaveBeenCalledWith(404)
@@ -79,8 +79,8 @@ describe('Find by email user service', () => {
 
 		try {
 			await FindByEmail({ email: 'email2@example.com' })
-		} catch ({ code }) {
-			mock(code)
+		} catch (result) {
+			mock((result as { code: number }).code)
 		}
 
 		expect(mock).toHaveBeenCalledWith(500)
