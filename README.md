@@ -107,7 +107,15 @@ npm run build:swagger
 
 ### Preview Swagger
 
-Preview open api spec.
+Preview and watch open api spec.
+
+```bash
+npm run preview:swagger
+```
+
+### Watch Swagger
+
+Build open api spec on changes
 
 ```bash
 npm run preview:swagger
