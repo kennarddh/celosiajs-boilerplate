@@ -88,7 +88,7 @@
 		"eslint-plugin-security": "^1.7.1",
 		"husky": "^8.0.3",
 		"jest": "^29.5.0",
-		"lint-staged": "^13.2.1",
+		"lint-staged": "^13.2.2",
 		"loadtest": "^5.2.0",
 		"mockingoose": "^2.16.2",
 		"nodemon": "^2.0.22",
