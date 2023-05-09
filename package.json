@@ -57,7 +57,7 @@
 		"helmet": "^6.1.5",
 		"jsonwebtoken": "^9.0.0",
 		"mongoose": "^7.1.0",
-		"swagger-ui-express": "^4.6.2",
+		"swagger-ui-express": "^4.6.3",
 		"winston": "^3.8.2",
 		"winston-daily-rotate-file": "^4.7.1"
 	},
