@@ -1,13 +1,14 @@
-import { watch } from 'node:fs/promises'
-import path from 'node:path'
-import { promisify } from 'node:util'
-import { exec as originalExec } from 'node:child_process'
+import path from 'path'
 
-import debounce from '../../utils/debouce'
+import { exec as originalExec } from 'child_process'
+import { watch } from 'fs/promises'
+import { promisify } from 'util'
+
+import Debouce from '../../Utils/Debouce'
 
 const exec = promisify(originalExec)
 
-const debounced = debounce(() => {
+const debounced = Debouce(() => {
 	exec('npm run build:swagger')
 }, 500)
 

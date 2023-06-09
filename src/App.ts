@@ -1,21 +1,23 @@
 import express from 'express'
 
-// Middleware
 import compression from 'compression'
-import helmet from 'helmet'
+
 import cookieParser from 'cookie-parser'
 
-import RateLimiter from './Middlewares/RateLimiter'
-import MongoSanitize from './Middlewares/MongoSanitize'
-import LogHttpRequest from './Middlewares/LogHttpRequest'
-import ParseJson from './Middlewares/ParseJson'
-import Cors from './Middlewares/Cors'
+import helmet from 'helmet'
 
-// Database
-import './Database'
+/* eslint-disable prettier/prettier */
+import Cors from 'Middlewares/Cors'
+import LogHttpRequest from 'Middlewares/LogHttpRequest'
+import MongoSanitize from 'Middlewares/MongoSanitize'
+import ParseJson from 'Middlewares/ParseJson'
+import RateLimiter from 'Middlewares/RateLimiter'
 
-// Router
-import IndexRouter from './Routes'
+import Routes from 'Routes/index'
+
+import 'Database/index'
+
+/* eslint-enable prettier/prettier */
 
 const app = express()
 
@@ -40,6 +42,6 @@ app.use(MongoSanitize)
 app.use(LogHttpRequest)
 
 // Router
-app.use('/api/', IndexRouter)
+app.use('/api/', Routes)
 
 export default app

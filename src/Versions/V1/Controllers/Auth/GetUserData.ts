@@ -1,8 +1,8 @@
 import { Request, Response } from 'express'
 
-import Logger from '../../../../Utils/Logger/Logger'
+import Logger from 'Utils/Logger/Logger'
 
-import FindUserById from '../../../../Services/User/FindById'
+import FindUserById from 'Services/User/FindById'
 
 const GetUserData = (req: Request, res: Response) => {
 	const id = req.user?.id

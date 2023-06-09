@@ -1,13 +1,16 @@
 /* eslint-disable security/detect-non-literal-regexp */
+
 /* eslint-disable security/detect-child-process */
-import { exec } from 'node:child_process'
-import { readdir, rmSync, lstatSync, existsSync } from 'node:fs'
-import { writeFile, copyFile, appendFile } from 'node:fs/promises'
+
+/* eslint-disable security/detect-non-literal-fs-filename */
+import { exec } from 'child_process'
+import { existsSync, lstatSync, readdir, rmSync } from 'fs'
+import { appendFile, copyFile, writeFile } from 'fs/promises'
 import { resolve } from 'node:path'
 
+import jestConfig from '../jest.config'
 // eslint-disable-next-line import/extensions
 import packageJson from '../package.json'
-import jestConfig from '../jest.config'
 
 const { testRegex } = jestConfig
 
@@ -15,12 +18,12 @@ const env = process.argv[2]
 
 const base = './build/'
 
+const outDir = resolve(base, 'src')
+
 const cleanCommand = 'npm run clean'
-const buildCommand = `cross-env NODE_ENV=${env} npx tsc --outDir ${resolve(
-	base,
-	'src'
-)}`
-const buildCodeCommand = `npx swagger-cli bundle ./src/Swagger/Swagger.json --outfile ${base}src/Swagger.json --type json`
+const buildCommand = `cross-env NODE_ENV=${env} npx tsc --outDir ${outDir}`
+const buildTscAliasCommand = `cross-env NODE_ENV=${env} npx tsc-alias -p tsconfig.json --outDir ${outDir}`
+const buildSwaggerCommand = `npx swagger-cli bundle ./src/Swagger/Swagger.json --outfile ${base}src/Swagger.json --type json`
 
 interface IPackageJson {
 	name: string
@@ -98,7 +101,9 @@ const main = async () => {
 
 	await execPromise(buildCommand)
 
-	await execPromise(buildCodeCommand)
+	await execPromise(buildTscAliasCommand)
+
+	await execPromise(buildSwaggerCommand)
 
 	writeFile(resolve(base, 'package.json'), JSON.stringify(newPackageJson))
 
