@@ -1,9 +1,9 @@
 import express, { Response } from 'express'
 
-import { watch, readFile } from 'node:fs/promises'
-import path from 'node:path'
+import path from 'path'
 
 import cors from 'cors'
+import { readFile, watch } from 'fs/promises'
 import open from 'open'
 import swaggerUIDist from 'swagger-ui-dist'
 

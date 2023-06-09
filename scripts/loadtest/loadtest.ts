@@ -1,7 +1,9 @@
 /* eslint-disable no-console */
+import { resolve } from 'path'
+
+import fs from 'fs'
 import loadtest from 'loadtest'
-import { resolve } from 'node:path'
-import fs from 'node:fs'
+
 import { stringRandomLength } from '../utils/random'
 
 const maxRequests = 10

@@ -1,7 +1,8 @@
-import { watch } from 'node:fs/promises'
-import path from 'node:path'
-import { promisify } from 'node:util'
-import { exec as originalExec } from 'node:child_process'
+import path from 'path'
+
+import { exec as originalExec } from 'child_process'
+import { watch } from 'fs/promises'
+import { promisify } from 'util'
 
 import debounce from '../../utils/debouce'
 

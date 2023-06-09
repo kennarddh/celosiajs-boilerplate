@@ -1,13 +1,16 @@
 /* eslint-disable security/detect-non-literal-regexp */
+
 /* eslint-disable security/detect-child-process */
-import { exec } from 'node:child_process'
-import { readdir, rmSync, lstatSync, existsSync } from 'node:fs'
-import { writeFile, copyFile, appendFile } from 'node:fs/promises'
+
+/* eslint-disable security/detect-non-literal-fs-filename */
+import { exec } from 'child_process'
+import { existsSync, lstatSync, readdir, rmSync } from 'fs'
+import { appendFile, copyFile, writeFile } from 'fs/promises'
 import { resolve } from 'node:path'
 
+import jestConfig from '../jest.config'
 // eslint-disable-next-line import/extensions
 import packageJson from '../package.json'
-import jestConfig from '../jest.config'
 
 const { testRegex } = jestConfig
 
