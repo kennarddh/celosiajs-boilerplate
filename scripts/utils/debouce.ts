@@ -1,7 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type Args = any[]
 
-const debounce = (callback: (...args: Args) => void, delay: number) => {
+const Debounce = (callback: (...args: Args) => void, delay: number) => {
 	let timerId: NodeJS.Timeout
 
 	return (...args: Args) => {
@@ -11,4 +11,4 @@ const debounce = (callback: (...args: Args) => void, delay: number) => {
 	}
 }
 
-export default debounce
+export default Debounce

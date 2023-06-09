@@ -4,7 +4,7 @@ import { resolve } from 'path'
 import fs from 'fs'
 import loadtest from 'loadtest'
 
-import { stringRandomLength } from '../utils/random'
+import { StringRandomLength } from '../Utils/Random'
 
 const maxRequests = 10
 
@@ -81,10 +81,10 @@ const statusCallback = (
 const generateBody = () => {
 	// eslint-disable-next-line security/detect-object-injection
 	body[results.count] = {
-		username: `${results.count}-${stringRandomLength(1, 20)}`,
-		email: `${results.count}-${stringRandomLength(1, 20)}@gmail.com`,
-		name: `${results.count}-${stringRandomLength(1, 20)}`,
-		password: `${results.count}-${stringRandomLength(8, 20)}`,
+		username: `${results.count}-${StringRandomLength(1, 20)}`,
+		email: `${results.count}-${StringRandomLength(1, 20)}@gmail.com`,
+		name: `${results.count}-${StringRandomLength(1, 20)}`,
+		password: `${results.count}-${StringRandomLength(8, 20)}`,
 	}
 
 	results.count += 1
@@ -110,7 +110,7 @@ loadtest.loadTest(options as any, (error: Error) => {
 	console.log('Tests run successfully')
 	console.log('Writing result')
 
-	const resultsDir = 'results'
+	const resultsDir = 'Results'
 	const resolvedResultsDir = resolve(__dirname, resultsDir)
 
 	// eslint-disable-next-line security/detect-non-literal-fs-filename
@@ -120,8 +120,8 @@ loadtest.loadTest(options as any, (error: Error) => {
 	}
 
 	const path = resolve(
-		__dirname,
-		`./results/${stringRandomLength(10, 10)}.json`
+		resolvedResultsDir,
+		`./results/${StringRandomLength(10, 10)}.json`
 	)
 
 	// eslint-disable-next-line security/detect-non-literal-fs-filename
