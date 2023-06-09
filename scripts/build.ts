@@ -18,12 +18,12 @@ const env = process.argv[2]
 
 const base = './build/'
 
+const outDir = resolve(base, 'src')
+
 const cleanCommand = 'npm run clean'
-const buildCommand = `cross-env NODE_ENV=${env} npx tsc --outDir ${resolve(
-	base,
-	'src'
-)}`
-const buildCodeCommand = `npx swagger-cli bundle ./src/Swagger/Swagger.json --outfile ${base}src/Swagger.json --type json`
+const buildCommand = `cross-env NODE_ENV=${env} npx tsc --outDir ${outDir}`
+const buildTscAliasCommand = `cross-env NODE_ENV=${env} npx tsc-alias -p tsconfig.json --outDir ${outDir}`
+const buildSwaggerCommand = `npx swagger-cli bundle ./src/Swagger/Swagger.json --outfile ${base}src/Swagger.json --type json`
 
 interface IPackageJson {
 	name: string
@@ -101,7 +101,9 @@ const main = async () => {
 
 	await execPromise(buildCommand)
 
-	await execPromise(buildCodeCommand)
+	await execPromise(buildTscAliasCommand)
+
+	await execPromise(buildSwaggerCommand)
 
 	writeFile(resolve(base, 'package.json'), JSON.stringify(newPackageJson))
 
