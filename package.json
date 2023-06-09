@@ -4,7 +4,6 @@
 	"description": "Express boilerplate",
 	"main": "src/index.ts",
 	"scripts": {
-		"loadtest": "ts-node ./scripts/Loadtest/index.ts",
 		"build:production": "ts-node ./scripts/Build.ts production",
 		"build:development": "ts-node ./scripts/Build.ts development",
 		"build:swagger": "swagger-cli bundle ./src/Swagger/Swagger.json --outfile ./src/Swagger.json --type json",
