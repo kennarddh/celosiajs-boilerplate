@@ -1,7 +1,7 @@
 import jwt, {
-	VerifyCallback,
-	JwtPayload,
 	JsonWebTokenError,
+	JwtPayload,
+	VerifyCallback,
 } from 'jsonwebtoken'
 
 import JWTVerify from '../JWTVerify'

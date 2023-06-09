@@ -1,9 +1,8 @@
 import { Types } from 'mongoose'
 
-import Logger from '../../Utils/Logger/Logger'
+import Logger from 'Utils/Logger/Logger'
 
-// Models
-import User, { IUser } from '../../Models/User'
+import User, { IUser } from 'Models/User'
 
 interface IFindByIdParameters {
 	id: string | Types.ObjectId

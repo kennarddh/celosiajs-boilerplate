@@ -1,7 +1,7 @@
-import MockMongoose, { ResetAll } from '../MockMongoose'
-
 // Models
-import User from '../../../Models/User'
+import User from 'Models/User'
+
+import MockMongoose, { ResetAll } from '../MockMongoose'
 
 describe('Mock Mongoose', () => {
 	afterEach(() => {

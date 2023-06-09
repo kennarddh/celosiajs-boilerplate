@@ -1,6 +1,6 @@
 import request from 'supertest'
 
-import App from '../../App'
+import App from 'App'
 
 describe('Get user data', () => {
 	afterEach(() => {

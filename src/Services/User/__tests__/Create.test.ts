@@ -1,11 +1,10 @@
 import bcrypt from 'bcrypt'
 
-import MockMongoose, { ResetAll } from '../../../Utils/Tests/MockMongoose'
+import MockMongoose, { ResetAll } from 'Utils/Tests/MockMongoose'
+
+import User from 'Models/User'
 
 import Create from '../Create'
-
-// Models
-import User from '../../../Models/User'
 
 describe('Create user service', () => {
 	afterEach(() => {

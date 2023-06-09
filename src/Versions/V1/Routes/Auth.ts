@@ -1,14 +1,16 @@
 import express from 'express'
 
-// Controllers
-import { Register, Login, GetUserData, Token } from '../Controllers/Auth'
+import VerifyJWT from 'Middlewares/VerifyJWT'
 
-// Middleware
-import VerifyJWT from '../../../Middlewares/VerifyJWT'
+import {
+	GetUserData,
+	Login,
+	Register,
+	Token,
+} from 'Versions/V1/Controllers/Auth'
 
-// Validation
-import RegisterValidation from '../Validation/Auth/Register'
-import LoginValidation from '../Validation/Auth/Login'
+import LoginValidation from 'Versions/V1/Validation/Auth/Login'
+import RegisterValidation from 'Versions/V1/Validation/Auth/Register'
 
 const Router = express.Router()
 

@@ -1,11 +1,11 @@
-import bcrypt from 'bcrypt'
 import { Request, Response } from 'express'
 
-import Logger from '../../../../Utils/Logger/Logger'
+import bcrypt from 'bcrypt'
 
-import FindUserByEmail from '../../../../Services/User/FindByEmail'
+import Logger from 'Utils/Logger/Logger'
+import JWTSign from 'Utils/Promises/JWTSign'
 
-import JWTSign from '../../../../Utils/Promises/JWTSign'
+import FindUserByEmail from 'Services/User/FindByEmail'
 
 interface IBody {
 	email: string

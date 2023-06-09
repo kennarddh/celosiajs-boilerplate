@@ -1,11 +1,10 @@
 import mongoose from 'mongoose'
 
-import MockMongoose, { ResetAll } from '../../../Utils/Tests/MockMongoose'
+import MockMongoose, { ResetAll } from 'Utils/Tests/MockMongoose'
+
+import User from 'Models/User'
 
 import FindByEmail from '../FindByEmail'
-
-// Models
-import User from '../../../Models/User'
 
 describe('Find by email user service', () => {
 	afterEach(() => {

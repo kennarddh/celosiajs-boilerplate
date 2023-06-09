@@ -1,7 +1,8 @@
 import { Server } from 'http'
-import Logger from '../Logger/Logger'
 
-import Database from '../../Database'
+import Logger from 'Utils/Logger/Logger'
+
+import Database from 'Database/index'
 
 const OnShutdown =
 	(server: Server, port: number | string, signal: string) => async () => {

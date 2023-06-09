@@ -1,11 +1,11 @@
-import { Request, Response, NextFunction } from 'express'
+import { NextFunction, Request, Response } from 'express'
 
-import JWTVerify from '../../Utils/Promises/JWTVerify'
-import MockRequestGet from '../../Utils/Tests/MockRequestGet'
+import JWTVerify from 'Utils/Promises/JWTVerify'
+import MockRequestGet from 'Utils/Tests/MockRequestGet'
 
 import VerifyJWT from '../VerifyJWT'
 
-jest.mock('../../Utils/Promises/JWTVerify')
+jest.mock('Utils/Promises/JWTVerify')
 
 const MockedJWTVerify = jest.mocked(JWTVerify)
 

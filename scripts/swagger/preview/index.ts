@@ -1,10 +1,9 @@
 import express, { Response } from 'express'
 
-import { watch, readFile } from 'node:fs/promises'
-import path from 'node:path'
+import path from 'path'
 
 import cors from 'cors'
-import open from 'open'
+import { readFile, watch } from 'fs/promises'
 import swaggerUIDist from 'swagger-ui-dist'
 
 const app = express()
@@ -91,12 +90,13 @@ const main = async () => {
 
 main()
 
-app.listen(PORT, () => {
+app.listen(PORT, async () => {
 	// eslint-disable-next-line no-console
 	console.info(`Swagger preview server running`, {
 		port: PORT,
 		pid: process.pid,
 	})
 
-	open(`http://localhost:${PORT}`)
+	// eslint-disable-next-line no-console
+	console.log(`Running on http://localhost:${PORT}`)
 })

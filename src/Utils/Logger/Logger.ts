@@ -1,17 +1,16 @@
-import winston from 'winston'
-
-import WinstonDailyRotateFile from 'winston-daily-rotate-file'
-
 import path from 'path'
 
+import winston from 'winston'
+import WinstonDailyRotateFile from 'winston-daily-rotate-file'
+
 // Utils
-import GetRootDirectory from '../GetRootDirectory'
+import GetRootDirectory from 'Utils/GetRootDirectory'
 
 // Format
 import RemoveError from './Format/RemoveError'
-import RemoveWarn from './Format/RemoveWarn'
-import RemoveInfo from './Format/RemoveInfo'
 import RemoveHttp from './Format/RemoveHttp'
+import RemoveInfo from './Format/RemoveInfo'
+import RemoveWarn from './Format/RemoveWarn'
 
 const logsRootDirectory = path.resolve(GetRootDirectory(), 'Logs')
 

@@ -1,4 +1,4 @@
-export const string = (length: number) => {
+export const String = (length: number) => {
 	const characters =
 		'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
 
@@ -13,11 +13,11 @@ export const string = (length: number) => {
 	return result
 }
 
-export const randomNumber = (min: number, max: number) =>
+export const RandomNumber = (min: number, max: number) =>
 	Math.floor(Math.random() * (max - min + 1)) + min
 
-export const stringRandomLength = (min: number, max: number) => {
-	const length = randomNumber(min, max)
+export const StringRandomLength = (min: number, max: number) => {
+	const length = RandomNumber(min, max)
 
-	return string(length)
+	return String(length)
 }
