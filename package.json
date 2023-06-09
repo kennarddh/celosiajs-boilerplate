@@ -93,7 +93,6 @@
 		"loadtest": "^5.2.0",
 		"mockingoose": "^2.16.2",
 		"nodemon": "^2.0.22",
-		"open": "^9.1.0",
 		"prettier": "^2.8.7",
 		"rimraf": "^5.0.0",
 		"supertest": "^6.3.3",
