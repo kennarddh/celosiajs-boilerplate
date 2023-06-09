@@ -1,6 +1,6 @@
 import mongoose from 'mongoose'
 
-import Logger from '../Utils/Logger/Logger'
+import Logger from 'Utils/Logger/Logger'
 
 mongoose.connect(process.env.DB_HOST).catch(error => {
 	Logger.error('Mongo DB connect error', { error })

@@ -1,14 +1,14 @@
-import request from 'supertest'
-
 import { Types } from 'mongoose'
 
-import Create from '../../../../../Services/User/Create'
-import FindByEmailOrUsername from '../../../../../Services/User/FindByEmailOrUsername'
+import request from 'supertest'
 
-import App from '../../../../../App'
+import App from 'App'
 
-jest.mock('../../../../../Services/User/Create')
-jest.mock('../../../../../Services/User/FindByEmailOrUsername')
+import Create from 'Services/User/Create'
+import FindByEmailOrUsername from 'Services/User/FindByEmailOrUsername'
+
+jest.mock('Services/User/Create')
+jest.mock('Services/User/FindByEmailOrUsername')
 
 const MockedCreate = jest.mocked(Create)
 const MockedFindByEmailOrUsername = jest.mocked(FindByEmailOrUsername)

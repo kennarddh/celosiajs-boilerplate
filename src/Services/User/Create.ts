@@ -1,9 +1,8 @@
 import bcrypt from 'bcrypt'
 
-// Models
-import User, { IUser } from '../../Models/User'
+import Logger from 'Utils/Logger/Logger'
 
-import Logger from '../../Utils/Logger/Logger'
+import User, { IUser } from 'Models/User'
 
 interface ICreateParameters {
 	username: string

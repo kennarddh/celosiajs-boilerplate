@@ -1,7 +1,8 @@
 import { NextFunction, Request, Response } from 'express'
+
 import { IncomingHttpHeaders, OutgoingHttpHeaders } from 'http'
 
-import Logger from '../Utils/Logger/Logger'
+import Logger from 'Utils/Logger/Logger'
 
 const FilterHeaders = (headers: IncomingHttpHeaders | OutgoingHttpHeaders) => {
 	const {

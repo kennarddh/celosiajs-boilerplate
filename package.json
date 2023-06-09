@@ -14,7 +14,7 @@
 		"clean:logs": "rimraf ./Logs",
 		"clean:dist": "rimraf ./dist",
 		"clean:coverage": "rimraf ./coverage",
-		"start": "cross-env NODE_ENV=development concurrently \"npm run build:swagger\"  \"npm run watch:swagger\" \"npx tsc --watch\" \"nodemon -q dist/index.js\"",
+		"start": "cross-env NODE_ENV=development concurrently \"npm run build:swagger\"  \"npm run watch:swagger\" \"npx tsc --watch\" \"npx tsc-alias -w -p tsconfig.json\" \"nodemon -q dist/index.js\"",
 		"lint:check": "eslint src/**/*.{ts,json} && tsc --noemit",
 		"lint:fix": "eslint --fix src/**/*.{ts,json} && tsc --noemit",
 		"prettier:fix": "prettier -w \"src/**/*.{ts,json}\"",
@@ -101,6 +101,7 @@
 		"swagger-ui-dist": "^4.18.2",
 		"ts-jest": "^29.1.0",
 		"ts-node": "^10.9.1",
+		"tsc-alias": "^1.8.6",
 		"typescript": "^5.0.4"
 	}
 }

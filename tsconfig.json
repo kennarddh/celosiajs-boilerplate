@@ -1,6 +1,6 @@
 {
 	"compilerOptions": {
-		"target": "es2016" /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */,
+		"target": "ES2022" /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */,
 		"module": "commonjs" /* Specify what module code is generated. */,
 		"allowJs": false /* Allow JavaScript files to be a part of your program. Use the 'checkJS' option to get errors from these files. */,
 		"esModuleInterop": true /* Emit additional JavaScript to ease support for importing CommonJS modules. This enables 'allowSyntheticDefaultImports' for type compatibility. */,
@@ -26,10 +26,18 @@
 		"skipLibCheck": false,
 		"resolveJsonModule": true,
 		"outDir": "./dist/",
-		"typeRoots": [
-			"./src/Types",
-			"./node_modules/@types"
-		]
+		"typeRoots": ["./node_modules/@types"],
+		"baseUrl": "src",
+		"paths": {
+			"Utils/*": ["./Utils/*"],
+			"Versions/*": ["./Versions/*"],
+			"Database/*": ["./Database/*"],
+			"Services/*": ["./Services/*"],
+			"Middlewares/*": ["./Middlewares/*"],
+			"Routes/*": ["./Routes/*"],
+			"Types/*": ["./Types/*"],
+			"Models/*": ["./Models/*"]
+		}
 	},
 	"include": ["src"]
 }

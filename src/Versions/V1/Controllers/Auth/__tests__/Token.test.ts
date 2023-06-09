@@ -1,12 +1,12 @@
 import request from 'supertest'
 
-import JWTSign from '../../../../../Utils/Promises/JWTSign'
-import JWTVerify from '../../../../../Utils/Promises/JWTVerify'
+import App from 'App'
 
-import App from '../../../../../App'
+import JWTSign from 'Utils/Promises/JWTSign'
+import JWTVerify from 'Utils/Promises/JWTVerify'
 
-jest.mock('../../../../../Utils/Promises/JWTSign')
-jest.mock('../../../../../Utils/Promises/JWTVerify')
+jest.mock('Utils/Promises/JWTSign')
+jest.mock('Utils/Promises/JWTVerify')
 
 const MockedJWTSign = jest.mocked(JWTSign)
 const MockedJWTVerify = jest.mocked(JWTVerify)
