@@ -13,7 +13,7 @@
 		"clean:logs": "rimraf ./Logs",
 		"clean:dist": "rimraf ./dist",
 		"clean:coverage": "rimraf ./coverage",
-		"clean:all": "concurrently 'npm run clean' 'npm run clean:logs' 'npm run clean:dist' 'npm run clean:coverage'",
+		"clean:all": "concurrently \"npm run clean\" \"npm run clean:logs\" \"npm run clean:dist\" \"npm run clean:coverage\"",
 		"start": "cross-env NODE_ENV=development concurrently \"npm run build:swagger\" \"npm run watch:swagger\" \"npx tsc --watch\" \"npx tsc-alias -w -p tsconfig.json\" \"nodemon -q dist/index.js\"",
 		"lint:check": "eslint src/**/*.{ts,json} scripts/**/*.ts && tsc --noemit",
 		"lint:fix": "eslint --fix src/**/*.{ts,json} scripts/**/*.ts && tsc --noemit",
