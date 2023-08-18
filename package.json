@@ -92,7 +92,7 @@
 		"lint-staged": "^14.0.0",
 		"mockingoose": "^2.16.2",
 		"nodemon": "^2.0.22",
-		"prettier": "^2.8.8",
+		"prettier": "^3.0.2",
 		"rimraf": "^5.0.1",
 		"supertest": "^6.3.3",
 		"swagger-cli": "^4.0.4",
