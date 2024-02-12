@@ -1,15 +1,9 @@
-import mongoose from 'mongoose'
+import { PrismaClient } from '@prisma/client'
 
 import Logger from 'Utils/Logger/Logger'
 
-mongoose.connect(process.env.DB_HOST).catch(error => {
-	Logger.error('Mongo DB connect error', { error })
-})
+const prisma = new PrismaClient()
 
-const db = mongoose.connection
+Logger.info('DB Init')
 
-db.on('error', error => {
-	Logger.error('Mongo DB connection error', { error })
-})
-
-export default db
+export default prisma
