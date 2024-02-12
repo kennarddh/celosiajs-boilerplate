@@ -2,7 +2,7 @@ import { Server } from 'http'
 
 import Logger from 'Utils/Logger/Logger'
 
-import Database from 'Database/index'
+import prisma from 'Database/index'
 
 const OnShutdown =
 	(server: Server, port: number | string, signal: string) => async () => {
@@ -15,9 +15,7 @@ const OnShutdown =
 			env: process.env.NODE_ENV,
 		})
 
-		await new Promise(resolve => {
-			server.close(resolve)
-		})
+		await new Promise(resolve => server.close(resolve))
 
 		Logger.info('Server Stopped', {
 			port: computedPort,
@@ -25,7 +23,7 @@ const OnShutdown =
 			env: process.env.NODE_ENV,
 		})
 
-		await Database.close(false)
+		await prisma.$disconnect()
 
 		Logger.info('Database connection closed')
 
