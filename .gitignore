@@ -284,3 +284,4 @@ dist
 /build
 /src/Swagger.json
 /scripts/loadtest/results/
+/eslint.config.js

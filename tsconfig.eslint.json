@@ -1,4 +1,24 @@
 {
-	"extends": "./tsconfig.json",
-	"include": ["./scripts/**/*", ".eslintrc.js", "jest.config.ts"]
+	"compilerOptions": {
+		"target": "ESNext",
+		"useDefineForClassFields": true,
+		"lib": ["ESNext"],
+		"allowJs": false,
+		"skipLibCheck": true,
+		"esModuleInterop": true,
+		"allowSyntheticDefaultImports": true,
+		"strict": true,
+		"forceConsistentCasingInFileNames": true,
+		"module": "ESNext",
+		"moduleResolution": "Node",
+		"resolveJsonModule": true,
+		"isolatedModules": true,
+		"removeComments": true,
+		"sourceMap": false,
+		"noImplicitAny": true,
+		"types": ["./eslint.d.ts", "node"],
+		"declaration": false
+	},
+	"include": ["./eslint.config.ts"],
+	"files": ["./eslint.config.ts"]
 }
