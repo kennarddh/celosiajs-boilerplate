@@ -88,7 +88,7 @@ describe('Mock Mongoose', () => {
 
 		const res = await User.findOneAndUpdate(
 			{ _id: 'id' },
-			{ username: 'x' }
+			{ username: 'x' },
 		).exec()
 
 		expect(res).toEqual(data)

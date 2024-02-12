@@ -57,7 +57,7 @@ const Create: ICreate = ({ username, name, email, password }) =>
 			.catch(error => {
 				Logger.error(
 					'Create user service generate password hash failed',
-					{ error }
+					{ error },
 				)
 
 				reject({ code: 500 })

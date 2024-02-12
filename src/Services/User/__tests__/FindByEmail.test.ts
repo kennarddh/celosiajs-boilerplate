@@ -35,7 +35,7 @@ describe('Find by email user service', () => {
 				expect(newUser.name).toBe(user.name)
 				expect(newUser.password).toBe(user.password)
 				expect(newUser.username).toBe(user.username)
-			}
+			},
 		)
 
 		return findByIdPromise

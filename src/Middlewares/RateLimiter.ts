@@ -15,7 +15,7 @@ const RateLimiter =
 					errors: ['Too many requests, please try again later.'],
 					data: {},
 				},
-		  }) // eslint-disable-line no-mixed-spaces-and-tabs
+			}) // eslint-disable-line no-mixed-spaces-and-tabs
 		: (_: Request, __: Response, next: NextFunction) => next()
 
 export default RateLimiter

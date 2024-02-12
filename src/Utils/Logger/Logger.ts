@@ -34,7 +34,7 @@ if (process.env.NODE_ENV === 'development') {
 			maxFiles: '14d',
 			format: winston.format.combine(RemoveHttp(), ...LoggerFormat),
 			silent: process.env.NODE_ENV !== 'development',
-		})
+		}),
 	)
 }
 
@@ -68,10 +68,10 @@ if (process.env.NODE_ENV !== 'test') {
 				RemoveError(),
 				RemoveWarn(),
 				RemoveInfo(),
-				...LoggerFormat
+				...LoggerFormat,
 			),
 		}),
-		new winston.transports.Console()
+		new winston.transports.Console(),
 	)
 }
 

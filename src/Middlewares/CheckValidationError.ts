@@ -8,7 +8,7 @@ const CheckValidationErrorFactory = () => {
 	const CheckValidationError = (
 		req: Request,
 		res: Response,
-		next: NextFunction
+		next: NextFunction,
 	) => {
 		const result = validationResult(req)
 

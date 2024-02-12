@@ -35,7 +35,7 @@ describe('Find by id user service', () => {
 				expect(newUser.name).toBe(user.name)
 				expect(newUser.password).toBe(user.password)
 				expect(newUser.username).toBe(user.username)
-			}
+			},
 		)
 
 		return findByIdPromise
@@ -54,7 +54,7 @@ describe('Find by id user service', () => {
 
 		MockMongoose(User).toReturn(query => {
 			expect(query._id).toEqual(
-				new mongoose.Types.ObjectId('62c526bb503a77b155f6eba5')
+				new mongoose.Types.ObjectId('62c526bb503a77b155f6eba5'),
 			)
 
 			if (query._id === user._id) return user

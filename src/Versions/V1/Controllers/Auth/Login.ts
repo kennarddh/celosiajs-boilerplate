@@ -39,7 +39,7 @@ const Login = (req: Request, res: Response) => {
 								expiresIn:
 									parseInt(
 										process.env.REFRESH_JWT_EXPIRE,
-										10
+										10,
 									) || 60 * 60 * 24 * 30, // Expires in 30 days
 							})
 								.then(refreshToken => {
@@ -68,7 +68,7 @@ const Login = (req: Request, res: Response) => {
 										{
 											id: user._id,
 											error,
-										}
+										},
 									)
 
 									return res.status(500).json({

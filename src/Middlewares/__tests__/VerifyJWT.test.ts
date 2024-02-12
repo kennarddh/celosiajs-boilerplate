@@ -59,7 +59,7 @@ describe('Verify JWT middleware', () => {
 					nextFunction()
 
 					resolve(true)
-				}
+				},
 			)
 		}).then(() => {
 			expect(nextFunction).toHaveBeenCalled()
@@ -87,7 +87,7 @@ describe('Verify JWT middleware', () => {
 		await VerifyJWT(
 			mockRequest as unknown as Request,
 			mockResponse as unknown as Response,
-			nextFunction
+			nextFunction,
 		)
 
 		expect(statusFunction.mock.calls[0][0]).toBe(401)
@@ -113,7 +113,7 @@ describe('Verify JWT middleware', () => {
 		await VerifyJWT(
 			mockRequest as unknown as Request,
 			mockResponse as unknown as Response,
-			nextFunction
+			nextFunction,
 		)
 
 		expect(statusFunction.mock.calls[0][0]).toBe(401)
@@ -134,7 +134,7 @@ describe('Verify JWT middleware', () => {
 		await VerifyJWT(
 			mockRequest as unknown as Request,
 			mockResponse as unknown as Response,
-			nextFunction
+			nextFunction,
 		)
 
 		expect(statusFunction.mock.calls[0][0]).toBe(401)
@@ -163,7 +163,7 @@ describe('Verify JWT middleware', () => {
 		await VerifyJWT(
 			mockRequest as unknown as Request,
 			mockResponse as unknown as Response,
-			nextFunction
+			nextFunction,
 		)
 
 		expect(statusFunction.mock.calls[0][0]).toBe(401)

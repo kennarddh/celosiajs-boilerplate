@@ -26,16 +26,16 @@ describe('JWT sign', () => {
 				payloadImplementation,
 				secretImplementation,
 				optionsImplementation,
-				callback
+				callback,
 			) => {
 				callback(null, 'token')
 
 				mock(
 					payloadImplementation,
 					secretImplementation,
-					optionsImplementation
+					optionsImplementation,
 				)
-			}
+			},
 		)
 
 		await JWTSign(payload, secret, options).then(resolveToken => {
@@ -57,16 +57,16 @@ describe('JWT sign', () => {
 				payloadImplementation,
 				secretImplementation,
 				optionsImplementation,
-				callback
+				callback,
 			) => {
 				callback(new Error('error'), undefined)
 
 				mock(
 					payloadImplementation,
 					secretImplementation,
-					optionsImplementation
+					optionsImplementation,
 				)
-			}
+			},
 		)
 
 		await JWTSign(payload, secret, options).catch(mock2)

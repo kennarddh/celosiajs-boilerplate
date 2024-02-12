@@ -52,7 +52,7 @@ const Register = () => {
 							'Username or email has already taken'
 						) {
 							throw new Error(
-								'Username or email has already taken'
+								'Username or email has already taken',
 							)
 						} else {
 							throw new Error('Internal Server Error')
@@ -70,7 +70,7 @@ const Register = () => {
 			.bail()
 			.isLength({ min: 8, max: 32 })
 			.withMessage(
-				'Password must be a minimum of 8 characters and a maximum of 32 characters'
+				'Password must be a minimum of 8 characters and a maximum of 32 characters',
 			)
 			.bail()
 			.toLowerCase(),

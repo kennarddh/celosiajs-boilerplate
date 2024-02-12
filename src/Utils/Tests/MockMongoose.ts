@@ -115,7 +115,7 @@ class MockBase {
 			spies.set(
 				this.model,
 				// eslint-disable-next-line @typescript-eslint/no-explicit-any
-				new Map<IOperation, undefined>()
+				new Map<IOperation, undefined>(),
 			)
 
 			this.#setup()
@@ -206,7 +206,7 @@ class MockBase {
 
 	#implementation(
 		operation: IOperation,
-		args: unknown[]
+		args: unknown[],
 	): Promise<ExpectedReturnType> {
 		const { model } = this
 
@@ -249,7 +249,7 @@ class MockBase {
 	toReturnBase(
 		expected: ExpectedReturnType | ReturnTypeFunction,
 		operation: IOperation,
-		once: boolean
+		once: boolean,
 	) {
 		mocks.get(this.model)?.get(operation)?.push({ once, expected })
 
@@ -260,7 +260,7 @@ class MockBase {
 
 	toReturn(
 		expected: ExpectedReturnType | ReturnTypeFunction,
-		operation: IOperation
+		operation: IOperation,
 	) {
 		this.toReturnBase(expected, operation, false)
 
@@ -269,7 +269,7 @@ class MockBase {
 
 	toReturnOnce(
 		expected: ExpectedReturnType | ReturnTypeFunction,
-		operation: IOperation
+		operation: IOperation,
 	) {
 		this.toReturnBase(expected, operation, true)
 

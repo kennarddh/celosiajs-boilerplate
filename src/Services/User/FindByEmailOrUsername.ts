@@ -12,7 +12,7 @@ interface IResolve {
 }
 
 type IFindByEmailOrUsername = (
-	options: IFindByEmailOrUsernameParameters
+	options: IFindByEmailOrUsernameParameters,
 ) => Promise<IResolve>
 
 const FindByEmailOrUsername: IFindByEmailOrUsername = ({ email, username }) =>

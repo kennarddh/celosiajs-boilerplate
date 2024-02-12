@@ -26,7 +26,7 @@ const Login = () => {
 			.bail()
 			.isLength({ min: 8, max: 32 })
 			.withMessage(
-				'Password must be a minimum of 8 characters and a maximum of 32 characters'
+				'Password must be a minimum of 8 characters and a maximum of 32 characters',
 			)
 			.bail()
 			.toLowerCase(),

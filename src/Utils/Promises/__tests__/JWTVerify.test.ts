@@ -43,7 +43,7 @@ describe('JWT verify', () => {
 				callback2(null, decoded)
 
 				mock(tokenImplementation, secretImplementation)
-			}
+			},
 		)
 
 		await JWTVerify<IDecoded>(token, secret).then(decodedJWT => {
@@ -67,7 +67,7 @@ describe('JWT verify', () => {
 				callback2('error' as unknown as JsonWebTokenError, undefined)
 
 				mock(tokenImplementation, secretImplementation)
-			}
+			},
 		)
 
 		await JWTVerify<IDecoded>(token, secret).catch(mock2)

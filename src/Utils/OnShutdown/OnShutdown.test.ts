@@ -41,7 +41,7 @@ describe('On shutdown', () => {
 				},
 			} as Server,
 			8080,
-			'SIGINT'
+			'SIGINT',
 		)()
 
 		expect(processSpy).toHaveBeenCalledTimes(1)
@@ -49,7 +49,7 @@ describe('On shutdown', () => {
 
 		expect(loggerSpy).toHaveBeenCalledTimes(3)
 		expect(loggerSpy.mock.calls[0]?.[0]).toBe(
-			'SIGINT signal received: Stopping server'
+			'SIGINT signal received: Stopping server',
 		)
 		expect(loggerSpy.mock.calls[1]?.[0]).toBe('Server Stopped')
 		expect(loggerSpy.mock.calls[2]?.[0]).toBe('Database connection closed')
@@ -83,7 +83,7 @@ describe('On shutdown', () => {
 				},
 			} as Server,
 			'8080',
-			'SIGINT'
+			'SIGINT',
 		)()
 
 		expect(processSpy).toHaveBeenCalledTimes(1)
@@ -91,7 +91,7 @@ describe('On shutdown', () => {
 
 		expect(loggerSpy).toHaveBeenCalledTimes(3)
 		expect(loggerSpy.mock.calls[0]?.[0]).toBe(
-			'SIGINT signal received: Stopping server'
+			'SIGINT signal received: Stopping server',
 		)
 		expect(loggerSpy.mock.calls[1]?.[0]).toBe('Server Stopped')
 		expect(loggerSpy.mock.calls[2]?.[0]).toBe('Database connection closed')

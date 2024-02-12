@@ -247,7 +247,7 @@ describe('Login', () => {
 		})
 
 		MockedBcryptCompare.mockImplementationOnce(() =>
-			Promise.reject(new Error('error'))
+			Promise.reject(new Error('error')),
 		)
 
 		MockedJWTSign.mockResolvedValueOnce('token')

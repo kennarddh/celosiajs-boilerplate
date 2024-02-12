@@ -47,7 +47,7 @@ describe('Cors middleware', () => {
 					throw new Error('Function not implemented.')
 				},
 			},
-			jest.fn() as NextFunction
+			jest.fn() as NextFunction,
 		)
 
 		expect(mock).toHaveBeenCalled()
@@ -84,7 +84,7 @@ describe('Cors middleware', () => {
 					throw new Error('Function not implemented.')
 				},
 			},
-			jest.fn() as NextFunction
+			jest.fn() as NextFunction,
 		)
 
 		expect(mock).toHaveBeenCalled()

@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken'
 const JWTSign = <T extends object>(
 	payload: T,
 	secret: jwt.Secret,
-	option: jwt.SignOptions
+	option: jwt.SignOptions,
 ) =>
 	new Promise<string | undefined>((resolve, reject) => {
 		jwt.sign(
@@ -14,7 +14,7 @@ const JWTSign = <T extends object>(
 				if (error) return reject(error)
 
 				resolve(token)
-			}
+			},
 		)
 	})
 

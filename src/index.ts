@@ -12,7 +12,7 @@ const server = App.listen(PORT, () =>
 		port: PORT,
 		pid: process.pid,
 		env: process.env.NODE_ENV,
-	})
+	}),
 )
 
 // Graceful Shutdown

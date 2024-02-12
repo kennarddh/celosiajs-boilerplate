@@ -31,7 +31,7 @@ describe('Parse json middleware', () => {
 				status: statusFunction.mockReturnThis(),
 				json: jsonFunction.mockReturnThis(),
 			} as unknown as Response,
-			nextFunction
+			nextFunction,
 		)
 
 		expect(mock).toHaveBeenCalled()
@@ -61,7 +61,7 @@ describe('Parse json middleware', () => {
 				status: statusFunction.mockReturnThis(),
 				json: jsonFunction.mockReturnThis(),
 			} as unknown as Response,
-			nextFunction
+			nextFunction,
 		)
 
 		expect(mock).toHaveBeenCalled()
