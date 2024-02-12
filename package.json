@@ -31,17 +31,6 @@
 		"type": "git",
 		"url": "https://github.com/kennarddh/express-boilerplate"
 	},
-	"keywords": [
-		"nodejs",
-		"boilerplate",
-		"jwt",
-		"express",
-		"mongodb",
-		"eslint",
-		"bcrypt",
-		"jsonwebtoken",
-		"typescript"
-	],
 	"author": "kennarddh",
 	"license": "MIT",
 	"dependencies": {
