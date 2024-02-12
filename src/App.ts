@@ -9,7 +9,6 @@ import helmet from 'helmet'
 /* eslint-disable prettier/prettier */
 import Cors from 'Middlewares/Cors'
 import LogHttpRequest from 'Middlewares/LogHttpRequest'
-import MongoSanitize from 'Middlewares/MongoSanitize'
 import ParseJson from 'Middlewares/ParseJson'
 import RateLimiter from 'Middlewares/RateLimiter'
 
@@ -36,8 +35,6 @@ app.use(cookieParser())
 app.use(Cors)
 
 app.use(RateLimiter)
-
-app.use(MongoSanitize)
 
 app.use(LogHttpRequest)
 
