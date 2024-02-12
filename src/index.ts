@@ -5,16 +5,16 @@ import App from 'App'
 import Logger from 'Utils/Logger/Logger'
 import OnShutdown from 'Utils/OnShutdown/OnShutdown'
 
-const PORT = process.env.PORT || 8080
+const port = parseInt(process.env.PORT || '8080', 10)
 
-const server = App.listen(PORT, () =>
+const server = App.listen(port, () =>
 	Logger.info(`Server running`, {
-		port: PORT,
+		port,
 		pid: process.pid,
 		env: process.env.NODE_ENV,
 	}),
 )
 
 // Graceful Shutdown
-process.on('SIGTERM', OnShutdown(server, PORT, 'SIGTERM'))
-process.on('SIGINT', OnShutdown(server, PORT, 'SIGINT'))
+process.on('SIGTERM', OnShutdown(server, port, 'SIGTERM'))
+process.on('SIGINT', OnShutdown(server, port, 'SIGINT'))

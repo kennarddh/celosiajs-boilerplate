@@ -5,12 +5,9 @@ import Logger from 'Utils/Logger/Logger'
 import prisma from 'Database/index'
 
 const OnShutdown =
-	(server: Server, port: number | string, signal: string) => async () => {
-		const computedPort =
-			typeof port === 'number' ? port : parseInt(port, 10)
-
+	(server: Server, port: number, signal: string) => async () => {
 		Logger.info(`${signal} signal received: Stopping server`, {
-			port: computedPort,
+			port,
 			pid: process.pid,
 			env: process.env.NODE_ENV,
 		})
@@ -18,7 +15,7 @@ const OnShutdown =
 		await new Promise(resolve => server.close(resolve))
 
 		Logger.info('Server Stopped', {
-			port: computedPort,
+			port,
 			pid: process.pid,
 			env: process.env.NODE_ENV,
 		})
