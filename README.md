@@ -16,8 +16,8 @@ The environment variables can be found and modified in the `.env` file. They com
 # Port number (optional, default: 8080)
 PORT=8080
 
-# URL of the Mongo DB (required)
-DB_HOST=mongodb://127.0.0.1:27017/express-boilerplate
+# Database URL (required)
+DATABASE_URL=mysql://root:root@database:3306/express-boilerplate
 
 # JWT secret (required)
 JWT_SECRET=
