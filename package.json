@@ -19,13 +19,13 @@
 		"lint:fix": "eslint --fix src/**/*.{ts,json} scripts/**/*.ts && tsc --noemit",
 		"prettier:fix": "prettier -w \"src/**/*.{ts,json}\" \"scripts/**/*.{ts,html}\"",
 		"prettier:check": "prettier -c \"src/**/*.{ts,json}\" \"scripts/**/*.{ts,html}\"",
-		"prepare": "husky install && npm run build:swagger",
+		"prepare": "husky && npm run build:swagger",
 		"test": "jest",
 		"test:watch": "jest --watch",
 		"test:watch:all": "jest --watchAll",
 		"test:coverage": "jest --coverage",
 		"test:changed": "jest -o",
-		"pre-commit": "lint-staged -c \"./lintstagedrc.json\" --quiet"
+		"lint-staged": "lint-staged"
 	},
 	"repository": {
 		"type": "git",
