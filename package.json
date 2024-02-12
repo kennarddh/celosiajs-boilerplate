@@ -45,6 +45,7 @@
 	"author": "kennarddh",
 	"license": "MIT",
 	"dependencies": {
+		"@prisma/client": "^5.9.1",
 		"bcrypt": "^5.1.0",
 		"compression": "^1.7.4",
 		"cookie-parser": "^1.4.6",
@@ -93,6 +94,7 @@
 		"mockingoose": "^2.16.2",
 		"nodemon": "^2.0.22",
 		"prettier": "^2.8.8",
+		"prisma": "^5.9.1",
 		"rimraf": "^5.0.1",
 		"supertest": "^6.3.3",
 		"swagger-cli": "^4.0.4",

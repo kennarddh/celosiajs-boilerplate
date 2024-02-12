@@ -4,8 +4,8 @@ services:
     database:
         image: mariadb:lts
         environment:
-            MYSQL_ROOT_PASSWORD: root
-            MYSQL_DATABASE: express-boilerplate
+            MYSQL_ROOT_PASSWORD: 'root'
+            MYSQL_DATABASE: 'express-boilerplate'
         volumes:
             - database:/var/lib/mysql
         healthcheck:
@@ -20,7 +20,7 @@ services:
         networks:
             - app
         ports:
-          - 3309:3306
+            - 3309:3306
 
 volumes:
     database:

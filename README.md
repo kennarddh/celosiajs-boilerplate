@@ -17,7 +17,7 @@ The environment variables can be found and modified in the `.env` file. They com
 PORT=8080
 
 # Database URL (required)
-DATABASE_URL=mysql://root:root@database:3306/express-boilerplate
+DATABASE_URL=mysql://root:root@localhost:3309/express-boilerplate
 
 # JWT secret (required)
 JWT_SECRET=
