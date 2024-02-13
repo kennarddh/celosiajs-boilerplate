@@ -14,15 +14,21 @@ const OnShutdown =
 
 		await new Promise(resolve => server.close(resolve))
 
-		Logger.info('Server Stopped', {
+		Logger.info('Server closed', {
 			port,
 			pid: process.pid,
 			env: process.env.NODE_ENV,
 		})
 
-		await prisma.$disconnect()
+		try {
+			await prisma.$disconnect()
 
-		Logger.info('Database connection closed')
+			Logger.info('Database connection closed')
+		} catch (error) {
+			Logger.error('Failed to close database connection', { error })
+		}
+
+		Logger.info('Exiting')
 
 		process.exit(0)
 	}
