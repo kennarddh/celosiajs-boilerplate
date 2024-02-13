@@ -29,7 +29,7 @@ const GetUserData = async (req: Request, res: Response) => {
 		})
 
 		if (!user) {
-			Logger.info("Can't find user in GetUserData controller", {
+			Logger.error("Can't find user in GetUserData controller", {
 				id,
 			})
 
@@ -48,7 +48,7 @@ const GetUserData = async (req: Request, res: Response) => {
 			},
 		})
 	} catch (error) {
-		Logger.info('GetUserData controller failed to get user', {
+		Logger.error('GetUserData controller failed to get user', {
 			id,
 			error,
 		})
