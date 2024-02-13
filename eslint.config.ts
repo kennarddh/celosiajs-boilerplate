@@ -1,4 +1,5 @@
 import js from '@eslint/js'
+import type { FlatConfig } from '@typescript-eslint/utils/ts-eslint'
 import airbnbBase from 'eslint-config-airbnb-base'
 import importPlugin from 'eslint-plugin-import'
 import jest from 'eslint-plugin-jest'
@@ -10,8 +11,6 @@ import { createRequire } from 'node:module'
 import { dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import tsEslint from 'typescript-eslint'
-
-import type { FlatConfig } from '@typescript-eslint/utils/ts-eslint'
 
 const require = createRequire(import.meta.url)
 const __dirname = dirname(fileURLToPath(import.meta.url))
@@ -37,7 +36,7 @@ export default tsEslint.config(
 			},
 		},
 		plugins: {
-			jest: jest as Omit<FlatConfig.Plugin, 'configs'>,
+			jest,
 			security,
 			prettier,
 			json,
