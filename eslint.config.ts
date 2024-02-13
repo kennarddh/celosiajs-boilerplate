@@ -97,9 +97,7 @@ export default tsEslint.config(
 		rules: {
 			'import/no-extraneous-dependencies': [
 				'error',
-				{
-					devDependencies: ['./eslint.config.ts'],
-				},
+				{ devDependencies: ['./eslint.config.ts'] },
 			],
 		},
 	},
