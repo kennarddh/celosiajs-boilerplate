@@ -6,7 +6,7 @@ import {
 	GetUserData,
 	Login,
 	Register,
-	Token,
+	RefreshToken,
 } from 'Versions/V1/Controllers/Auth/index.js'
 
 import LoginValidation from 'Versions/V1/Validation/Auth/Login.js'
@@ -17,6 +17,6 @@ const Router = express.Router()
 Router.post('/register', RegisterValidation(), Register)
 Router.post('/login', LoginValidation(), Login)
 Router.get('/user', VerifyJWT, GetUserData)
-Router.post('/token', Token)
+Router.post('/refresh-token', RefreshToken)
 
 export default Router

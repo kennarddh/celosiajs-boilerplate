@@ -10,7 +10,7 @@ interface ICookies {
 	refreshToken: string
 }
 
-const Token = (req: Request, res: Response) => {
+const RefreshToken = (req: Request, res: Response) => {
 	const { refreshToken }: ICookies = req.cookies
 
 	if (!refreshToken)
@@ -83,4 +83,4 @@ const Token = (req: Request, res: Response) => {
 		})
 }
 
-export default Token
+export default RefreshToken
