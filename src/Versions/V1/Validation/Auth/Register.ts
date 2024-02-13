@@ -59,7 +59,6 @@ const Register = () => {
 			.escape()
 			.isLength({ max: 100 })
 			.withMessage('Name must be a maximum of 100 characters'),
-
 		CheckValidationError(),
 	]
 
