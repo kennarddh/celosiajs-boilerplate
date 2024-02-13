@@ -30,7 +30,7 @@ const RefreshToken = async (req: Request, res: Response) => {
 
 		try {
 			const token = await JWTSign(payload, process.env.JWT_SECRET, {
-				expiresIn: parseInt(process.env.JWT_EXPIRE, 10) || 60, // Expires in 1 minute
+				expiresIn: parseInt(process.env.JWT_EXPIRE, 10) 
 			})
 
 			try {
@@ -38,9 +38,7 @@ const RefreshToken = async (req: Request, res: Response) => {
 					payload,
 					process.env.REFRESH_JWT_SECRET,
 					{
-						expiresIn:
-							parseInt(process.env.REFRESH_JWT_EXPIRE, 10) ||
-							60 * 60 * 24 * 30, // Expires in 30 days
+						expiresIn: parseInt(process.env.REFRESH_JWT_EXPIRE, 10),
 					},
 				)
 
