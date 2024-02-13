@@ -1,8 +1,8 @@
 import { Server } from 'http'
 
-import Logger from 'Utils/Logger/Logger'
+import Logger from 'Utils/Logger/Logger.js'
 
-import prisma from 'Database/index'
+import prisma from 'Database/index.js'
 
 const OnShutdown =
 	(server: Server, port: number, signal: string) => async () => {

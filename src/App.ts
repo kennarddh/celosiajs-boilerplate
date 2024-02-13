@@ -7,12 +7,12 @@ import cookieParser from 'cookie-parser'
 import helmet from 'helmet'
 
 /* eslint-disable prettier/prettier */
-import Cors from 'Middlewares/Cors'
-import LogHttpRequest from 'Middlewares/LogHttpRequest'
-import ParseJson from 'Middlewares/ParseJson'
-import RateLimiter from 'Middlewares/RateLimiter'
+import Cors from 'Middlewares/Cors.js'
+import LogHttpRequest from 'Middlewares/LogHttpRequest.js'
+import ParseJson from 'Middlewares/ParseJson.js'
+import RateLimiter from 'Middlewares/RateLimiter.js'
 
-import Routes from 'Routes/index'
+import Routes from 'Routes/index.js'
 
 import 'Database/index'
 

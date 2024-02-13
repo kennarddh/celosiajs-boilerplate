@@ -1,13 +1,13 @@
 import { Server } from 'http'
 
-import Logger from 'Utils/Logger/Logger'
+import Logger from 'Utils/Logger/Logger.js'
 
-import Database from 'Database/index'
+import Database from 'Database/index.js'
 
-import OnShutdown from './OnShutdown'
+import OnShutdown from './OnShutdown.js'
 
-jest.mock<typeof import('Utils/Logger/Logger')>('Utils/Logger/Logger')
-jest.mock<typeof import('Database/index')>('Database/index')
+jest.mock<typeof import('Utils/Logger/Logger.js')>('Utils/Logger/Logger.js')
+jest.mock<typeof import('Database/index.js')>('Database/index.js')
 
 describe('On shutdown', () => {
 	afterEach(() => {

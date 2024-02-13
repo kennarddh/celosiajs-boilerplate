@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 
-import Logger from 'Utils/Logger/Logger'
+import Logger from 'Utils/Logger/Logger.js'
 
 import FindUserById from 'Services/User/FindById'
 

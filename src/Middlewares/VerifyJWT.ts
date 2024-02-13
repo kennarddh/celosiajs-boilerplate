@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from 'express'
 
-import { IUser } from 'Types/Http'
+import { IUser } from 'Types/Http.js'
 
-import JWTVerify from 'Utils/Promises/JWTVerify'
+import JWTVerify from 'Utils/Promises/JWTVerify.js'
 
 const VerifyJWT = async (req: Request, res: Response, next: NextFunction) => {
 	const tokenHeader = req.get('Access-Token')

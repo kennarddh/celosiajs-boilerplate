@@ -1,9 +1,9 @@
 import express from 'express'
 
-import V1Router from 'Versions/V1/Routes/index'
+import V1Router from 'Versions/V1/Routes/index.js'
 
-import DocsRouter from './Docs'
-import NoMatchRouter from './NoMatch'
+import DocsRouter from './Docs.js'
+import NoMatchRouter from './NoMatch.js'
 
 const Router = express.Router()
 

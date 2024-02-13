@@ -2,8 +2,8 @@ import { Request, Response } from 'express'
 
 import bcrypt from 'bcrypt'
 
-import Logger from 'Utils/Logger/Logger'
-import JWTSign from 'Utils/Promises/JWTSign'
+import Logger from 'Utils/Logger/Logger.js'
+import JWTSign from 'Utils/Promises/JWTSign.js'
 
 import FindUserByEmail from 'Services/User/FindByEmail'
 

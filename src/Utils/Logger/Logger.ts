@@ -4,13 +4,13 @@ import winston from 'winston'
 import WinstonDailyRotateFile from 'winston-daily-rotate-file'
 
 // Utils
-import GetRootDirectory from 'Utils/GetRootDirectory'
+import GetRootDirectory from 'Utils/GetRootDirectory.js'
 
 // Format
-import RemoveError from './Format/RemoveError'
-import RemoveHttp from './Format/RemoveHttp'
-import RemoveInfo from './Format/RemoveInfo'
-import RemoveWarn from './Format/RemoveWarn'
+import RemoveError from './Format/RemoveError.js'
+import RemoveHttp from './Format/RemoveHttp.js'
+import RemoveInfo from './Format/RemoveInfo.js'
+import RemoveWarn from './Format/RemoveWarn.js'
 
 const logsRootDirectory = path.resolve(GetRootDirectory(), 'Logs')
 
