@@ -19,6 +19,7 @@
 		"lint:build": "tsc --project tsconfig.eslint.json",
 		"lint:check": "eslint && tsc --noemit",
 		"lint:fix": "eslint --fix && tsc --noemit",
+		"lint:staged": "lint-staged",
 		"prettier:fix": "prettier -w \"./src/**/*.{ts,json}\" \"./scripts/**/*.{ts,html}\"",
 		"prettier:check": "prettier -c \"./src/**/*.{ts,json}\" \"./scripts/**/*.{ts,html}\"",
 		"prepare": "npm run lint:build && husky && npm run build:swagger",
@@ -26,8 +27,7 @@
 		"test:watch": "jest --watch",
 		"test:watch:all": "jest --watchAll",
 		"test:coverage": "jest --coverage",
-		"test:changed": "jest -o",
-		"lint-staged": "lint-staged"
+		"test:changed": "jest -o"
 	},
 	"repository": {
 		"type": "git",
