@@ -1,15 +1,17 @@
 import { NextFunction, Request, Response } from 'express'
 
-import { IUser } from 'Types/Http.js'
+import { IUserJWTPayload } from 'Types/Http.js'
+import { JsonWebTokenError, TokenExpiredError } from 'jsonwebtoken'
 
+import Logger from 'Utils/Logger/Logger.js'
 import JWTVerify from 'Utils/Promises/JWTVerify.js'
 
 const VerifyJWT = async (req: Request, res: Response, next: NextFunction) => {
 	const tokenHeader = req.get('Access-Token')
 
-	if (Array.isArray(tokenHeader)) {
+	if (!tokenHeader) {
 		return res.status(401).json({
-			errors: ['Failed to authenticate'],
+			errors: ['No token provided'],
 			data: {},
 		})
 	}
@@ -18,22 +20,41 @@ const VerifyJWT = async (req: Request, res: Response, next: NextFunction) => {
 
 	if (!token)
 		return res.status(401).json({
-			errors: ['Failed to authenticate'],
+			errors: ['Invalid token'],
 			data: {},
 		})
 
-	await JWTVerify<IUser>(token, process.env.JWT_SECRET)
-		.then(user => {
-			req.user = user
+	try {
+		const user = await JWTVerify<IUserJWTPayload>(
+			token,
+			process.env.JWT_SECRET,
+		)
+		req.user = user
 
-			next()
-		})
-		.catch(() => {
+		next()
+	} catch (error) {
+		if (error instanceof TokenExpiredError)
 			return res.status(401).json({
-				errors: ['Failed to authenticate'],
+				errors: ['Expired token'],
 				data: {},
 			})
+
+		if (
+			error instanceof JsonWebTokenError &&
+			error.message === 'invalid signature'
+		)
+			return res.status(401).json({
+				errors: ['Invalid token'],
+				data: {},
+			})
+
+		Logger.error('Unknown error while verifying JWT', { error, token })
+
+		return res.status(500).json({
+			errors: ['Internal server error'],
+			data: {},
 		})
+	}
 }
 
 export default VerifyJWT

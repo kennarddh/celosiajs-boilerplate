@@ -1,5 +1,6 @@
 import { Request, Response } from 'express'
 
+import { IUserJWTPayload } from 'Types/Http.js'
 import argon2 from 'argon2'
 
 import Logger from 'Utils/Logger/Logger.js'
@@ -39,7 +40,7 @@ const Login = async (req: Request, res: Response) => {
 					data: {},
 				})
 
-			const payload = { id: user.id }
+			const payload: IUserJWTPayload = { id: user.id }
 
 			try {
 				const token = await JWTSign(payload, process.env.JWT_SECRET, {
