@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
 
 import { IUserJWTPayload } from 'Types/Http.js'
-import { JsonWebTokenError, TokenExpiredError } from 'jsonwebtoken'
+import jwt from 'jsonwebtoken'
 
 import Logger from 'Utils/Logger/Logger.js'
 import JWTSign from 'Utils/Promises/JWTSign.js'
@@ -80,14 +80,14 @@ const RefreshToken = async (req: Request, res: Response) => {
 			})
 		}
 	} catch (error) {
-		if (error instanceof TokenExpiredError)
+		if (error instanceof jwt.TokenExpiredError)
 			return res.status(401).json({
 				errors: ['Expired refresh token'],
 				data: {},
 			})
 
 		if (
-			error instanceof JsonWebTokenError &&
+			error instanceof jwt.JsonWebTokenError &&
 			error.message === 'invalid signature'
 		)
 			return res.status(401).json({

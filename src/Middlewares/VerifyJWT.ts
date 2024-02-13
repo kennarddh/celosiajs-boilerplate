@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express'
 
 import { IUserJWTPayload } from 'Types/Http.js'
-import { JsonWebTokenError, TokenExpiredError } from 'jsonwebtoken'
+import jwt from 'jsonwebtoken'
 
 import Logger from 'Utils/Logger/Logger.js'
 import JWTVerify from 'Utils/Promises/JWTVerify.js'
@@ -34,14 +34,14 @@ const VerifyJWT = async (req: Request, res: Response, next: NextFunction) => {
 
 		next()
 	} catch (error) {
-		if (error instanceof TokenExpiredError)
+		if (error instanceof jwt.TokenExpiredError)
 			return res.status(401).json({
 				errors: ['Expired token'],
 				data: {},
 			})
 
 		if (
-			error instanceof JsonWebTokenError &&
+			error instanceof jwt.JsonWebTokenError &&
 			error.message === 'invalid signature'
 		)
 			return res.status(401).json({
