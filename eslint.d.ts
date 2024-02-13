@@ -1,14 +1,12 @@
 type FlagConfigPlugin =
 	import('@typescript-eslint/utils/ts-eslint').FlatConfig.Plugin
 
+type FlatConfigConfig =
+	import('@typescript-eslint/utils/ts-eslint').FlatConfig.Config
+
 type FlagConfigPluginWithoutConfigs = Omit<FlagConfigPlugin, 'configs'>
 
-type IConfig = Record<
-	string,
-	| import('eslint').Linter.FlatConfig
-	| import('eslint').Linter.FlatConfig[]
-	| import('eslint').ESLint.ConfigData<import('eslint').Linter.RulesRecord>
->
+type IConfig = FlatConfigConfig
 
 type IConfigs<T extends string, V = IConfig> = { configs: { [I in T]: V } }
 
