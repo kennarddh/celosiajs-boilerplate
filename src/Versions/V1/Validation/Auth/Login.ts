@@ -4,17 +4,16 @@ import CheckValidationError from 'Middlewares/CheckValidationError'
 
 const Login = () => {
 	const validator = [
-		body('email')
+		body('username')
 			.trim()
 			.not()
 			.isEmpty()
-			.withMessage('Email cannot be empty')
+			.withMessage('Username cannot be empty')
 			.bail()
 			.escape()
-			.isEmail()
-			.withMessage('Invalid email')
-			.bail()
-			.normalizeEmail({ all_lowercase: true }),
+			.isLength({ max: 50 })
+			.withMessage('Username must be a maximum of 50 characters')
+			.bail(),
 		body('password')
 			.trim()
 			.not()
@@ -24,9 +23,9 @@ const Login = () => {
 			.matches(/^(?!.*\s)/g)
 			.withMessage('Password cannot have whitespace')
 			.bail()
-			.isLength({ min: 8, max: 32 })
+			.isLength({ min: 8, max: 100 })
 			.withMessage(
-				'Password must be a minimum of 8 characters and a maximum of 32 characters',
+				'Password must be a minimum of 8 characters and a maximum of 100 characters',
 			)
 			.bail()
 			.toLowerCase(),

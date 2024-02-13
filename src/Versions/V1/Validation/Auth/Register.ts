@@ -1,8 +1,10 @@
 import { body } from 'express-validator'
 
-import FindUserByEmailOrUsername from 'Services/User/FindByEmailOrUsername'
+import Logger from 'Utils/Logger/Logger'
 
 import CheckValidationError from 'Middlewares/CheckValidationError'
+
+import prisma from 'Database/index'
 
 const Register = () => {
 	const validator = [
@@ -13,51 +15,25 @@ const Register = () => {
 			.withMessage('Username cannot be empty')
 			.bail()
 			.escape()
-			.isLength({ max: 32 })
-			.withMessage('Username must be a maximum of 32 characters')
-			.bail(),
-		body('name')
-			.trim()
-			.not()
-			.isEmpty()
-			.withMessage('Name cannot be empty')
+			.isLength({ max: 50 })
+			.withMessage('Username must be a maximum of 50 characters')
 			.bail()
-			.escape()
-			.isLength({ max: 32 })
-			.withMessage('Name must be a maximum of 32 characters'),
-		body('email')
-			.trim()
-			.not()
-			.isEmpty()
-			.withMessage('Email cannot be empty')
-			.bail()
-			.escape()
-			.isEmail()
-			.withMessage('Invalid email')
-			.bail()
-			.normalizeEmail({ all_lowercase: true })
-			.custom(async (value, { req }) => {
-				await FindUserByEmailOrUsername({
-					email: value,
-					username: req.body.username,
-				})
-					.then(() => {
-						throw new Error('Username or email has already taken')
+			.custom(async value => {
+				try {
+					const user = await prisma.user.findFirst({
+						where: { username: value },
+						select: { id: true },
 					})
-					.catch(error => {
-						if (error.code === 404) return true
 
-						if (
-							error.message ===
-							'Username or email has already taken'
-						) {
-							throw new Error(
-								'Username or email has already taken',
-							)
-						} else {
-							throw new Error('Internal Server Error')
-						}
+					if (user != null)
+						throw new Error('Username or email has already taken')
+				} catch (error) {
+					Logger.error('Username validation findFirst error', {
+						error,
 					})
+
+					throw new Error('Internal Server Error')
+				}
 			}),
 		body('password')
 			.trim()
@@ -68,12 +44,22 @@ const Register = () => {
 			.matches(/^(?!.*\s)/g)
 			.withMessage('Password cannot have whitespace')
 			.bail()
-			.isLength({ min: 8, max: 32 })
+			.isLength({ min: 8, max: 100 })
 			.withMessage(
-				'Password must be a minimum of 8 characters and a maximum of 32 characters',
+				'Password must be a minimum of 8 characters and a maximum of 100 characters',
 			)
 			.bail()
 			.toLowerCase(),
+		body('name')
+			.trim()
+			.not()
+			.isEmpty()
+			.withMessage('Name cannot be empty')
+			.bail()
+			.escape()
+			.isLength({ max: 100 })
+			.withMessage('Name must be a maximum of 100 characters'),
+
 		CheckValidationError(),
 	]
 
