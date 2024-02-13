@@ -1,7 +1,7 @@
 {
 	"compilerOptions": {
 		"target": "ES2022" /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */,
-		"module": "commonjs" /* Specify what module code is generated. */,
+		"module": "NodeNext" /* Specify what module code is generated. */,
 		"allowJs": false /* Allow JavaScript files to be a part of your program. Use the 'checkJS' option to get errors from these files. */,
 		"esModuleInterop": true /* Emit additional JavaScript to ease support for importing CommonJS modules. This enables 'allowSyntheticDefaultImports' for type compatibility. */,
 		"forceConsistentCasingInFileNames": true /* Ensure that casing is correct in imports. */,
@@ -25,6 +25,7 @@
 		"allowUnreachableCode": true /* Disable error reporting for unreachable code. */,
 		"skipLibCheck": false,
 		"resolveJsonModule": true,
+		"moduleResolution": "NodeNext",
 		"outDir": "./dist/",
 		"typeRoots": ["./node_modules/@types"],
 		"baseUrl": "src",
@@ -32,11 +33,9 @@
 			"Utils/*": ["./Utils/*"],
 			"Versions/*": ["./Versions/*"],
 			"Database/*": ["./Database/*"],
-			"Services/*": ["./Services/*"],
 			"Middlewares/*": ["./Middlewares/*"],
 			"Routes/*": ["./Routes/*"],
 			"Types/*": ["./Types/*"],
-			"Models/*": ["./Models/*"]
 		}
 	},
 	"include": ["src"]
