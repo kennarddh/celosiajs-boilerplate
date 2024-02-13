@@ -29,7 +29,8 @@ const VerifyJWT = async (req: Request, res: Response, next: NextFunction) => {
 			token,
 			process.env.JWT_SECRET,
 		)
-		req.user = user
+
+		req.user = { id: user.id }
 
 		next()
 	} catch (error) {
