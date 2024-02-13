@@ -36,11 +36,17 @@
 			"Middlewares/*": ["./Middlewares/*"],
 			"Routes/*": ["./Routes/*"],
 			"Types/*": ["./Types/*"]
-		},
+		}
 	},
 	"references": [
 		{ "path": "./tsconfig.dev.json" },
 		{ "path": "./tsconfig.eslint.json" }
 	],
-	"include": ["src"]
+	"include": ["src"],
+	"exclude": [
+		"**/*.test.ts",
+		"**/*.spec.ts",
+		"**/__tests__/**/*.ts",
+		"./scripts/**/*.ts"
+	]
 }
