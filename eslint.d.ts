@@ -1,3 +1,8 @@
+type FlagConfigPlugin =
+	import('./node_modules/typescript-eslint/node_modules/@typescript-eslint/utils/dist/ts-eslint/Config.d.ts').FlatConfig.Plugin
+
+type FlagConfigPluginWithoutConfigs = Omit<FlagConfigPlugin, 'configs'>
+
 type IConfig = Record<
 	string,
 	| import('eslint').Linter.FlatConfig
@@ -5,57 +10,66 @@ type IConfig = Record<
 	| import('eslint').ESLint.ConfigData<import('eslint').Linter.RulesRecord>
 >
 
-type IConfigs<T extends string, V = IConfig> = { [I in T]: V }
-
-declare module '@typescript-eslint/parser' {
-	type ParserModule = import('eslint').Linter.ParserModule
-
-	const parser: ParserModule
-	export = parser
-}
+type IConfigs<T extends string, V = IConfig> = { configs: { [I in T]: V } }
 
 declare module '@eslint/js' {
-	export const configs: IConfigs<'recommended' | 'all'>
+	const plugin: FlagConfigPluginWithoutConfigs &
+		IConfigs<'recommended' | 'all'>
+
+	export default plugin
 }
 
 declare module 'eslint-plugin-import' {
-	export const configs: IConfigs<
-		| 'recommended'
-		| 'errors'
-		| 'warnings'
-		| 'stage-0'
-		| 'react'
-		| 'react-native'
-		| 'electron'
-		| 'typescript'
-	>
-
-	const plugin: any
+	const plugin: FlagConfigPluginWithoutConfigs &
+		IConfigs<
+			| 'recommended'
+			| 'errors'
+			| 'warnings'
+			| 'stage-0'
+			| 'react'
+			| 'react-native'
+			| 'electron'
+			| 'typescript'
+		>
 
 	export default plugin
 }
 
 declare module 'eslint-plugin-json' {
-	export const configs: IConfigs<'recommended' | 'recommended-with-comments'>
+	const plugin: FlagConfigPluginWithoutConfigs &
+		IConfigs<'recommended' | 'recommended-with-comments'>
+
+	export default plugin
 }
 
 declare module 'eslint-plugin-jsx-a11y' {
-	export const configs: IConfigs<'recommended' | 'strict'>
+	const plugin: FlagConfigPluginWithoutConfigs &
+		IConfigs<'recommended' | 'strict'>
+
+	export default plugin
 }
 
 declare module 'eslint-plugin-security' {
-	export const configs: IConfigs<'recommended'>
+	const plugin: FlagConfigPluginWithoutConfigs & IConfigs<'recommended'>
+
+	export default plugin
 }
 
 declare module 'eslint-plugin-prettier' {
-	export const configs: IConfigs<'recommended'>
+	const plugin: FlagConfigPluginWithoutConfigs & IConfigs<'recommended'>
+
+	export default plugin
 }
 
 declare module 'eslint-plugin-jest' {
-	export const configs: IConfigs<'recommended' | 'all' | 'style'>
+	const plugin: FlagConfigPluginWithoutConfigs &
+		IConfigs<'recommended' | 'all' | 'style'>
+
+	export default plugin
 }
 
 declare module 'eslint-config-airbnb-base' {
 	const any: any
-	export = any
+
+	export default any
 }

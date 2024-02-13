@@ -35,8 +35,12 @@
 			"Database/*": ["./Database/*"],
 			"Middlewares/*": ["./Middlewares/*"],
 			"Routes/*": ["./Routes/*"],
-			"Types/*": ["./Types/*"],
-		}
+			"Types/*": ["./Types/*"]
+		},
 	},
+	"references": [
+		{ "path": "./tsconfig.dev.json" },
+		{ "path": "./tsconfig.eslint.json" }
+	],
 	"include": ["src"]
 }

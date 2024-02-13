@@ -1,32 +1,31 @@
-import { Linter } from 'eslint'
 import js from '@eslint/js'
-
-import globals from 'globals'
-
-import typescriptParser from '@typescript-eslint/parser'
-
-import security from 'eslint-plugin-security'
-import json from 'eslint-plugin-json'
-import jest from 'eslint-plugin-jest'
-import ts from '@typescript-eslint/eslint-plugin'
-import prettier from 'eslint-plugin-prettier'
-import importPlugin, {
-	configs as importPluginConfigs,
-} from 'eslint-plugin-import'
 import airbnbBase from 'eslint-config-airbnb-base'
-
+import importPlugin from 'eslint-plugin-import'
+import jest from 'eslint-plugin-jest'
+import json from 'eslint-plugin-json'
+import prettier from 'eslint-plugin-prettier'
+import security from 'eslint-plugin-security'
+import globals from 'globals'
+import { createRequire } from 'node:module'
 import { dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { createRequire } from 'node:module';
+import tsEslint from 'typescript-eslint'
 
-const require = createRequire(import.meta.url);
+import type { FlatConfig } from './node_modules/typescript-eslint/node_modules/@typescript-eslint/utils/dist/ts-eslint/Config.d.ts'
+
+const require = createRequire(import.meta.url)
 const __dirname = dirname(fileURLToPath(import.meta.url))
 
-const config: Linter.FlatConfig[] = [
+export default tsEslint.config(
 	{
-		files: ['./src/**/*.{ts,tsx,json}', './eslint.config.ts', './scripts/**/*', './jest.config.ts'],
+		files: [
+			'./src/**/*.{ts,tsx,json}',
+			'./eslint.config.ts',
+			'./scripts/**/*',
+			'./jest.config.ts',
+		],
 		languageOptions: {
-			parser: typescriptParser,
+			parser: tsEslint.parser as FlatConfig.Parser,
 			parserOptions: {
 				ecmaVersion: 'latest',
 				project: './tsconfig.json',
@@ -38,12 +37,12 @@ const config: Linter.FlatConfig[] = [
 			},
 		},
 		plugins: {
-			jest,
+			jest: jest as Omit<FlatConfig.Plugin, 'configs'>,
 			security,
 			prettier,
 			json,
 			import: importPlugin,
-			'@typescript-eslint': ts,
+			'@typescript-eslint': tsEslint.plugin,
 		},
 		settings: {
 			'import/resolver': {
@@ -51,17 +50,21 @@ const config: Linter.FlatConfig[] = [
 			},
 		},
 		rules: {
-			...ts.configs['eslint-recommended'].rules,
-			...ts.configs['recommended'].rules,
+			...tsEslint.configs['eslintRecommended'].rules,
+			...tsEslint.configs['recommended']
+				.map(config => config.rules)
+				.reduce((acc, val) => ({ ...acc, ...val }), {}),
 			...js.configs['recommended'].rules,
 			...json.configs['recommended'].rules,
 			...security.configs['recommended'].rules,
 			...prettier.configs['recommended'].rules,
-			...importPluginConfigs['recommended'].rules,
-			...importPluginConfigs['typescript'].rules,
+			...importPlugin.configs['recommended'].rules,
+			...importPlugin.configs['typescript'].rules,
 			...jest.configs['recommended'].rules,
 			...airbnbBase.rules,
-			...(airbnbBase.extends as string[]).map(extend => require(extend).rules).reduce((acc, val) => ({...acc, ...val}), {}),
+			...(airbnbBase.extends as string[])
+				.map(extend => require(extend).rules)
+				.reduce((acc, val) => ({ ...acc, ...val }), {}),
 			'prettier/prettier': [
 				'warn',
 				{
@@ -92,6 +95,14 @@ const config: Linter.FlatConfig[] = [
 				project: './tsconfig.eslint.json',
 			},
 		},
+		rules: {
+			'import/no-extraneous-dependencies': [
+				'error',
+				{
+					devDependencies: ['./eslint.config.ts'],
+				},
+			],
+		},
 	},
 	{
 		files: ['./scripts/**/*', './jest.config.ts'],
@@ -112,8 +123,6 @@ const config: Linter.FlatConfig[] = [
 					],
 				},
 			],
-		}
+		},
 	},
-]
-
-export default config
+)
