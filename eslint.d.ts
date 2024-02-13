@@ -42,13 +42,6 @@ declare module 'eslint-plugin-json' {
 	export default plugin
 }
 
-declare module 'eslint-plugin-jsx-a11y' {
-	const plugin: FlagConfigPluginWithoutConfigs &
-		IConfigs<'recommended' | 'strict'>
-
-	export default plugin
-}
-
 declare module 'eslint-plugin-security' {
 	const plugin: FlagConfigPluginWithoutConfigs & IConfigs<'recommended'>
 
