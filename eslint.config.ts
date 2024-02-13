@@ -11,7 +11,7 @@ import { dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import tsEslint from 'typescript-eslint'
 
-import type { FlatConfig } from './node_modules/typescript-eslint/node_modules/@typescript-eslint/utils/dist/ts-eslint/Config.d.ts'
+import type { FlatConfig } from '@typescript-eslint/utils/ts-eslint'
 
 const require = createRequire(import.meta.url)
 const __dirname = dirname(fileURLToPath(import.meta.url))

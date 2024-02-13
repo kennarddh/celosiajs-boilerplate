@@ -1,5 +1,5 @@
 type FlagConfigPlugin =
-	import('./node_modules/typescript-eslint/node_modules/@typescript-eslint/utils/dist/ts-eslint/Config.d.ts').FlatConfig.Plugin
+	import('@typescript-eslint/utils/ts-eslint').FlatConfig.Plugin
 
 type FlagConfigPluginWithoutConfigs = Omit<FlagConfigPlugin, 'configs'>
 
