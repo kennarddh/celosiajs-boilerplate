@@ -10,39 +10,7 @@ npm install
 
 ### Environment Variables
 
-The environment variables can be found and modified in the `.env` file. They come with these default values:
-
-```bash
-# Port number (optional, default: 8080)
-PORT=8080
-
-# Database URL (required)
-DATABASE_URL=mysql://root:root@localhost:3309/express-boilerplate
-
-# JWT secret (required)
-JWT_SECRET=
-
-# Refresh token JWT secret (required)
-REFRESH_JWT_SECRET=
-
-# JWT secret (optional, default: 60 (1 minute))
-JWT_EXPIRE=60
-
-# Refresh token JWT secret (optional, default: 2592000 (30 days))
-REFRESH_JWT_EXPIRE=2592000
-
-# Rate limiter max (optional, default: 100)
-RATE_LIMITER_MAX=100
-
-# Rate limiter window ms (optional, default: 60000 (1 minute))
-RATE_LIMITER_WINDOW_MS=60000
-
-# Logger level (optional, default: info)
-LOG_LEVEL=info
-
-# Cors origin separated with comma (default: http://localhost:3000,http://127.0.0.1:3000,http://localhost:8888,http://127.0.0.1:8888)
-CORS_ORIGIN="http://localhost:3000,http://127.0.0.1:3000,http://localhost:8888,http://127.0.0.1:8888"
-```
+The environment variables can be found and modified in the `.env` file. See `.env.example` for default values.
 
 ### Project Structure
 
