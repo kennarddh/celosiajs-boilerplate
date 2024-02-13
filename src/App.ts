@@ -14,7 +14,7 @@ import RateLimiter from 'Middlewares/RateLimiter.js'
 
 import Routes from 'Routes/index.js'
 
-import 'Database/index'
+import 'Database/index.js'
 
 /* eslint-enable prettier/prettier */
 
