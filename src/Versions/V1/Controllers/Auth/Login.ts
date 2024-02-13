@@ -5,15 +5,39 @@ import bcrypt from 'bcrypt'
 import Logger from 'Utils/Logger/Logger.js'
 import JWTSign from 'Utils/Promises/JWTSign.js'
 
-import FindUserByEmail from 'Services/User/FindByEmail'
+import prisma from 'Database/index.js'
 
 interface IBody {
-	email: string
+	username: string
 	password: string
 }
 
-const Login = (req: Request, res: Response) => {
-	const { email, password }: IBody = req.body
+const Login = async (req: Request, res: Response) => {
+	const { username, password }: IBody = req.body
+
+	try {
+		const user = await prisma.user.findFirst({
+			where: { username },
+			select: { password: true },
+		})
+
+		if (!user) {
+			return res.status(403).json({
+				errors: ['Cannot find user with the same username'],
+				data: {},
+			})
+		}
+	} catch (error) {
+		Logger.info('Login controller failed to get user', {
+			username,
+			error,
+		})
+
+		return res.status(500).json({
+			errors: ['Internal server error'],
+			data: {},
+		})
+	}
 
 	FindUserByEmail({ email })
 		.then(({ user }) => {
