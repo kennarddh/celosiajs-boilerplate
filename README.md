@@ -88,15 +88,6 @@ Removes all logs.
 npm run clean:logs
 ```
 
-### Clean Dist
-
-Removes dist directory.
-Directory created to temporarily store tsc compiled output
-
-```bash
-npm run clean:dist
-```
-
 ### Clean Coverage
 
 Removes jest coverage result.
