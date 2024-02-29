@@ -2,11 +2,7 @@ import type { JestConfigWithTsJest } from 'ts-jest'
 
 const jestConfig: JestConfigWithTsJest = {
 	testEnvironment: 'node',
-	coveragePathIgnorePatterns: [
-		'/node_modules/',
-		'./src/Swagger.json',
-		'./src/Swagger/',
-	],
+	coveragePathIgnorePatterns: ['/node_modules/'],
 	collectCoverageFrom: ['./src/**'],
 	coverageThreshold: {
 		global: {

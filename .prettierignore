@@ -2,4 +2,3 @@
 /build
 /package-lock.json
 /.gitignore
-/src/Swagger.json

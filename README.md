@@ -26,7 +26,6 @@ src/
  |--Middlewares/          # Custom express middlewares
  |--Models/               # Mongoose models (Data layer)
  |--Utils/                # Utility classes and functions
- |--Swagger/              # Open Api 3 spec
  |--Types/                # Typescript types definition
  |--Services/             # Services
  |--App.ts                # Express app
@@ -63,30 +62,6 @@ build the project for development.
 
 ```bash
 npm run build:development
-```
-
-### Build Swagger
-
-Bundle open api spec.
-
-```bash
-npm run build:swagger
-```
-
-### Preview Swagger
-
-Preview and watch open api spec.
-
-```bash
-npm run preview:swagger
-```
-
-### Watch Swagger
-
-Build open api spec on changes
-
-```bash
-npm run preview:swagger
 ```
 
 ### Clean All

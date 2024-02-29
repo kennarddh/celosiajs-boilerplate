@@ -12,7 +12,6 @@
 		"^express-validator$",
 		"^http$",
 		"^path$",
-		"^swagger-ui-express$",
 		"^bcrypt$",
 		"^mongoose$",
 		"^winston",

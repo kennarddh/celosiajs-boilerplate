@@ -1,4 +1,4 @@
-import { Request, Response } from 'express'
+import { Request, Response, response } from 'express'
 
 import { IUserJWTPayload } from 'Types/Http.js'
 import argon2 from 'argon2'

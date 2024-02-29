@@ -1,8 +1,0 @@
-{
-	"Access-Token": {
-		"type": "apiKey",
-		"name": "Access-Token",
-		"in": "header",
-		"description": "Bearer token"
-	}
-}
