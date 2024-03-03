@@ -11,7 +11,7 @@
 		"clean:logs": "rimraf ./Logs",
 		"clean:coverage": "rimraf ./coverage",
 		"clean": "concurrently \"npm run clean:build\" \"npm run clean:logs\" \"npm run clean:coverage\"",
-		"start": "cross-env NODE_ENV=development tsx ./src/index.ts",
+		"start": "cross-env NODE_ENV=development tsx watch ./src/index.ts",
 		"lint:build": "tsc --project tsconfig.eslint.json",
 		"lint:check": "eslint && tsc --noemit",
 		"lint:fix": "eslint --fix && tsc --noemit",
