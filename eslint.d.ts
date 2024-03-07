@@ -52,13 +52,6 @@ declare module 'eslint-plugin-prettier' {
 	export default plugin
 }
 
-declare module 'eslint-plugin-jest' {
-	const plugin: FlagConfigPluginWithoutConfigs &
-		IConfigs<'recommended' | 'all' | 'style'>
-
-	export default plugin
-}
-
 declare module 'eslint-config-airbnb-base' {
 	const any: any
 

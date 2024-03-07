@@ -1,8 +1,8 @@
 import { Port, ServerApp } from 'index.js'
 
-import Logger from 'Utils/Logger/Logger.js'
+import Logger from 'Utils/Logger/Logger'
 
-import prisma from 'Database/index.js'
+import prisma from 'Database/index'
 
 const OnShutdown =
 	(signal: string, exitCode: number = 0) =>

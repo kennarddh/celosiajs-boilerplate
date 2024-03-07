@@ -1,7 +1,9 @@
 {
 	"extends": "./tsconfig.json",
 	"compilerOptions": {
-		"composite": true
+		"composite": true,
+		"allowJs": true
 	},
-	"include": ["./scripts/**/*", "jest.config.ts"]
+	"include": ["./scripts/**/*", "package.json"],
+	"exclude": ["src"]
 }

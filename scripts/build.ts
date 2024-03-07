@@ -1,28 +1,18 @@
-/* eslint-disable security/detect-non-literal-regexp */
-
-/* eslint-disable security/detect-child-process */
-
-/* eslint-disable security/detect-non-literal-fs-filename */
+/* eslint-disable security/detect-non-literal-fs-filename security/detect-child-process */
 import { exec } from 'child_process'
-import { existsSync, lstatSync, readdir, rmSync } from 'fs'
+import { existsSync } from 'fs'
 import { appendFile, copyFile, writeFile } from 'fs/promises'
 import { resolve } from 'node:path'
 
-import jestConfig from '../jest.config'
-// eslint-disable-next-line import/extensions
 import packageJson from '../package.json'
-
-const { testRegex } = jestConfig
 
 const env = process.argv[2]
 
 const base = './build/'
 
-const outDir = resolve(base, 'src')
-
 const cleanCommand = 'npm run clean'
-const buildCommand = `cross-env NODE_ENV=${env} npx tsc --outDir ${outDir}`
-const buildTscAliasCommand = `cross-env NODE_ENV=${env} npx tsc-alias -p tsconfig.json --outDir ${outDir}`
+const buildCommand = `cross-env NODE_ENV=${env} npx tsc --outDir ${base}`
+const buildTscAliasCommand = `cross-env NODE_ENV=${env} npx tsc-alias -p tsconfig.json --outDir ${base}`
 
 interface IPackageJson {
 	name: string
@@ -48,36 +38,6 @@ const execPromise = (command: string) =>
 			resolvePromise(stdout)
 		})
 	})
-
-const removeTestRecurive = (root: string) => {
-	readdir(root, (error, files) => {
-		if (error) throw error
-
-		files.forEach(file => {
-			const path = resolve(root, file)
-
-			const lstat = lstatSync(path)
-
-			const isDir = lstat.isDirectory()
-
-			if (Array.isArray(testRegex)) {
-				testRegex.forEach(regex => {
-					if (new RegExp(regex).test(path)) {
-						rmSync(path, { force: true, recursive: true })
-					}
-				})
-			} else if (new RegExp(testRegex as string).test(path)) {
-				rmSync(path, { force: true, recursive: true })
-
-				return
-			}
-
-			if (isDir) {
-				removeTestRecurive(path)
-			}
-		})
-	})
-}
 
 const copyEnv = async () => {
 	let path = ''
@@ -105,8 +65,6 @@ const main = async () => {
 	writeFile(resolve(base, 'package.json'), JSON.stringify(newPackageJson))
 
 	copyEnv()
-
-	removeTestRecurive(base)
 }
 
 main()

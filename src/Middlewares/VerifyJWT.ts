@@ -1,10 +1,10 @@
 import { NextFunction, Request, Response } from 'express'
 
-import { IUserJWTPayload } from 'Types/Http.js'
+import { IUserJWTPayload } from 'Types/Http'
 import jwt from 'jsonwebtoken'
 
-import Logger from 'Utils/Logger/Logger.js'
-import JWTVerify from 'Utils/Promises/JWTVerify.js'
+import Logger from 'Utils/Logger/Logger'
+import JWTVerify from 'Utils/Promises/JWTVerify'
 
 const VerifyJWT = async (req: Request, res: Response, next: NextFunction) => {
 	const tokenHeader = req.get('Access-Token')

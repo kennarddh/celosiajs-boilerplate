@@ -1,6 +1,6 @@
 import { body } from 'express-validator'
 
-import CheckValidationError from 'Middlewares/CheckValidationError.js'
+import CheckValidationError from 'Middlewares/CheckValidationError'
 
 const Login = () => {
 	const validator = [

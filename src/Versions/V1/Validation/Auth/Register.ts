@@ -1,10 +1,10 @@
 import { body } from 'express-validator'
 
-import Logger from 'Utils/Logger/Logger.js'
+import Logger from 'Utils/Logger/Logger'
 
-import CheckValidationError from 'Middlewares/CheckValidationError.js'
+import CheckValidationError from 'Middlewares/CheckValidationError'
 
-import prisma from 'Database/index.js'
+import prisma from 'Database/index'
 
 const Register = () => {
 	const validator = [

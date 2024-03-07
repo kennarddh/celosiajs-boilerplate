@@ -42,12 +42,6 @@ In the project directory, you can run:
 npm start
 ```
 
-### Load Test
-
-```bash
-npm run loadtest
-```
-
 ### Build Production
 
 build the project for production.
@@ -88,14 +82,6 @@ Removes all logs.
 npm run clean:logs
 ```
 
-### Clean Coverage
-
-Removes jest coverage result.
-
-```bash
-npm run clean:coverage
-```
-
 ### Lint Check
 
 Finds lint errors in your code.
@@ -126,44 +112,4 @@ Check the code formatting.
 
 ```bash
 npm run prettier:check
-```
-
-### Test
-
-Run all tests
-
-```bash
-npm run test
-```
-
-### Watch test
-
-Watch changed test
-
-```bash
-npm run test:watch
-```
-
-### Watch all test
-
-Watch all test
-
-```bash
-npm run test:watch:all
-```
-
-### Test coverage
-
-Run test coverage
-
-```bash
-npm run test:coverage
-```
-
-### Test changed
-
-Run tests related to changed files based on git (uncommitted files)
-
-```bash
-npm run test:changed
 ```

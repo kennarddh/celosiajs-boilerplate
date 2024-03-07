@@ -1,8 +1,8 @@
 import { PrismaClient } from '@prisma/client'
 import { PrismaClientInitializationError } from '@prisma/client/runtime/library'
 
-import Logger from 'Utils/Logger/Logger.js'
-import OnShutdown from 'Utils/OnShutdown/OnShutdown.js'
+import Logger from 'Utils/Logger/Logger'
+import OnShutdown from 'Utils/OnShutdown/OnShutdown'
 
 const prisma = new PrismaClient()
 

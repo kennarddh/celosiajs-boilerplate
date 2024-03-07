@@ -2,9 +2,9 @@ import { Request, Response } from 'express'
 
 import argon2 from 'argon2'
 
-import Logger from 'Utils/Logger/Logger.js'
+import Logger from 'Utils/Logger/Logger'
 
-import prisma from 'Database/index.js'
+import prisma from 'Database/index'
 
 interface IBody {
 	username: string

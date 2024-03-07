@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from 'express'
 
 import { validationResult } from 'express-validator'
 
-import Logger from 'Utils/Logger/Logger.js'
+import Logger from 'Utils/Logger/Logger'
 
 const CheckValidationErrorFactory = () => {
 	const CheckValidationError = (

@@ -1,8 +1,8 @@
 import { Request, Response } from 'express'
 
-import Logger from 'Utils/Logger/Logger.js'
+import Logger from 'Utils/Logger/Logger'
 
-import prisma from 'Database/index.js'
+import prisma from 'Database/index'
 
 const GetUserData = async (req: Request, res: Response) => {
 	const id = req.user?.id

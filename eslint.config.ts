@@ -2,7 +2,6 @@ import js from '@eslint/js'
 import type { FlatConfig } from '@typescript-eslint/utils/ts-eslint'
 import airbnbBase from 'eslint-config-airbnb-base'
 import importPlugin from 'eslint-plugin-import'
-import jest from 'eslint-plugin-jest'
 import json from 'eslint-plugin-json'
 import prettier from 'eslint-plugin-prettier'
 import security from 'eslint-plugin-security'
@@ -21,7 +20,6 @@ export default tsEslint.config(
 			'./src/**/*.{ts,tsx,json}',
 			'./eslint.config.ts',
 			'./scripts/**/*',
-			'./jest.config.ts',
 		],
 		languageOptions: {
 			parser: tsEslint.parser as FlatConfig.Parser,
@@ -30,13 +28,9 @@ export default tsEslint.config(
 				project: './tsconfig.json',
 				tsconfigRootDir: __dirname,
 			},
-			globals: {
-				...globals.node,
-				...globals.jest,
-			},
+			globals: { ...globals.node },
 		},
 		plugins: {
-			jest,
 			security,
 			prettier,
 			json,
@@ -59,7 +53,6 @@ export default tsEslint.config(
 			...prettier.configs['recommended'].rules,
 			...importPlugin.configs['recommended'].rules,
 			...importPlugin.configs['typescript'].rules,
-			...jest.configs['recommended'].rules,
 			...airbnbBase.rules,
 			...(airbnbBase.extends as string[])
 				.map(extend => require(extend).rules)
@@ -107,24 +100,11 @@ export default tsEslint.config(
 		},
 	},
 	{
-		files: ['./scripts/**/*', './jest.config.ts'],
+		files: ['./scripts/**/*'],
 		languageOptions: {
 			parserOptions: {
 				project: './tsconfig.dev.json',
 			},
-		},
-		rules: {
-			'import/no-extraneous-dependencies': [
-				'error',
-				{
-					devDependencies: [
-						'**/*.test.ts',
-						'**/*.spec.ts',
-						'**/__tests__/**/*.ts',
-						'./scripts/**/*.ts',
-					],
-				},
-			],
 		},
 	},
 )

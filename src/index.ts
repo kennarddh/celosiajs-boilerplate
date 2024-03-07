@@ -1,8 +1,8 @@
-import App from 'App.js'
+import App from 'App'
 import 'dotenv/config'
 
-import Logger from 'Utils/Logger/Logger.js'
-import OnShutdown from 'Utils/OnShutdown/OnShutdown.js'
+import Logger from 'Utils/Logger/Logger'
+import OnShutdown from 'Utils/OnShutdown/OnShutdown'
 
 export const Port = parseInt(process.env.PORT || '8080', 10)
 
