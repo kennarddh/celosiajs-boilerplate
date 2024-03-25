@@ -1,22 +1,29 @@
 import express from 'express'
 
+import Router from 'Controllers/Router'
+
 import VerifyJWT from 'Middlewares/VerifyJWT'
 
 import {
 	GetUserData,
 	Login,
-	Register,
 	RefreshToken,
+	Register,
 } from 'Versions/V1/Controllers/Auth/index'
 
 import LoginValidation from 'Versions/V1/Validation/Auth/Login'
 import RegisterValidation from 'Versions/V1/Validation/Auth/Register'
+import { IControllerRequest } from 'Controllers/BaseController'
 
-const Router = express.Router()
+// const Router = express.Router()
 
-Router.post('/register', RegisterValidation(), Register)
-Router.post('/login', LoginValidation(), Login)
-Router.get('/user', VerifyJWT, GetUserData)
-Router.post('/refresh-token', RefreshToken)
+const AuthRouter = new Router()
+
+// Router.post('/register', RegisterValidation(), Register)
+// Router.post('/login', LoginValidation(), Login)
+AuthRouter.get('/user', [new VerifyJWT()], new GetUserData())
+// Router.post('/refresh-token', RefreshToken)
+
+type x = IControllerRequest<GetUserData>
 
 export default Router
