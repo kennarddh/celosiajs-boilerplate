@@ -1,4 +1,4 @@
-import BaseController, { IControllerRequest, IControllerResponse } from 'Controllers/BaseController'
+import BaseController, { IControllerRequest, IControllerResponse } from 'Internals/BaseController'
 import { z } from 'zod'
 
 import Logger from 'Utils/Logger/Logger'
@@ -9,7 +9,7 @@ import prisma from 'Database/index'
 
 class GetUserData extends BaseController {
 	public override get body() {
-		return z.object({ a: z.string() })
+		return z.object({ data: z.string() })
 	}
 
 	public async index(

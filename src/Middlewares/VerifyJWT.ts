@@ -1,10 +1,7 @@
 import { Request } from 'express'
 
-import {
-	IControllerResponse,
-	IRequest,
-} from 'Controllers/BaseController'
-import BaseMiddleware from 'Controllers/BaseMiddleware'
+import { IControllerResponse, IRequest } from 'Internals/BaseController'
+import BaseMiddleware from 'Internals/BaseMiddleware'
 import { IUserJWTPayload } from 'Types/Http'
 import jwt from 'jsonwebtoken'
 
@@ -17,74 +14,50 @@ export interface JWTVerified {
 	}
 }
 
-class VerifyJWT extends BaseMiddleware {
+type EmptyObject = Record<PropertyKey, never>
+
+class VerifyJWT extends BaseMiddleware<
+	IRequest<{
+		data: string
+	}>,
+	EmptyObject,
+	JWTVerified
+> {
 	public override async index(
-		data: {},
+		data: EmptyObject,
 		request: IRequest<{
 			data: string
 		}>,
 		response: IControllerResponse,
-	): Promise<JWTVerified> {
-		const tokenHeader =
-			request.get(
-				'Access-Token',
-			)
+	) {
+		const tokenHeader = request.get('Access-Token')
 
-		if (
-			!tokenHeader
-		) {
-			response
-				.status(
-					401,
-				)
-				.json(
-					{
-						errors: {
-							others: [
-								'No token provided',
-							],
-						},
-						data: {},
-					},
-				)
+		if (!tokenHeader) {
+			response.status(401).json({
+				errors: {
+					others: ['No token provided'],
+				},
+				data: {},
+			})
 
 			throw new Error()
 		}
 
-		const token =
-			tokenHeader?.split(
-				' ',
-			)[1]
+		const token = tokenHeader?.split(' ')[1]
 
-		if (
-			!token
-		) {
-			response
-				.status(
-					401,
-				)
-				.json(
-					{
-						errors: {
-							others: [
-								'Invalid token',
-							],
-						},
-						data: {},
-					},
-				)
+		if (!token) {
+			response.status(401).json({
+				errors: {
+					others: ['Invalid token'],
+				},
+				data: {},
+			})
 
 			throw new Error()
 		}
 
 		try {
-			const user =
-				await JWTVerify<IUserJWTPayload>(
-					token,
-					process
-						.env
-						.JWT_SECRET,
-				)
+			const user = await JWTVerify<IUserJWTPayload>(token, process.env.JWT_SECRET)
 
 			return {
 				user: {
@@ -92,72 +65,37 @@ class VerifyJWT extends BaseMiddleware {
 				},
 			}
 		} catch (error) {
-			if (
-				error instanceof
-				jwt.TokenExpiredError
-			) {
-				response
-					.status(
-						401,
-					)
-					.json(
-						{
-							errors: {
-								others: [
-									'Expired token',
-								],
-							},
-							data: {},
-						},
-					)
-
-				throw new Error()
-			}
-
-			if (
-				error instanceof
-					jwt.JsonWebTokenError &&
-				error.message ===
-					'invalid signature'
-			) {
-				response
-					.status(
-						401,
-					)
-					.json(
-						{
-							errors: [
-								'Invalid token',
-							],
-							data: {},
-						},
-					)
-
-				throw new Error()
-			}
-
-			Logger.error(
-				'Unknown error while verifying JWT',
-				{
-					error,
-					token,
-				},
-			)
-
-			response
-				.status(
-					500,
-				)
-				.json(
-					{
-						errors: {
-							others: [
-								'Internal server error',
-							],
-						},
-						data: {},
+			if (error instanceof jwt.TokenExpiredError) {
+				response.status(401).json({
+					errors: {
+						others: ['Expired token'],
 					},
-				)
+					data: {},
+				})
+
+				throw new Error()
+			}
+
+			if (error instanceof jwt.JsonWebTokenError && error.message === 'invalid signature') {
+				response.status(401).json({
+					errors: ['Invalid token'],
+					data: {},
+				})
+
+				throw new Error()
+			}
+
+			Logger.error('Unknown error while verifying JWT', {
+				error,
+				token,
+			})
+
+			response.status(500).json({
+				errors: {
+					others: ['Internal server error'],
+				},
+				data: {},
+			})
 
 			throw new Error()
 		}

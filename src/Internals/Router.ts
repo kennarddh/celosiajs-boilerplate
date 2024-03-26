@@ -1,8 +1,6 @@
 import express, { Request, Response } from 'express'
 
-import VerifyJWT, { JWTVerified } from 'Middlewares/VerifyJWT'
-
-import BaseController, { IControllerRequest } from './BaseController'
+import BaseController, { IControllerRequest, IRequest } from './BaseController'
 import BaseMiddleware from './BaseMiddleware'
 
 type MiddlewareArray = BaseMiddleware<any, any>[]
@@ -26,14 +24,17 @@ type ValidateMiddlewares<
 			>
 		: Results
 
-type MergeMiddlewaresOutput<T extends MiddlewareArray, Input extends Record<string, any> = {}> = T extends [
-	BaseMiddleware<any, any, infer Output>,
-	...infer Tail extends MiddlewareArray,
-]
+type MergeMiddlewaresOutput<
+	T extends MiddlewareArray,
+	Input extends Record<string, any> = {},
+> = T extends [BaseMiddleware<any, any, infer Output>, ...infer Tail extends MiddlewareArray]
 	? MergeMiddlewaresOutput<Tail, Output & Input>
 	: Input
 
-type ValidateController<Controller extends BaseController<any>, Middlewares extends MiddlewareArray | []> =
+type ValidateController<
+	Controller extends BaseController<any>,
+	Middlewares extends MiddlewareArray | [],
+> =
 	Controller extends BaseController<infer Data>
 		? MergeMiddlewaresOutput<Middlewares> extends Data
 			? Controller
@@ -87,22 +88,31 @@ class Router {
 				errors.parsing.cookies = parsedCookies.error.format()
 			}
 
-			if (!(parsedBody.success && parsedQuery.success && parsedParams.success && parsedCookies.success))
+			if (
+				!(
+					parsedBody.success &&
+					parsedQuery.success &&
+					parsedParams.success &&
+					parsedCookies.success
+				)
+			)
 				return response.status(400).json({
 					data: {},
 					errors,
 				})
 
-			request.body = parsedBody.data
-			request.query = parsedQuery.data
-			request.params = parsedParams.data
-			request.cookies = parsedCookies.data
+			const newRequest: IRequest = {
+				body: parsedBody.data,
+				query: parsedQuery.data,
+				params: parsedParams.data,
+				cookies: parsedCookies.data,
+			}
 
 			let data = {}
 
 			for (const middleware of middlewares) {
 				try {
-					data = await middleware.index(data, request, response)
+					data = await middleware.index(data, newRequest, response)
 				} catch {
 					if (!response.writableEnded) {
 						response.status(500).json({
@@ -117,7 +127,7 @@ class Router {
 				}
 			}
 
-			controller.index(data, request, response)
+			controller.index(data, newRequest, response)
 
 			return
 		}

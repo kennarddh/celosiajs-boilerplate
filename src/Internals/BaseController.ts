@@ -3,19 +3,19 @@ import { Request, Response } from 'express'
 import { JSON } from 'Types/JSON'
 import { z } from 'zod'
 
-export type IControllerRequest<Controller extends BaseController> = IRequest<
+export type IControllerRequest<Controller extends BaseController<any>> = IRequest<
 	z.infer<Controller['body']>,
 	z.infer<Controller['query']>,
 	z.infer<Controller['params']>,
 	z.infer<Controller['cookies']>
 >
 
-export type IRequest<
+export interface IRequest<
 	Body extends Record<string, any> = {},
 	Query extends Record<string, any> = {},
 	Params extends Record<string, any> = {},
 	Cookies extends Record<string, any> = {},
-> = Omit<Request<unknown, JSON>, 'body' | 'query' | 'params' | 'cookies'> & {
+> {
 	body: Body
 	query: Query
 	params: Params
@@ -29,7 +29,7 @@ const emptyZodObject = z.object({})
 abstract class BaseController<T extends Record<string, any> = {}> {
 	public abstract index(
 		data: T,
-		request: IControllerRequest<typeof this>,
+		request: IControllerRequest<any>,
 		response: IControllerResponse,
 	): void
 
