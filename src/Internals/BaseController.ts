@@ -11,15 +11,15 @@ export type IControllerRequest<Controller extends BaseController<any>> = IReques
 >
 
 export interface IRequest<
-	Body extends Record<string, any> = {},
-	Query extends Record<string, any> = {},
-	Params extends Record<string, any> = {},
-	Cookies extends Record<string, any> = {},
+	Body extends Record<string, any> = Record<PropertyKey, never>,
+	Query extends Record<string, any> = Record<PropertyKey, never>,
+	Params extends Record<string, any> = Record<PropertyKey, never>,
+	Cookies extends Record<string, any> = Record<PropertyKey, never>,
 > {
-	body: Body
-	query: Query
-	params: Params
-	cookies: Cookies
+	body: {} extends Body ? Record<PropertyKey, never> : Body
+	query: {} extends Query ? Record<PropertyKey, never> : Query
+	params: {} extends Params ? Record<PropertyKey, never> : Params
+	cookies: {} extends Cookies ? Record<PropertyKey, never> : Cookies
 }
 
 export type IControllerResponse = Response<JSON>

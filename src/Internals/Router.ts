@@ -3,7 +3,7 @@ import express, { Request, Response } from 'express'
 import BaseController, { IControllerRequest, IRequest } from './BaseController'
 import BaseMiddleware from './BaseMiddleware'
 
-type MiddlewareArray = BaseMiddleware<any, any>[]
+type MiddlewareArray = BaseMiddleware<any, any, any>[]
 
 type ValidateMiddlewares<
 	Controller extends BaseController<any>,
@@ -15,7 +15,10 @@ type ValidateMiddlewares<
 	...infer Tail extends MiddlewareArray,
 ]
 	? ValidateMiddlewares<Controller, Tail, Input & Output, [...Results, T[0]]>
-	: T extends [BaseMiddleware<any, any, infer Output>, ...infer Tail extends MiddlewareArray]
+	: T extends [
+				BaseMiddleware<IRequest<any, any, any, any>, any, infer Output>,
+				...infer Tail extends MiddlewareArray,
+		  ]
 		? ValidateMiddlewares<
 				Controller,
 				Tail,
@@ -44,7 +47,7 @@ type ValidateController<
 class Router {
 	private router = express.Router()
 
-	get<Controller extends BaseController<any>, Middlewares extends BaseMiddleware[]>(
+	get<Controller extends BaseController<any>, Middlewares extends MiddlewareArray>(
 		path: string,
 		middlewares: Middlewares & ValidateMiddlewares<Controller, Middlewares>,
 		controller: Controller & ValidateController<Controller, Middlewares>,
