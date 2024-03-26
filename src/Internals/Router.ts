@@ -1,48 +1,8 @@
 import express, { Request, Response } from 'express'
 
-import BaseController, { IControllerRequest, IRequest } from './BaseController'
+import BaseController from './BaseController'
 import BaseMiddleware from './BaseMiddleware'
-
-type MiddlewareArray = BaseMiddleware<any, any, any>[]
-
-type ValidateMiddlewares<
-	Controller extends BaseController<any>,
-	T extends MiddlewareArray,
-	Input extends Record<string, any> = Record<string, never>,
-	Results extends any[] = [],
-> = T extends [
-	BaseMiddleware<IControllerRequest<Controller>, Input, infer Output>,
-	...infer Tail extends MiddlewareArray,
-]
-	? ValidateMiddlewares<Controller, Tail, Input & Output, [...Results, T[0]]>
-	: T extends [
-				BaseMiddleware<IRequest<any, any, any, any>, any, infer Output>,
-				...infer Tail extends MiddlewareArray,
-		  ]
-		? ValidateMiddlewares<
-				Controller,
-				Tail,
-				Input,
-				[...Results, BaseMiddleware<IControllerRequest<Controller>, Input, Output>]
-			>
-		: Results
-
-type MergeMiddlewaresOutput<
-	T extends MiddlewareArray,
-	Input extends Record<string, any> = {},
-> = T extends [BaseMiddleware<any, any, infer Output>, ...infer Tail extends MiddlewareArray]
-	? MergeMiddlewaresOutput<Tail, Output & Input>
-	: Input
-
-type ValidateController<
-	Controller extends BaseController<any>,
-	Middlewares extends MiddlewareArray | [],
-> =
-	Controller extends BaseController<infer Data>
-		? MergeMiddlewaresOutput<Middlewares> extends Data
-			? Controller
-			: never
-		: never
+import { IRequest, MiddlewareArray, ValidateController, ValidateMiddlewares } from './Types'
 
 class Router {
 	private router = express.Router()

@@ -1,5 +1,5 @@
-import BaseController, { IControllerRequest, IControllerResponse } from 'Internals/BaseController'
-import { z } from 'zod'
+import BaseController from 'Internals/BaseController'
+import { IControllerRequest, IControllerResponse } from 'Internals/Types'
 
 import Logger from 'Utils/Logger/Logger'
 
@@ -8,10 +8,6 @@ import { JWTVerified } from 'Middlewares/VerifyJWT'
 import prisma from 'Database/index'
 
 class GetUserData extends BaseController {
-	public override get body() {
-		return z.object({ data: z.string() })
-	}
-
 	public async index(
 		data: JWTVerified,
 		request: IControllerRequest<typeof this>,
