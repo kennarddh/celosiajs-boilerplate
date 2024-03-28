@@ -48,16 +48,9 @@ const Login = async (req: Request, res: Response) => {
 				})
 
 				try {
-					const refreshToken = await JWTSign(
-						payload,
-						process.env.REFRESH_JWT_SECRET,
-						{
-							expiresIn: parseInt(
-								process.env.REFRESH_JWT_EXPIRE,
-								10,
-							),
-						},
-					)
+					const refreshToken = await JWTSign(payload, process.env.REFRESH_JWT_SECRET, {
+						expiresIn: parseInt(process.env.REFRESH_JWT_EXPIRE, 10),
+					})
 
 					res.cookie('refreshToken', refreshToken, {
 						secure: process.env.NODE_ENV === 'production',
@@ -72,13 +65,10 @@ const Login = async (req: Request, res: Response) => {
 						},
 					})
 				} catch (error) {
-					Logger.error(
-						'Login controller failed to sign refresh token JWT',
-						{
-							username,
-							error,
-						},
-					)
+					Logger.error('Login controller failed to sign refresh token JWT', {
+						username,
+						error,
+					})
 
 					return res.status(500).json({
 						errors: ['Internal server error'],

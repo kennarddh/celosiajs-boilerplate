@@ -1,4 +1,5 @@
 import BaseMiddleware from 'Internals/BaseMiddleware'
+import Request from 'Internals/Providers/Base/Request'
 import { EmptyObject, IControllerResponse, IRequest } from 'Internals/Types'
 import { IUserJWTPayload } from 'Types/Http'
 import jwt from 'jsonwebtoken'
@@ -12,18 +13,29 @@ export interface JWTVerified {
 	}
 }
 
-class VerifyJWT extends BaseMiddleware<IRequest, EmptyObject, JWTVerified> {
+class VerifyJWT extends BaseMiddleware<Request, EmptyObject, JWTVerified> {
 	public override async index(
 		data: EmptyObject,
-		request: IRequest,
+		request: Request,
 		response: IControllerResponse,
 	) {
-		const tokenHeader = request.get('Access-Token')
+		const tokenHeader = request.header('Access-Token')
 
 		if (!tokenHeader) {
 			response.status(401).json({
 				errors: {
 					others: ['No token provided'],
+				},
+				data: {},
+			})
+
+			throw new Error()
+		}
+
+		if (Array.isArray(tokenHeader)) {
+			response.status(401).json({
+				errors: {
+					others: ['Token must not be an arrray'],
 				},
 				data: {},
 			})

@@ -1,15 +1,16 @@
-import { IControllerResponse, IRequest } from './BaseController'
+import Request from "./Providers/Base/Request"
+import { IControllerResponse } from "./Types"
 
 type EmptyObject = Record<string, never>
 
 abstract class BaseMiddleware<
-	Request extends IRequest<any, any, any, any> = IRequest,
+	Req extends Request<any, any, any, any> = Request,
 	Input extends Record<string, any> = EmptyObject,
 	Output extends Record<string, any> = EmptyObject,
 > {
 	public abstract index(
 		data: Input,
-		request: Request,
+		request: Req,
 		response: IControllerResponse,
 	): Promise<Output>
 }
