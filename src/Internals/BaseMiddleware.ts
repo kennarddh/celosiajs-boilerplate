@@ -1,18 +1,17 @@
-import Request from "./Providers/Base/Request"
-import { IControllerResponse } from "./Types"
+import { JSON } from 'Types/JSON'
+
+import BaseRequest from './Providers/Base/BaseRequest'
+import BaseResponse from './Providers/Base/BaseResponse'
 
 type EmptyObject = Record<string, never>
 
 abstract class BaseMiddleware<
-	Req extends Request<any, any, any, any> = Request,
+	Request extends BaseRequest<any, any, any, any> = BaseRequest,
+	Response extends BaseResponse<any> = BaseResponse<JSON>,
 	Input extends Record<string, any> = EmptyObject,
 	Output extends Record<string, any> = EmptyObject,
 > {
-	public abstract index(
-		data: Input,
-		request: Req,
-		response: IControllerResponse,
-	): Promise<Output>
+	public abstract index(data: Input, request: Request, response: Response): Promise<Output>
 }
 
 export default BaseMiddleware

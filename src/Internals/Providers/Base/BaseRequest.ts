@@ -1,6 +1,13 @@
 import { IncomingHttpHeaders } from 'http'
 
-import { EmptyObject } from 'Internals/Types'
+import {
+	BodyObject,
+	CookiesObject,
+	EmptyObject,
+	HeaderValue,
+	PathParams,
+	QueryParams,
+} from 'Internals/Types'
 import RangeParser from 'range-parser'
 import { TypedEmitter } from 'tiny-typed-emitter'
 
@@ -15,10 +22,10 @@ export interface ResponseEvents {
 }
 
 abstract class Request<
-	Body extends Record<string, any> = EmptyObject,
-	Query extends Record<string, any> = EmptyObject,
-	Params extends Record<string, any> = EmptyObject,
-	Cookies extends Record<string, any> = EmptyObject,
+	Body extends BodyObject = EmptyObject,
+	Query extends QueryParams = EmptyObject,
+	Params extends PathParams = EmptyObject,
+	Cookies extends CookiesObject = EmptyObject,
 > extends TypedEmitter<ResponseEvents> {
 	public abstract get body(): {} extends Body ? EmptyObject : Body
 	public abstract get query(): {} extends Query ? EmptyObject : Query
@@ -44,8 +51,7 @@ abstract class Request<
 	 *     req.header('Something');
 	 *     // => undefined
 	 */
-	public abstract header(name: string): string | string[] | undefined
-	public abstract header(name: string, value: string | string[] | undefined): this
+	public abstract header(name: string): HeaderValue | undefined
 
 	/**
 	 * Check if the given `type(s)` is acceptable, returning
@@ -85,8 +91,6 @@ abstract class Request<
 	 *     // => "json"
 	 */
 	public abstract accepts(): string[]
-	public abstract accepts(type: string): string | false
-	public abstract accepts(type: string[]): string | false
 	public abstract accepts(...type: string[]): string | false
 
 	/**
@@ -97,8 +101,6 @@ abstract class Request<
 	 * For more information, or if you have issues or concerns, see accepts.
 	 */
 	public abstract acceptsCharsets(): string[]
-	public abstract acceptsCharsets(charset: string): string | false
-	public abstract acceptsCharsets(charset: string[]): string | false
 	public abstract acceptsCharsets(...charset: string[]): string | false
 
 	/**
@@ -109,8 +111,6 @@ abstract class Request<
 	 * For more information, or if you have issues or concerns, see accepts.
 	 */
 	public abstract acceptsEncodings(): string[]
-	public abstract acceptsEncodings(encoding: string): string | false
-	public abstract acceptsEncodings(encoding: string[]): string | false
 	public abstract acceptsEncodings(...encoding: string[]): string | false
 
 	/**
@@ -121,8 +121,6 @@ abstract class Request<
 	 * For more information, or if you have issues or concerns, see accepts.
 	 */
 	public abstract acceptsLanguages(): string[]
-	public abstract acceptsLanguages(lang: string): string | false
-	public abstract acceptsLanguages(lang: string[]): string | false
 	public abstract acceptsLanguages(...lang: string[]): string | false
 
 	/**
@@ -201,13 +199,6 @@ abstract class Request<
 	 * still match.
 	 */
 	public abstract get fresh(): boolean
-
-	/**
-	 * Check if the request is stale, aka
-	 * "Last-Modified" and / or the "ETag" for the
-	 * resource has changed.
-	 */
-	public abstract get stale(): boolean
 
 	/**
 	 * Check if the request was an "XMLHttpRequest".

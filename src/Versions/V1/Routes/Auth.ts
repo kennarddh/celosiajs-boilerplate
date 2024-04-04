@@ -1,4 +1,4 @@
-import Router from 'Internals/Router'
+import Router from 'Internals/Providers/Base/BaseRouter'
 
 import VerifyJWT from 'Middlewares/VerifyJWT'
 

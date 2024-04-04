@@ -1,5 +1,5 @@
 import BaseMiddleware from 'Internals/BaseMiddleware'
-import Request from 'Internals/Providers/Base/Request'
+import Request from 'Internals/Providers/Base/BaseRequest'
 import { EmptyObject, IControllerResponse, IRequest } from 'Internals/Types'
 import { IUserJWTPayload } from 'Types/Http'
 import jwt from 'jsonwebtoken'

@@ -14,7 +14,7 @@ export interface ResponseEvents {
 	unpipe: (src: Readable) => void
 }
 
-abstract class Response<Body = JSON> extends TypedEmitter<ResponseEvents> {
+abstract class BaseResponse<Body = JSON> extends TypedEmitter<ResponseEvents> {
 	/**
 	 * Set status `code`.
 	 */
@@ -31,7 +31,7 @@ abstract class Response<Body = JSON> extends TypedEmitter<ResponseEvents> {
 	 *    res.sendStatus(404); // equivalent to res.status(404).send('Not Found')
 	 *    res.sendStatus(500); // equivalent to res.status(500).send('Internal Server Error')
 	 */
-	public abstract sendStatus(statusCode?: number): this
+	public abstract sendStatus(statusCode: number): this
 
 	/**
 	 * Send a response.
@@ -43,7 +43,7 @@ abstract class Response<Body = JSON> extends TypedEmitter<ResponseEvents> {
 	 *     res.send('<p>some html</p>');
 	 *     res.status(404).send('Sorry, cant find that');
 	 */
-	public abstract send(json: Body): this
+	public abstract send(body: Body): this
 
 	/**
 	 * Send JSON response.
@@ -149,8 +149,8 @@ abstract class Response<Body = JSON> extends TypedEmitter<ResponseEvents> {
 	 *    res.header('Accept', 'application/json');
 	 *    res.header({ Accept: 'text/plain', 'X-API-Key': 'tobi' });
 	 */
-	public abstract header(name: string): string | string[] | undefined
-	public abstract header(name: string, value: string | string[] | undefined): this
+	public abstract header(name: string): number | string | string[] | undefined
+	public abstract header(name: string, value: number | string | string[] | undefined): this
 	public abstract header(headers: Headers): this
 	public abstract get headers(): OutgoingHttpHeaders
 
@@ -179,7 +179,6 @@ abstract class Response<Body = JSON> extends TypedEmitter<ResponseEvents> {
 	 *    // save as above
 	 *    res.cookie('rememberme', '1', { maxAge: 900000, httpOnly: true })
 	 */
-	public abstract cookie(name: string, value: string, options: CookieOptions): this
 	public abstract cookie(name: string, value: string, options: CookieOptions): this
 	public abstract cookie(name: string, value: string): this
 
@@ -228,8 +227,8 @@ abstract class Response<Body = JSON> extends TypedEmitter<ResponseEvents> {
 	 *    res.redirect('http://example.com', 301);
 	 *    res.redirect('../login'); // /blog/post/1 -> /blog/login
 	 */
-	public abstract redirect(url: string): void
-	public abstract redirect(status: number, url: string): void
+	public abstract redirect(url: string): this
+	public abstract redirect(status: number, url: string): this
 }
 
-export default Response
+export default BaseResponse

@@ -1,11 +1,10 @@
-import { Response } from 'express'
-
 import { JSON } from 'Types/JSON'
 import { z } from 'zod'
 
 import BaseController from './BaseController'
 import BaseMiddleware from './BaseMiddleware'
-import Request from './Providers/Base/Request'
+import BaseRequest from './Providers/Base/BaseRequest'
+import BaseResponse from './Providers/Base/BaseResponse'
 
 export type EmptyObject = Record<PropertyKey, never>
 export const EmptyObject = {} as EmptyObject
@@ -18,19 +17,27 @@ export type ValidateMiddlewares<
 	Input extends Record<string, any> = Record<string, never>,
 	Results extends any[] = [],
 > = T extends [
-	BaseMiddleware<IControllerRequest<Controller>, Input, infer Output>,
+	BaseMiddleware<IControllerRequest<Controller>, BaseResponse<any>, Input, infer Output>,
 	...infer Tail extends MiddlewareArray,
 ]
 	? ValidateMiddlewares<Controller, Tail, Input & Output, [...Results, T[0]]>
 	: T extends [
-				BaseMiddleware<Request<any, any, any, any>, any, infer Output>,
+				BaseMiddleware<BaseRequest<any, any, any, any>, any, infer Output>,
 				...infer Tail extends MiddlewareArray,
 		  ]
 		? ValidateMiddlewares<
 				Controller,
 				Tail,
 				Input,
-				[...Results, BaseMiddleware<IControllerRequest<Controller>, Input, Output>]
+				[
+					...Results,
+					BaseMiddleware<
+						IControllerRequest<Controller>,
+						BaseResponse<any>,
+						Input,
+						Output
+					>,
+				]
 			>
 		: Results
 
@@ -51,26 +58,12 @@ export type ValidateController<
 			: never
 		: never
 
-export type IControllerRequest<Controller extends BaseController<any>> = Request<
+export type IControllerRequest<Controller extends BaseController<any>> = BaseRequest<
 	z.infer<Controller['body']>,
 	z.infer<Controller['query']>,
 	z.infer<Controller['params']>,
 	z.infer<Controller['cookies']>
 >
-
-export interface IRequest<
-	Body extends Record<string, any> = Record<PropertyKey, never>,
-	Query extends Record<string, any> = Record<PropertyKey, never>,
-	Params extends Record<string, any> = Record<PropertyKey, never>,
-	Cookies extends Record<string, any> = Record<PropertyKey, never>,
-> {
-	body: {} extends Body ? Record<PropertyKey, never> : Body
-	query: {} extends Query ? Record<PropertyKey, never> : Query
-	params: {} extends Params ? Record<PropertyKey, never> : Params
-	cookies: {} extends Cookies ? Record<PropertyKey, never> : Cookies
-}
-
-export type IControllerResponse = Response<JSON>
 
 export type HeaderValue = string | string[]
 export type Headers = Record<string, HeaderValue>
@@ -191,4 +184,18 @@ export interface CookieOptions {
 	 * @link https://datatracker.ietf.org/doc/html/draft-west-cookie-priority-00#section-4.3
 	 */
 	priority?: 'low' | 'medium' | 'high'
+}
+
+export type BodyObject = JSON
+
+export interface QueryParams {
+	[key: string]: string | QueryParams | QueryParams[]
+}
+
+export interface PathParams {
+	[key: string]: string
+}
+
+export interface CookiesObject {
+	[key: string]: string
 }
