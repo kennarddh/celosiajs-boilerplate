@@ -11,7 +11,7 @@ import {
 import RangeParser from 'range-parser'
 import { TypedEmitter } from 'tiny-typed-emitter'
 
-export interface ResponseEvents {
+export interface RequestEvents {
 	close: () => void
 	data: (chunk: any) => void
 	end: () => void
@@ -21,12 +21,12 @@ export interface ResponseEvents {
 	resume: () => void
 }
 
-abstract class Request<
+abstract class BaseRequest<
 	Body extends BodyObject = EmptyObject,
 	Query extends QueryParams = EmptyObject,
 	Params extends PathParams = EmptyObject,
 	Cookies extends CookiesObject = EmptyObject,
-> extends TypedEmitter<ResponseEvents> {
+> extends TypedEmitter<RequestEvents> {
 	public abstract get body(): {} extends Body ? EmptyObject : Body
 	public abstract get query(): {} extends Query ? EmptyObject : Query
 	public abstract get params(): {} extends Params ? EmptyObject : Params
@@ -208,4 +208,4 @@ abstract class Request<
 	public abstract get method(): string
 }
 
-export default Request
+export default BaseRequest
