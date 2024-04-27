@@ -15,7 +15,7 @@ abstract class BaseInstance {
 		...args: ConstructorParameters<typeof BaseRouter>
 	) => BaseRouter
 
-	public abstract listen(options: IListenOptions): [Server, Promise<void>]
+	public abstract listen(options: IListenOptions): Promise<void>
 	public abstract close(): Promise<void>
 }
 

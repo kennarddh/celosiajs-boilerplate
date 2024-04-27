@@ -50,25 +50,18 @@ class ExpressInstance extends BaseInstance {
 		return ExpressRouter
 	}
 
-	public listen(options: IListenOptions): [Server, Promise<void>] {
+	public listen(options: IListenOptions): Promise<void> {
 		if (this._server !== null) throw new Error('Server already running')
 
-		// Hacky way to resolve promise from outside
-		let promiseResolve = () => {}
-
-		const promise = new Promise<void>(resolve => {
-			promiseResolve = resolve
+		return new Promise(resolve => {
+			// https://stackoverflow.com/a/69324331/14813577
+			this._server = this._express.listen(
+				options.port ?? 0,
+				options.host ?? '127.0.0.1',
+				options.backlog ?? 511,
+				() => resolve(),
+			)
 		})
-
-		// https://stackoverflow.com/a/69324331/14813577
-		this._server = this._express.listen(
-			options.port ?? 0,
-			options.host ?? '127.0.0.1',
-			options.backlog ?? 511,
-			() => promiseResolve(),
-		)
-
-		return [this._server, promise]
 	}
 
 	public close(): Promise<void> {

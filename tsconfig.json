@@ -35,7 +35,8 @@
 			"Database/*": ["./Database/*"],
 			"Middlewares/*": ["./Middlewares/*"],
 			"Routes/*": ["./Routes/*"],
-			"Types/*": ["./Types/*"]
+			"Types/*": ["./Types/*"],
+			"Internals/*": ["./Internals/*"],
 		}
 	},
 	"references": [
