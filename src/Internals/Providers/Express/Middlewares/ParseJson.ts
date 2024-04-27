@@ -3,8 +3,8 @@ import express, { NextFunction, Request, Response } from 'express'
 const ParseJson = (req: Request, res: Response, next: NextFunction) => {
 	const errorHandler = (err: Error | null) => {
 		if (err instanceof Error) {
-			res.status(400).json({
-				errors: ['Invalid json'],
+			res.status(422).json({
+				errors: ['Invalid json body'],
 				data: {},
 			})
 
@@ -16,4 +16,5 @@ const ParseJson = (req: Request, res: Response, next: NextFunction) => {
 
 	express.json()(req, res, errorHandler)
 }
+
 export default ParseJson
