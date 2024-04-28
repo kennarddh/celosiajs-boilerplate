@@ -18,7 +18,7 @@ export interface JWTVerified {
 
 class VerifyJWT extends BaseMiddleware {
 	public override async index(
-		data: EmptyObject,
+		_: EmptyObject,
 		request: BaseRequest,
 		response: BaseResponse,
 	): Promise<JWTVerified> {
