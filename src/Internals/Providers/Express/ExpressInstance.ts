@@ -106,7 +106,7 @@ class ExpressInstance extends BaseInstance {
 	}
 
 	/**
-	 * For middlewares without any input
+	 * For middlewares without any input or output
 	 */
 	public useMiddlewares(
 		...middlewares: BaseMiddleware<
