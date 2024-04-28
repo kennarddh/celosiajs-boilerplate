@@ -38,6 +38,16 @@ class AuthController extends BaseController {
 	}
 }
 
+class NotFoundController extends BaseController {
+	public override index(
+		data: EmptyObject,
+		request: IControllerRequest<typeof this>,
+		response: BaseResponse<JSON>,
+	) {
+		response.status(404).json({ message: 'Not Found' })
+	}
+}
+
 class PostController extends BaseController {
 	public override index(
 		data: {},
@@ -79,6 +89,8 @@ Instance.useMiddlewares(new RateLimitMiddleware())
 
 rootRouter.get('/', [], new RootController())
 rootRouter.post('/', [], new PostController())
+
+rootRouter.all('*', [], new NotFoundController())
 
 const authRouter = new Instance.Router()
 
