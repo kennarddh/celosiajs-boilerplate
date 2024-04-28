@@ -28,7 +28,8 @@ abstract class BaseInstance {
 	public abstract listen(options: IListenOptions): Promise<void>
 	public abstract close(): Promise<void>
 
-	public abstract useRouters(path: string, ...routers: BaseRouter[]): this
+	public abstract useRouters(path: string, ...routers: [BaseRouter, ...BaseRouter[]]): this
+	public abstract useRouters(...routers: [BaseRouter, ...BaseRouter[]]): this
 
 	/**
 	 * For middlewares without any input or output

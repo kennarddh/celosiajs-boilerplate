@@ -99,9 +99,21 @@ class ExpressInstance extends BaseInstance {
 		})
 	}
 
-	public useRouters(path: string, ...routers: ExpressRouter[]): this {
+	public useRouters(path: string, ...routers: [ExpressRouter, ...ExpressRouter[]]): this
+	public useRouters(...routers: [ExpressRouter, ...ExpressRouter[]]): this
+	public useRouters(
+		...routersAndPath: [string | ExpressRouter, ...(string | ExpressRouter)[]]
+	): this {
+		const possiblyPath = routersAndPath[0]
+		const path = typeof possiblyPath === 'string' ? possiblyPath : null
+
+		const routers = (
+			path === null ? routersAndPath : routersAndPath.filter((_, index) => index !== 0)
+		) as ExpressRouter[]
+
 		routers.forEach(router => {
-			this._express.use(path, router.expressRouter)
+			if (path === null) this.express.use(router.expressRouter)
+			else this.express.use(path, router.expressRouter)
 		})
 
 		return this

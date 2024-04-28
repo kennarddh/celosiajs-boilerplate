@@ -88,7 +88,7 @@ authRouter.get('/', [new Auth2Middleware()], new AuthController())
 
 rootRouter.useRouters('/auth', authRouter)
 
-Instance.useRouters('/', rootRouter)
+Instance.useRouters(rootRouter)
 
 Instance.addErrorHandler()
 
