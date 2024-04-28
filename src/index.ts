@@ -58,7 +58,7 @@ Instance.useMiddlewares(new RateLimitMiddleware())
 rootRouter.get('/', [], new RootController())
 rootRouter.post('/', [], new PostController())
 
-Instance.useRouter(rootRouter)
+Instance.useRouters(rootRouter)
 
 Instance.addErrorHandler()
 

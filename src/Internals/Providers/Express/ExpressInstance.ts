@@ -61,7 +61,7 @@ class ExpressInstance extends BaseInstance {
 
 	/**
 	 * Must be called last after all router is registered
-	 * 
+	 *
 	 * Doesn't work until Express 5 because Express 4.x won't catch uncaught exception in promise.
 	 */
 	public addErrorHandler() {
@@ -99,8 +99,10 @@ class ExpressInstance extends BaseInstance {
 		})
 	}
 
-	public useRouter(router: ExpressRouter): this {
-		this._express.use(router.expressRouter)
+	public useRouters(...routers: ExpressRouter[]): this {
+		routers.forEach(router => {
+			this._express.use(router.expressRouter)
+		})
 
 		return this
 	}

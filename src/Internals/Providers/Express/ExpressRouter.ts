@@ -3,11 +3,11 @@ import express, { Request, Response } from 'express'
 import BaseController from '../../BaseController'
 import BaseMiddleware from '../../BaseMiddleware'
 import { EmptyObject, MiddlewareArray, ValidateController, ValidateMiddlewares } from '../../Types'
+import BaseRequest from '../Base/BaseRequest'
+import BaseResponse from '../Base/BaseResponse'
 import BaseRouter from '../Base/BaseRouter'
 import ExpressRequest from './ExpressRequest'
 import ExpressResponse from './ExpressResponse'
-import BaseRequest from '../Base/BaseRequest'
-import BaseResponse from '../Base/BaseResponse'
 
 class ExpressRouter extends BaseRouter {
 	private _expressRouter = express.Router()
@@ -16,8 +16,10 @@ class ExpressRouter extends BaseRouter {
 		return this._expressRouter
 	}
 
-	public useRouter(router: ExpressRouter): this {
-		this._expressRouter.use(router.expressRouter)
+	public useRouters(...routers: ExpressRouter[]): this {
+		routers.forEach(router => {
+			this._expressRouter.use(router.expressRouter)
+		})
 
 		return this
 	}
