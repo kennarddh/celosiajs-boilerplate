@@ -2,16 +2,48 @@ import express, { Request, Response } from 'express'
 
 import BaseController from '../../BaseController'
 import BaseMiddleware from '../../BaseMiddleware'
-import { MiddlewareArray, ValidateController, ValidateMiddlewares } from '../../Types'
+import { EmptyObject, MiddlewareArray, ValidateController, ValidateMiddlewares } from '../../Types'
 import BaseRouter from '../Base/BaseRouter'
 import ExpressRequest from './ExpressRequest'
 import ExpressResponse from './ExpressResponse'
+import BaseRequest from '../Base/BaseRequest'
+import BaseResponse from '../Base/BaseResponse'
 
 class ExpressRouter extends BaseRouter {
 	private _expressRouter = express.Router()
 
 	public get expressRouter() {
 		return this._expressRouter
+	}
+
+	public useRouter(router: ExpressRouter): this {
+		this._expressRouter.use(router.expressRouter)
+
+		return this
+	}
+
+	/**
+	 * For middlewares without any input or output
+	 */
+	public useMiddlewares(
+		...middlewares: BaseMiddleware<
+			BaseRequest<EmptyObject, EmptyObject, EmptyObject, EmptyObject>,
+			BaseResponse,
+			EmptyObject
+		>[]
+	): this {
+		middlewares.forEach(middleware => {
+			this._expressRouter.use((request, response, next) => {
+				const newRequest = new ExpressRequest(request)
+				const newResponse = new ExpressResponse(response)
+
+				middleware.index({}, newRequest, newResponse).then(() => {
+					next()
+				})
+			})
+		})
+
+		return this
 	}
 
 	public get<Controller extends BaseController<any>, Middlewares extends MiddlewareArray>(

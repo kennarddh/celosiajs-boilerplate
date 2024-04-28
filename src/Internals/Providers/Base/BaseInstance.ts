@@ -31,7 +31,7 @@ abstract class BaseInstance {
 	public abstract useRouter(router: BaseRouter): this
 
 	/**
-	 * For middlewares without any input
+	 * For middlewares without any input or output
 	 */
 	public abstract useMiddlewares(
 		...middlewares: BaseMiddleware<
