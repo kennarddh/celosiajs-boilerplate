@@ -28,6 +28,16 @@ class RootController extends BaseController {
 	}
 }
 
+class AuthController extends BaseController {
+	public override index(
+		data: EmptyObject,
+		request: IControllerRequest<typeof this>,
+		response: BaseResponse<JSON>,
+	) {
+		response.status(200).json({ message: 'Auth' })
+	}
+}
+
 class PostController extends BaseController {
 	public override index(
 		data: {},
@@ -53,10 +63,30 @@ class RateLimitMiddleware extends BaseMiddleware {
 	}
 }
 
+class AuthMiddleware extends BaseMiddleware {
+	public override async index(data: {}, request: BaseRequest, response: BaseResponse<JSON>) {
+		response.header('Auth', 1)
+	}
+}
+
+class Auth2Middleware extends BaseMiddleware {
+	public override async index(data: {}, request: BaseRequest, response: BaseResponse<JSON>) {
+		response.header('Auth2', 1)
+	}
+}
+
 Instance.useMiddlewares(new RateLimitMiddleware())
 
 rootRouter.get('/', [], new RootController())
 rootRouter.post('/', [], new PostController())
+
+const authRouter = new Instance.Router()
+
+authRouter.useMiddlewares(new AuthMiddleware())
+
+authRouter.get('/auth', [new Auth2Middleware()], new AuthController())
+
+rootRouter.useRouters(authRouter)
 
 Instance.useRouters(rootRouter)
 
