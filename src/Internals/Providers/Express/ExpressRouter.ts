@@ -16,9 +16,9 @@ class ExpressRouter extends BaseRouter {
 		return this._expressRouter
 	}
 
-	public useRouters(...routers: ExpressRouter[]): this {
+	public useRouters(path: string, ...routers: ExpressRouter[]): this {
 		routers.forEach(router => {
-			this._expressRouter.use(router.expressRouter)
+			this._expressRouter.use(path, router.expressRouter)
 		})
 
 		return this

@@ -84,11 +84,11 @@ const authRouter = new Instance.Router()
 
 authRouter.useMiddlewares(new AuthMiddleware())
 
-authRouter.get('/auth', [new Auth2Middleware()], new AuthController())
+authRouter.get('/', [new Auth2Middleware()], new AuthController())
 
-rootRouter.useRouters(authRouter)
+rootRouter.useRouters('/auth', authRouter)
 
-Instance.useRouters(rootRouter)
+Instance.useRouters('/', rootRouter)
 
 Instance.addErrorHandler()
 

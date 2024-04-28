@@ -99,9 +99,9 @@ class ExpressInstance extends BaseInstance {
 		})
 	}
 
-	public useRouters(...routers: ExpressRouter[]): this {
+	public useRouters(path: string, ...routers: ExpressRouter[]): this {
 		routers.forEach(router => {
-			this._express.use(router.expressRouter)
+			this._express.use(path, router.expressRouter)
 		})
 
 		return this

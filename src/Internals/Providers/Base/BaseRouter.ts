@@ -13,7 +13,7 @@ export interface ParsingInput {
 }
 
 abstract class BaseRouter {
-	public abstract useRouters(...routers: BaseRouter[]): this
+	public abstract useRouters(path: string, ...routers: BaseRouter[]): this
 
 	/**
 	 * For middlewares without any input or output
