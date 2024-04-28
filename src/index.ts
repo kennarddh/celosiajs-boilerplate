@@ -18,10 +18,10 @@ const rootRouter = new Instance.Router()
 
 class RootController extends BaseController {
 	public override index(
-		data: {},
+		data: EmptyObject,
 		request: IControllerRequest<typeof this>,
 		response: BaseResponse<JSON>,
-	): void {
+	) {
 		response.status(200).json({ message: 'Hello world' })
 	}
 }
