@@ -8,7 +8,7 @@ const emptyZodObject = z.object({})
 
 abstract class BaseController<
 	T extends Record<string, any> = {},
-	Request extends BaseRequest<any, any, any, any> = BaseRequest,
+	Request extends BaseRequest<any, any, any, any> = BaseRequest<any, any, any, any>,
 	Response extends BaseResponse<any> = BaseResponse<JSON>,
 > {
 	public abstract index(data: T, request: Request, response: Response): void

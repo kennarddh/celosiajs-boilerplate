@@ -58,7 +58,7 @@ export type ValidateController<
 			: never
 		: never
 
-export type IControllerRequest<Controller extends BaseController<any>> = BaseRequest<
+export type IControllerRequest<Controller extends BaseController<any, any, any>> = BaseRequest<
 	z.infer<Controller['body']>,
 	z.infer<Controller['query']>,
 	z.infer<Controller['params']>,
