@@ -8,7 +8,14 @@ import cookieParser from 'cookie-parser'
 
 import helmet from 'helmet'
 
+import BaseMiddleware from 'Internals/BaseMiddleware'
+import { EmptyObject } from 'Internals/Types'
+
 import BaseInstance, { IListenOptions } from '../Base/BaseInstance'
+import BaseRequest from '../Base/BaseRequest'
+import BaseResponse from '../Base/BaseResponse'
+import ExpressRequest from './ExpressRequest'
+import ExpressResponse from './ExpressResponse'
 import ExpressRouter from './ExpressRouter'
 import ParseJson from './Middlewares/ParseJson'
 import ParseUrlencoded from './Middlewares/ParseUrlencoded'
@@ -73,6 +80,34 @@ class ExpressInstance extends BaseInstance {
 				else resolve()
 			})
 		})
+	}
+
+	public useRouter(router: ExpressRouter): this {
+		this._express.use(router.expressRouter)
+
+		return this
+	}
+
+	/**
+	 * For middlewares without any input
+	 */
+	public useMiddlewares(
+		...middlewares: BaseMiddleware<
+			BaseRequest<EmptyObject, EmptyObject, EmptyObject, EmptyObject>,
+			BaseResponse,
+			EmptyObject
+		>[]
+	): this {
+		middlewares.forEach(middleware => {
+			this._express.use((request, response, next) => {
+				const newRequest = new ExpressRequest(request)
+				const newResponse = new ExpressResponse(response)
+
+				middleware.index({}, newRequest, newResponse).then(() => {console.log('next');next()})
+			})
+		})
+
+		return this
 	}
 }
 

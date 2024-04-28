@@ -1,5 +1,10 @@
 import { Server } from 'http'
 
+import BaseMiddleware from 'Internals/BaseMiddleware'
+import { EmptyObject } from 'Internals/Types'
+
+import BaseRequest from './BaseRequest'
+import BaseResponse from './BaseResponse'
 import BaseRouter from './BaseRouter'
 
 export interface IListenOptions {
@@ -17,6 +22,19 @@ abstract class BaseInstance {
 
 	public abstract listen(options: IListenOptions): Promise<void>
 	public abstract close(): Promise<void>
+
+	public abstract useRouter(router: BaseRouter): this
+
+	/**
+	 * For middlewares without any input
+	 */
+	public abstract useMiddlewares(
+		...middlewares: BaseMiddleware<
+			BaseRequest<EmptyObject, EmptyObject, EmptyObject, EmptyObject>,
+			BaseResponse,
+			EmptyObject
+		>[]
+	): this
 }
 
 export default BaseInstance
