@@ -3,9 +3,9 @@ import { Response } from 'express'
 import { OutgoingHttpHeaders } from 'http'
 
 import { CookieOptions, DownloadOptions, Headers, SendFileOptions } from 'Internals/Types'
+import { JSON } from 'Types/JSON'
 
 import BaseResponse from '../Base/BaseResponse'
-import { JSON } from 'Types/JSON'
 
 class ExpressResponse<Body = JSON> extends BaseResponse<Body> {
 	protected _expressResponse: Response
@@ -233,11 +233,11 @@ class ExpressResponse<Body = JSON> extends BaseResponse<Body> {
 	): number | string | string[] | undefined | this {
 		if (typeof nameOrHeaders === 'string') {
 			if (value) {
-				return this.expressResponse.getHeader(nameOrHeaders)
-			} else {
 				this.expressResponse.header(nameOrHeaders, value)
 
 				return this
+			} else {
+				return this.expressResponse.getHeader(nameOrHeaders)
 			}
 		}
 
