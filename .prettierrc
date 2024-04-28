@@ -21,6 +21,8 @@
 		"^helmet$",
 		"<THIRD_PARTY_MODULES>",
 		"^App$",
+		"^Internals/",
+		"^Types/",
 		"^Utils/",
 		"^Services/",
 		"^Models/",

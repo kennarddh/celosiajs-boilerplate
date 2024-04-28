@@ -36,12 +36,9 @@
 			"Middlewares/*": ["./Middlewares/*"],
 			"Routes/*": ["./Routes/*"],
 			"Types/*": ["./Types/*"],
-			"Internals/*": ["./Internals/*"],
+			"Internals/*": ["./Internals/*"]
 		}
 	},
-	"references": [
-		{ "path": "./tsconfig.dev.json" },
-		{ "path": "./tsconfig.eslint.json" }
-	],
+	"references": [{ "path": "./tsconfig.dev.json" }, { "path": "./tsconfig.eslint.json" }],
 	"include": ["src"]
 }
