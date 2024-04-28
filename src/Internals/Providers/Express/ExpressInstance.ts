@@ -64,7 +64,7 @@ class ExpressInstance extends BaseInstance {
 	 */
 	public addErrorHandler() {
 		this._express.use(
-			(error: Error, request: Request, response: Response, next: NextFunction): void => {
+			(error: Error, _: Request, response: Response, __: NextFunction): void => {
 				Logger.error('Error occured.', error)
 
 				response.status(500).json({ errors: ['Internal Server Error'], data: {} })
