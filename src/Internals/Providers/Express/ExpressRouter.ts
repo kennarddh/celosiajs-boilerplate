@@ -140,7 +140,9 @@ class ExpressRouter extends BaseRouter {
 
 			for (const middleware of middlewares) {
 				try {
-					data = await middleware.index(data, newRequest, newResponse)
+					const output = await middleware.index(data, newRequest, newResponse)
+
+					data = output ?? {}
 				} catch {
 					if (!response.writableEnded) {
 						response.status(500).json({

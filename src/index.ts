@@ -46,14 +46,8 @@ class PostController extends BaseController {
 }
 
 class RateLimitMiddleware extends BaseMiddleware {
-	public override async index(
-		data: {},
-		request: BaseRequest,
-		response: BaseResponse<JSON>,
-	): Promise<EmptyObject> {
+	public override async index(data: {}, request: BaseRequest, response: BaseResponse<JSON>) {
 		response.header('Request-Left', 10)
-
-		return {}
 	}
 }
 

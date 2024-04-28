@@ -11,7 +11,7 @@ abstract class BaseMiddleware<
 	Input extends Record<string, any> = EmptyObject,
 	Output extends Record<string, any> = EmptyObject,
 > {
-	public abstract index(data: Input, request: Request, response: Response): Promise<Output>
+	public abstract index(data: Input, request: Request, response: Response): Promise<Output | void>
 }
 
 export default BaseMiddleware

@@ -103,7 +103,9 @@ class ExpressInstance extends BaseInstance {
 				const newRequest = new ExpressRequest(request)
 				const newResponse = new ExpressResponse(response)
 
-				middleware.index({}, newRequest, newResponse).then(() => {console.log('next');next()})
+				middleware.index({}, newRequest, newResponse).then(() => {
+					next()
+				})
 			})
 		})
 
