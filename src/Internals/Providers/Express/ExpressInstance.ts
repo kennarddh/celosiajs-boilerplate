@@ -61,6 +61,8 @@ class ExpressInstance extends BaseInstance {
 
 	/**
 	 * Must be called last after all router is registered
+	 * 
+	 * Doesn't work until Express 5 because Express 4.x won't catch uncaught exception in promise.
 	 */
 	public addErrorHandler() {
 		this._express.use(
