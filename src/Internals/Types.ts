@@ -1,5 +1,6 @@
-import { JSON } from 'Types/JSON'
 import { z } from 'zod'
+
+import { JSON } from 'Types/JSON'
 
 import BaseController from './BaseController'
 import BaseMiddleware from './BaseMiddleware'
@@ -41,10 +42,10 @@ export type ValidateMiddlewares<
 			>
 		: Results
 
-type MergeMiddlewaresOutput<
+export type MergeMiddlewaresOutput<
 	T extends MiddlewareArray,
 	Input extends Record<string, any> = {},
-> = T extends [BaseMiddleware<any, any, infer Output>, ...infer Tail extends MiddlewareArray]
+> = T extends [BaseMiddleware<any, any, any, infer Output>, ...infer Tail extends MiddlewareArray]
 	? MergeMiddlewaresOutput<Tail, Output & Input>
 	: Input
 
@@ -55,7 +56,7 @@ export type ValidateController<
 	Controller extends BaseController<infer Data>
 		? MergeMiddlewaresOutput<Middlewares> extends Data
 			? Controller
-			: never
+			: MergeMiddlewaresOutput<Middlewares>
 		: never
 
 export type IControllerRequest<Controller extends BaseController<any, any, any>> = BaseRequest<

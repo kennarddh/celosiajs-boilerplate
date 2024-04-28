@@ -1,10 +1,11 @@
 import Router from 'Internals/Providers/Base/BaseRouter'
+import ExpressRouter from 'Internals/Providers/Express/ExpressRouter'
 
 import VerifyJWT from 'Middlewares/VerifyJWT'
 
 import { GetUserData } from 'Versions/V1/Controllers/Auth/index'
 
-const AuthRouter = new Router()
+const AuthRouter = new ExpressRouter()
 
 // Router.post('/register', RegisterValidation(), Register)
 // Router.post('/login', LoginValidation(), Login)

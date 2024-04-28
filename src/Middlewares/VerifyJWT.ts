@@ -1,8 +1,11 @@
+import jwt from 'jsonwebtoken'
+
 import BaseMiddleware from 'Internals/BaseMiddleware'
 import BaseRequest from 'Internals/Providers/Base/BaseRequest'
-import { EmptyObject, IControllerResponse, IRequest } from 'Internals/Types'
+import BaseResponse from 'Internals/Providers/Base/BaseResponse'
+import { EmptyObject } from 'Internals/Types'
+
 import { IUserJWTPayload } from 'Types/Http'
-import jwt from 'jsonwebtoken'
 
 import Logger from 'Utils/Logger/Logger'
 import JWTVerify from 'Utils/Promises/JWTVerify'
@@ -13,12 +16,12 @@ export interface JWTVerified {
 	}
 }
 
-class VerifyJWT extends BaseMiddleware<BaseRequest, EmptyObject, JWTVerified> {
+class VerifyJWT extends BaseMiddleware {
 	public override async index(
 		data: EmptyObject,
 		request: BaseRequest,
-		response: IControllerResponse,
-	) {
+		response: BaseResponse,
+	): Promise<JWTVerified> {
 		const tokenHeader = request.header('Access-Token')
 
 		if (!tokenHeader) {
