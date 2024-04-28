@@ -1,4 +1,4 @@
-import express from 'express'
+import express, { NextFunction, Request, Response } from 'express'
 
 import { Server } from 'http'
 
@@ -10,6 +10,8 @@ import helmet from 'helmet'
 
 import BaseMiddleware from 'Internals/BaseMiddleware'
 import { EmptyObject } from 'Internals/Types'
+
+import Logger from 'Utils/Logger/Logger'
 
 import BaseInstance, { IListenOptions } from '../Base/BaseInstance'
 import BaseRequest from '../Base/BaseRequest'
@@ -55,6 +57,16 @@ class ExpressInstance extends BaseInstance {
 		...args: ConstructorParameters<typeof ExpressRouter>
 	) => ExpressRouter {
 		return ExpressRouter
+	}
+
+	public addErrorHandler() {
+		this._express.use(
+			(error: Error, request: Request, response: Response, next: NextFunction): void => {
+				Logger.error('Error occured.', error)
+
+				response.status(500).json({ errors: ['Internal Server Error'], data: {} })
+			},
+		)
 	}
 
 	public listen(options: IListenOptions): Promise<void> {

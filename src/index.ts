@@ -60,6 +60,8 @@ rootRouter.post('/', [], new PostController())
 
 Instance.useRouter(rootRouter)
 
+Instance.addErrorHandler()
+
 await Instance.listen({ port: Port })
 
 Logger.info(`Server running`, {
