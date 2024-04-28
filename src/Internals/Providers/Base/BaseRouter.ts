@@ -1,9 +1,7 @@
 import BaseMiddleware from 'Internals/BaseMiddleware'
 
 import BaseController from '../../BaseController'
-import { EmptyObject, MiddlewareArray, ValidateController, ValidateMiddlewares } from '../../Types'
-import BaseRequest from './BaseRequest'
-import BaseResponse from './BaseResponse'
+import { MiddlewareArray, ValidateController, ValidateMiddlewares } from '../../Types'
 
 export interface ParsingInput {
 	body: unknown
@@ -20,12 +18,14 @@ abstract class BaseRouter {
 	 * For middlewares without any input or output
 	 */
 	public abstract useMiddlewares(
-		...middlewares: BaseMiddleware<
-			BaseRequest<EmptyObject, EmptyObject, EmptyObject, EmptyObject>,
-			BaseResponse,
-			EmptyObject
-		>[]
+		path: string,
+		...middlewares: [BaseMiddleware, ...BaseMiddleware[]]
 	): this
+
+	/**
+	 * For middlewares without any input or output
+	 */
+	public abstract useMiddlewares(...middlewares: [BaseMiddleware, ...BaseMiddleware[]]): this
 
 	public abstract get<
 		Controller extends BaseController<any>,

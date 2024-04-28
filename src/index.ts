@@ -82,9 +82,10 @@ rootRouter.post('/', [], new PostController())
 
 const authRouter = new Instance.Router()
 
-authRouter.useMiddlewares(new AuthMiddleware())
+authRouter.useMiddlewares('/1', new AuthMiddleware())
 
-authRouter.get('/', [new Auth2Middleware()], new AuthController())
+authRouter.get('/1', [new Auth2Middleware()], new AuthController())
+authRouter.get('/2', [new Auth2Middleware()], new AuthController())
 
 rootRouter.useRouters('/auth', authRouter)
 

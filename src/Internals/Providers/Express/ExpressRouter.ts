@@ -1,10 +1,8 @@
-import express, { Request, Response } from 'express'
+import express, { NextFunction, Request, Response } from 'express'
 
 import BaseController from '../../BaseController'
 import BaseMiddleware from '../../BaseMiddleware'
-import { EmptyObject, MiddlewareArray, ValidateController, ValidateMiddlewares } from '../../Types'
-import BaseRequest from '../Base/BaseRequest'
-import BaseResponse from '../Base/BaseResponse'
+import { MiddlewareArray, ValidateController, ValidateMiddlewares } from '../../Types'
 import BaseRouter from '../Base/BaseRouter'
 import ExpressRequest from './ExpressRequest'
 import ExpressResponse from './ExpressResponse'
@@ -39,22 +37,37 @@ class ExpressRouter extends BaseRouter {
 	/**
 	 * For middlewares without any input or output
 	 */
+	public useMiddlewares(path: string, ...routers: [BaseMiddleware, ...BaseMiddleware[]]): this
+
+	/**
+	 * For middlewares without any input or output
+	 */
+	public useMiddlewares(...routers: [BaseMiddleware, ...BaseMiddleware[]]): this
+
 	public useMiddlewares(
-		...middlewares: BaseMiddleware<
-			BaseRequest<EmptyObject, EmptyObject, EmptyObject, EmptyObject>,
-			BaseResponse,
-			EmptyObject
-		>[]
+		...middlewaresAndPath: [string | BaseMiddleware, ...(string | BaseMiddleware)[]]
 	): this {
+		const possiblyPath = middlewaresAndPath[0]
+		const path = typeof possiblyPath === 'string' ? possiblyPath : null
+
+		const middlewares = (
+			path === null
+				? middlewaresAndPath
+				: middlewaresAndPath.filter((_, index) => index !== 0)
+		) as BaseMiddleware[]
+
 		middlewares.forEach(middleware => {
-			this._expressRouter.use((request, response, next) => {
+			const handler = (request: Request, response: Response, next: NextFunction) => {
 				const newRequest = new ExpressRequest(request)
 				const newResponse = new ExpressResponse(response)
 
 				middleware.index({}, newRequest, newResponse).then(() => {
 					next()
 				})
-			})
+			}
+
+			if (path === null) this._expressRouter.use(handler)
+			else this._expressRouter.use(path, handler)
 		})
 
 		return this

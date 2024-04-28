@@ -9,13 +9,10 @@ import cookieParser from 'cookie-parser'
 import helmet from 'helmet'
 
 import BaseMiddleware from 'Internals/BaseMiddleware'
-import { EmptyObject } from 'Internals/Types'
 
 import Logger from 'Utils/Logger/Logger'
 
 import BaseInstance, { IListenOptions } from '../Base/BaseInstance'
-import BaseRequest from '../Base/BaseRequest'
-import BaseResponse from '../Base/BaseResponse'
 import ExpressRequest from './ExpressRequest'
 import ExpressResponse from './ExpressResponse'
 import ExpressRouter from './ExpressRouter'
@@ -122,22 +119,37 @@ class ExpressInstance extends BaseInstance {
 	/**
 	 * For middlewares without any input or output
 	 */
+	public useMiddlewares(path: string, ...routers: [BaseMiddleware, ...BaseMiddleware[]]): this
+
+	/**
+	 * For middlewares without any input or output
+	 */
+	public useMiddlewares(...routers: [BaseMiddleware, ...BaseMiddleware[]]): this
+
 	public useMiddlewares(
-		...middlewares: BaseMiddleware<
-			BaseRequest<EmptyObject, EmptyObject, EmptyObject, EmptyObject>,
-			BaseResponse,
-			EmptyObject
-		>[]
+		...middlewaresAndPath: [string | BaseMiddleware, ...(string | BaseMiddleware)[]]
 	): this {
+		const possiblyPath = middlewaresAndPath[0]
+		const path = typeof possiblyPath === 'string' ? possiblyPath : null
+
+		const middlewares = (
+			path === null
+				? middlewaresAndPath
+				: middlewaresAndPath.filter((_, index) => index !== 0)
+		) as BaseMiddleware[]
+
 		middlewares.forEach(middleware => {
-			this._express.use((request, response, next) => {
+			const handler = (request: Request, response: Response, next: NextFunction) => {
 				const newRequest = new ExpressRequest(request)
 				const newResponse = new ExpressResponse(response)
 
 				middleware.index({}, newRequest, newResponse).then(() => {
 					next()
 				})
-			})
+			}
+
+			if (path === null) this.express.use(handler)
+			else this.express.use(path, handler)
 		})
 
 		return this
