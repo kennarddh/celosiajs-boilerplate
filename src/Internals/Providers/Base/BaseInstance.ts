@@ -20,6 +20,11 @@ abstract class BaseInstance {
 		...args: ConstructorParameters<typeof BaseRouter>
 	) => BaseRouter
 
+	/**
+	 * Must be called last after all router is registered
+	 */
+	public abstract addErrorHandler(): void
+
 	public abstract listen(options: IListenOptions): Promise<void>
 	public abstract close(): Promise<void>
 

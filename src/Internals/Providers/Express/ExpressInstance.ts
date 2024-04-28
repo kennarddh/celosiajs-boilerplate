@@ -59,6 +59,9 @@ class ExpressInstance extends BaseInstance {
 		return ExpressRouter
 	}
 
+	/**
+	 * Must be called last after all router is registered
+	 */
 	public addErrorHandler() {
 		this._express.use(
 			(error: Error, request: Request, response: Response, next: NextFunction): void => {
