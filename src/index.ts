@@ -131,7 +131,7 @@ class AuthorizedController extends BaseController {
 
 Instance.useMiddlewares(new RateLimitMiddleware())
 
-rootRouter.post('/', [new VerifyMiddleware()], new AuthorizedController())
+rootRouter.post('/authorized', [new VerifyMiddleware()], new AuthorizedController())
 
 rootRouter.get('/', [], new RootController())
 rootRouter.post('/', [], new PostController())
