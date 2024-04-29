@@ -119,7 +119,7 @@ class AuthorizedController extends BaseController {
 		request: IControllerRequest<AuthorizedController>,
 		response: BaseResponse<JSON>,
 	) {
-		response.status(200).json({ message: `User ID: ${request.body.id}` })
+		response.status(200).json({ message: `User ID: ${request.body.id}, Username: ${data.username}` })
 	}
 
 	public override get body() {
