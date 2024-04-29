@@ -1,5 +1,8 @@
 import { IncomingHttpHeaders } from 'http'
 
+import RangeParser from 'range-parser'
+import { TypedEmitter } from 'tiny-typed-emitter'
+
 import {
 	BodyObject,
 	CookiesObject,
@@ -8,8 +11,6 @@ import {
 	PathParams,
 	QueryParams,
 } from 'Internals/Types'
-import RangeParser from 'range-parser'
-import { TypedEmitter } from 'tiny-typed-emitter'
 
 export interface RequestEvents {
 	close: () => void
@@ -27,10 +28,10 @@ abstract class BaseRequest<
 	Params extends PathParams = EmptyObject,
 	Cookies extends CookiesObject = EmptyObject,
 > extends TypedEmitter<RequestEvents> {
-	public abstract get body(): {} extends Body ? EmptyObject : Body
-	public abstract get query(): {} extends Query ? EmptyObject : Query
-	public abstract get params(): {} extends Params ? EmptyObject : Params
-	public abstract get cookies(): {} extends Cookies ? EmptyObject : Cookies
+	public abstract get body(): Body
+	public abstract get query(): Query
+	public abstract get params(): Params
+	public abstract get cookies(): Cookies
 
 	public abstract get headers(): IncomingHttpHeaders
 

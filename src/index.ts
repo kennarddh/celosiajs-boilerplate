@@ -38,6 +38,22 @@ class AuthController extends BaseController {
 	}
 }
 
+class AuthUserController extends BaseController {
+	public override index(
+		data: EmptyObject,
+		request: IControllerRequest<AuthUserController>,
+		response: BaseResponse<JSON>,
+	) {
+		response.status(200).json({ message: `User ID: ${request.params.id}` })
+	}
+
+	public override get params() {
+		return z.object({
+			id: z.string(),
+		})
+	}
+}
+
 class NotFoundController extends BaseController {
 	public override index(
 		data: EmptyObject,
@@ -51,7 +67,7 @@ class NotFoundController extends BaseController {
 class PostController extends BaseController {
 	public override index(
 		data: {},
-		request: IControllerRequest<typeof this>,
+		request: IControllerRequest<PostController>,
 		response: BaseResponse,
 	) {
 		response.status(200).json({
@@ -85,7 +101,37 @@ class Auth2Middleware extends BaseMiddleware {
 	}
 }
 
+class VerifyMiddleware extends BaseMiddleware {
+	public override async index(
+		data: {},
+		request: BaseRequest<{ id: string }>,
+		response: BaseResponse<JSON>,
+	): Promise<{ username: string }> {
+		response.header('Auth2', 1)
+
+		return { username: `${request.body.id}` }
+	}
+}
+
+class AuthorizedController extends BaseController {
+	public override index(
+		data: { username: string },
+		request: IControllerRequest<AuthorizedController>,
+		response: BaseResponse<JSON>,
+	) {
+		response.status(200).json({ message: `User ID: ${request.body.id}` })
+	}
+
+	public override get body() {
+		return z.object({
+			id: z.string(),
+		})
+	}
+}
+
 Instance.useMiddlewares(new RateLimitMiddleware())
+
+rootRouter.post('/', [new VerifyMiddleware()], new AuthorizedController())
 
 rootRouter.get('/', [], new RootController())
 rootRouter.post('/', [], new PostController())
@@ -98,6 +144,7 @@ authRouter.useMiddlewares('/1', new AuthMiddleware())
 
 authRouter.get('/1', [new Auth2Middleware()], new AuthController())
 authRouter.get('/2', [new Auth2Middleware()], new AuthController())
+authRouter.get('/user/:id', [new Auth2Middleware()], new AuthUserController())
 
 rootRouter.useRouters('/auth', authRouter)
 

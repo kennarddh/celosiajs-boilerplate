@@ -1,5 +1,6 @@
-import { JSON } from 'Types/JSON'
 import { z } from 'zod'
+
+import { JSON } from 'Types/JSON'
 
 import BaseRequest from './Providers/Base/BaseRequest'
 import BaseResponse from './Providers/Base/BaseResponse'
