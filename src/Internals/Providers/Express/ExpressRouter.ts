@@ -73,7 +73,10 @@ class ExpressRouter extends BaseRouter {
 		return this
 	}
 
-	public get<Controller extends BaseController<any>, Middlewares extends MiddlewareArray>(
+	public get<
+		Controller extends BaseController<any, any, any>,
+		Middlewares extends MiddlewareArray,
+	>(
 		path: string,
 		middlewares: Middlewares & ValidateMiddlewares<Controller, Middlewares>,
 		controller: Controller & ValidateController<Controller, Middlewares>,
@@ -83,7 +86,10 @@ class ExpressRouter extends BaseRouter {
 		return this
 	}
 
-	public post<Controller extends BaseController<any>, Middlewares extends MiddlewareArray>(
+	public post<
+		Controller extends BaseController<any, any, any>,
+		Middlewares extends MiddlewareArray,
+	>(
 		path: string,
 		middlewares: Middlewares & ValidateMiddlewares<Controller, Middlewares>,
 		controller: Controller & ValidateController<Controller, Middlewares>,
@@ -93,7 +99,10 @@ class ExpressRouter extends BaseRouter {
 		return this
 	}
 
-	public put<Controller extends BaseController<any>, Middlewares extends MiddlewareArray>(
+	public put<
+		Controller extends BaseController<any, any, any>,
+		Middlewares extends MiddlewareArray,
+	>(
 		path: string,
 		middlewares: Middlewares & ValidateMiddlewares<Controller, Middlewares>,
 		controller: Controller & ValidateController<Controller, Middlewares>,
@@ -103,7 +112,10 @@ class ExpressRouter extends BaseRouter {
 		return this
 	}
 
-	public patch<Controller extends BaseController<any>, Middlewares extends MiddlewareArray>(
+	public patch<
+		Controller extends BaseController<any, any, any>,
+		Middlewares extends MiddlewareArray,
+	>(
 		path: string,
 		middlewares: Middlewares & ValidateMiddlewares<Controller, Middlewares>,
 		controller: Controller & ValidateController<Controller, Middlewares>,
@@ -113,7 +125,10 @@ class ExpressRouter extends BaseRouter {
 		return this
 	}
 
-	public delete<Controller extends BaseController<any>, Middlewares extends MiddlewareArray>(
+	public delete<
+		Controller extends BaseController<any, any, any>,
+		Middlewares extends MiddlewareArray,
+	>(
 		path: string,
 		middlewares: Middlewares & ValidateMiddlewares<Controller, Middlewares>,
 		controller: Controller & ValidateController<Controller, Middlewares>,
@@ -123,7 +138,10 @@ class ExpressRouter extends BaseRouter {
 		return this
 	}
 
-	public options<Controller extends BaseController<any>, Middlewares extends MiddlewareArray>(
+	public options<
+		Controller extends BaseController<any, any, any>,
+		Middlewares extends MiddlewareArray,
+	>(
 		path: string,
 		middlewares: Middlewares & ValidateMiddlewares<Controller, Middlewares>,
 		controller: Controller & ValidateController<Controller, Middlewares>,
@@ -133,7 +151,10 @@ class ExpressRouter extends BaseRouter {
 		return this
 	}
 
-	public all<Controller extends BaseController<any>, Middlewares extends MiddlewareArray>(
+	public all<
+		Controller extends BaseController<any, any, any>,
+		Middlewares extends MiddlewareArray,
+	>(
 		path: string,
 		middlewares: Middlewares & ValidateMiddlewares<Controller, Middlewares>,
 		controller: Controller & ValidateController<Controller, Middlewares>,
@@ -143,10 +164,10 @@ class ExpressRouter extends BaseRouter {
 		return this
 	}
 
-	private handler<Controller extends BaseController<any>, Middlewares extends BaseMiddleware[]>(
-		middlewares: Middlewares,
-		controller: Controller,
-	) {
+	private handler<
+		Controller extends BaseController<any, any, any>,
+		Middlewares extends BaseMiddleware[],
+	>(middlewares: Middlewares, controller: Controller) {
 		return async (request: Request, response: Response) => {
 			const parsedBody = await controller.body.safeParseAsync(request.body)
 			const parsedQuery = await controller.query.safeParseAsync(request.query)
