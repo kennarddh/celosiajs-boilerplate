@@ -14,40 +14,10 @@ export type EmptyObject = { [emptyObjectSymbol]?: never }
 
 export type MiddlewareArray = BaseMiddleware<any, any, any, any>[]
 
-export type ReplaceEmptyObjectWithEmptyObjectLiteral<T> = T extends EmptyObject ? {} : T
-
-export type IsBaseRequestExtends<
-	Request1 extends BaseRequest<any, any, any, any>,
-	Request2 extends BaseRequest<any, any, any, any>,
-> =
-	Request1 extends BaseRequest<
-		infer Request1Body,
-		infer Request1Query,
-		infer Request1Params,
-		infer Request1Cookies
-	>
-		? Request2 extends BaseRequest<
-				infer Request2Body,
-				infer Request2Query,
-				infer Request2Params,
-				infer Request2Cookies
-			>
-			? ReplaceEmptyObjectWithEmptyObjectLiteral<Request1Body> extends ReplaceEmptyObjectWithEmptyObjectLiteral<Request2Body>
-				? ReplaceEmptyObjectWithEmptyObjectLiteral<Request1Query> extends ReplaceEmptyObjectWithEmptyObjectLiteral<Request2Query>
-					? ReplaceEmptyObjectWithEmptyObjectLiteral<Request1Params> extends ReplaceEmptyObjectWithEmptyObjectLiteral<Request2Params>
-						? ReplaceEmptyObjectWithEmptyObjectLiteral<Request1Cookies> extends ReplaceEmptyObjectWithEmptyObjectLiteral<Request2Cookies>
-							? true
-							: false
-						: false
-					: false
-				: false
-			: false
-		: false
-
 /**
  * I don't know how that "& 1" fixes the problem but it does.
  *
- * The problem is when a middleware require a body in request but the controller doesn't provide it
+ * The problem is when a middleware require a body in request but the controller doesn't provide it.
  */
 export type ValidateMiddlewares<
 	Controller extends BaseController<any>,
@@ -55,13 +25,23 @@ export type ValidateMiddlewares<
 	Input extends Record<string, any> = Record<string, never>,
 	Results extends any[] = [],
 > = T extends [
-	BaseMiddleware<infer Request, BaseResponse<any>, Input, infer Output>,
+	BaseMiddleware<infer Request, BaseResponse<any>, infer RequiredInput, infer Output>,
 	...infer Tail extends MiddlewareArray,
 ]
-	? IsBaseRequestExtends<IControllerRequest<Controller>, Request> extends true
-		? ValidateMiddlewares<Controller, Tail, Input & Output, [...Results, T[0]]>
-		: Tail['length'] extends 0
-			? [
+	? IControllerRequest<Controller> extends Request
+		? RequiredInput extends Input
+			? ValidateMiddlewares<Controller, Tail, Input & Output, [...Results, T[0]]>
+			: ValidateMiddlewares<
+					Controller,
+					Tail,
+					Input,
+					[...Results, BaseMiddleware<Request, BaseResponse<any>, Input, Output>]
+				>
+		: ValidateMiddlewares<
+				Controller,
+				Tail,
+				Input,
+				[
 					...Results,
 					BaseMiddleware<
 						IControllerRequest<Controller> & 1,
@@ -70,20 +50,7 @@ export type ValidateMiddlewares<
 						Output
 					>,
 				]
-			: ValidateMiddlewares<
-					Controller,
-					Tail,
-					Input,
-					[
-						...Results,
-						BaseMiddleware<
-							IControllerRequest<Controller> & 1,
-							BaseResponse<any>,
-							Input,
-							Output
-						>,
-					]
-				>
+			>
 	: Results
 
 // export type ValidateMiddlewares<

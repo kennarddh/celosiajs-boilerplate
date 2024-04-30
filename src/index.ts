@@ -113,13 +113,30 @@ class VerifyMiddleware extends BaseMiddleware {
 	}
 }
 
+class Verify2Middleware extends BaseMiddleware {
+	public override async index(
+		data: { username: string },
+		request: BaseRequest<{ id: string }>,
+		response: BaseResponse<JSON>,
+	): Promise<{ username: string; email: string }> {
+		response.header('Auth2', 1)
+
+		return {
+			username: `${request.body.id}`,
+			email: `${request.body.id}+${data.username}@example.com`,
+		}
+	}
+}
+
 class AuthorizedController extends BaseController {
 	public override index(
 		data: { username: string },
 		request: IControllerRequest<AuthorizedController>,
 		response: BaseResponse<JSON>,
 	) {
-		response.status(200).json({ message: `User ID: ${request.body.id}, Username: ${data.username}` })
+		response
+			.status(200)
+			.json({ message: `User ID: ${request.body.id}, Username: ${data.username}` })
 	}
 
 	public override get body() {
@@ -131,7 +148,11 @@ class AuthorizedController extends BaseController {
 
 Instance.useMiddlewares(new RateLimitMiddleware())
 
-rootRouter.post('/authorized', [new VerifyMiddleware()], new AuthorizedController())
+rootRouter.post(
+	'/authorized',
+	[new VerifyMiddleware(), new Verify2Middleware()],
+	new AuthorizedController(),
+)
 
 rootRouter.get('/', [], new RootController())
 rootRouter.post('/', [], new PostController())
