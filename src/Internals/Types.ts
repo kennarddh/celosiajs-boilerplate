@@ -53,18 +53,6 @@ export type ValidateMiddlewares<
 			>
 	: Results
 
-// export type ValidateMiddlewares<
-// 	Controller extends BaseController<any>,
-// 	T extends MiddlewareArray,
-// 	Input extends Record<string, any> = Record<string, never>,
-// 	Results extends any[] = [],
-// > = T extends [
-// 	BaseMiddleware<infer Request, BaseResponse<any>, Input, infer Output>,
-// 	...infer Tail extends MiddlewareArray,
-// ]
-// 	? 1
-// 	: 2
-
 export type MergeMiddlewaresOutput<
 	T extends MiddlewareArray,
 	Input extends Record<string, any> = {},
