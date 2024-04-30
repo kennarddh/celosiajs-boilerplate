@@ -5,7 +5,6 @@ import { JSON } from 'Types/JSON'
 import BaseController from './BaseController'
 import BaseMiddleware from './BaseMiddleware'
 import BaseRequest from './Providers/Base/BaseRequest'
-import BaseResponse from './Providers/Base/BaseResponse'
 
 // https://github.com/sindresorhus/type-fest/blob/main/source/empty-object.d.ts
 declare const emptyObjectSymbol: unique symbol
@@ -25,17 +24,40 @@ export type ValidateMiddlewares<
 	Input extends Record<string, any> = Record<string, never>,
 	Results extends any[] = [],
 > = T extends [
-	BaseMiddleware<infer Request, BaseResponse<any>, infer RequiredInput, infer Output>,
+	BaseMiddleware<infer Request, infer Response, infer RequiredInput, infer Output>,
 	...infer Tail extends MiddlewareArray,
 ]
 	? IControllerRequest<Controller> extends Request
-		? RequiredInput extends Input
-			? ValidateMiddlewares<Controller, Tail, Input & Output, [...Results, T[0]]>
+		? Response extends IControllerResponse<Controller>
+			? RequiredInput extends Input
+				? ValidateMiddlewares<Controller, Tail, Input & Output, [...Results, T[0]]>
+				: ValidateMiddlewares<
+						Controller,
+						Tail,
+						Input,
+						[
+							...Results,
+							BaseMiddleware<
+								IControllerRequest<Controller> & 1,
+								IControllerResponse<Controller>,
+								Input,
+								Output
+							>,
+						]
+					>
 			: ValidateMiddlewares<
 					Controller,
 					Tail,
 					Input,
-					[...Results, BaseMiddleware<Request, BaseResponse<any>, Input, Output>]
+					[
+						...Results,
+						BaseMiddleware<
+							IControllerRequest<Controller> & 1,
+							IControllerResponse<Controller>,
+							Input,
+							Output
+						>,
+					]
 				>
 		: ValidateMiddlewares<
 				Controller,
@@ -45,7 +67,7 @@ export type ValidateMiddlewares<
 					...Results,
 					BaseMiddleware<
 						IControllerRequest<Controller> & 1,
-						BaseResponse<any>,
+						IControllerResponse<Controller>,
 						Input,
 						Output
 					>,
@@ -76,6 +98,9 @@ export type IControllerRequest<Controller extends BaseController<any, any, any>>
 	{} extends z.infer<Controller['params']> ? EmptyObject : z.infer<Controller['params']>,
 	{} extends z.infer<Controller['cookies']> ? EmptyObject : z.infer<Controller['cookies']>
 >
+
+export type IControllerResponse<Controller extends BaseController<any, any, any>> =
+	Controller extends BaseController<any, any, infer Response> ? Response : never
 
 export type HeaderValue = string | string[]
 export type Headers = Record<string, HeaderValue>

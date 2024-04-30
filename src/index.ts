@@ -132,7 +132,7 @@ class AuthorizedController extends BaseController {
 	public override index(
 		data: { username: string },
 		request: IControllerRequest<AuthorizedController>,
-		response: BaseResponse<JSON>,
+		response: BaseResponse<{ message: string }>,
 	) {
 		response
 			.status(200)
