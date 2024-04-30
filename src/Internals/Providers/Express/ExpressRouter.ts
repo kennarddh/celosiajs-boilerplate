@@ -208,7 +208,7 @@ class ExpressRouter extends BaseRouter {
 					parsedCookies.success
 				)
 			)
-				return response.status(400).json({
+				return response.status(422).json({
 					data: {},
 					errors,
 				})
