@@ -28,7 +28,7 @@ abstract class BaseRouter {
 	public abstract useMiddlewares(...middlewares: [BaseMiddleware, ...BaseMiddleware[]]): this
 
 	public abstract get<
-		Controller extends BaseController<any>,
+		Controller extends BaseController<any, any, any>,
 		Middlewares extends MiddlewareArray,
 	>(
 		path: string,
@@ -37,7 +37,7 @@ abstract class BaseRouter {
 	): this
 
 	public abstract post<
-		Controller extends BaseController<any>,
+		Controller extends BaseController<any, any, any>,
 		Middlewares extends MiddlewareArray,
 	>(
 		path: string,
@@ -46,7 +46,7 @@ abstract class BaseRouter {
 	): this
 
 	public abstract put<
-		Controller extends BaseController<any>,
+		Controller extends BaseController<any, any, any>,
 		Middlewares extends MiddlewareArray,
 	>(
 		path: string,
@@ -55,7 +55,7 @@ abstract class BaseRouter {
 	): this
 
 	public abstract patch<
-		Controller extends BaseController<any>,
+		Controller extends BaseController<any, any, any>,
 		Middlewares extends MiddlewareArray,
 	>(
 		path: string,
@@ -64,7 +64,7 @@ abstract class BaseRouter {
 	): this
 
 	public abstract delete<
-		Controller extends BaseController<any>,
+		Controller extends BaseController<any, any, any>,
 		Middlewares extends MiddlewareArray,
 	>(
 		path: string,
@@ -73,7 +73,7 @@ abstract class BaseRouter {
 	): this
 
 	public abstract options<
-		Controller extends BaseController<any>,
+		Controller extends BaseController<any, any, any>,
 		Middlewares extends MiddlewareArray,
 	>(
 		path: string,
@@ -82,7 +82,7 @@ abstract class BaseRouter {
 	): this
 
 	public abstract all<
-		Controller extends BaseController<any>,
+		Controller extends BaseController<any, any, any>,
 		Middlewares extends MiddlewareArray,
 	>(
 		path: string,
@@ -90,7 +90,7 @@ abstract class BaseRouter {
 		controller: Controller & ValidateController<Controller, Middlewares>,
 	): this
 
-	async parseData(controller: BaseController<any>, parsingData: ParsingInput) {
+	async parseData(controller: BaseController<any, any, any>, parsingData: ParsingInput) {
 		return {
 			body: await controller.body.safeParseAsync(parsingData.body),
 			query: await controller.query.safeParseAsync(parsingData.query),

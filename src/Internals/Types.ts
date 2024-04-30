@@ -19,7 +19,7 @@ export type MiddlewareArray = BaseMiddleware<any, any, any, any>[]
  * The problem is when a middleware require a body in request but the controller doesn't provide it.
  */
 export type ValidateMiddlewares<
-	Controller extends BaseController<any>,
+	Controller extends BaseController<any, any, any>,
 	T extends MiddlewareArray,
 	Input extends Record<string, any> = Record<string, never>,
 	Results extends any[] = [],
@@ -83,7 +83,7 @@ export type MergeMiddlewaresOutput<
 	: Input
 
 export type ValidateController<
-	Controller extends BaseController<any>,
+	Controller extends BaseController<any, any, any>,
 	Middlewares extends MiddlewareArray | [],
 > =
 	Controller extends BaseController<infer Data>
