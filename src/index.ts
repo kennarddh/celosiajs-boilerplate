@@ -84,7 +84,11 @@ class PostController extends BaseController {
 }
 
 class RateLimitMiddleware extends BaseMiddleware {
-	public override async index(data: {}, request: BaseRequest, response: BaseResponse<JSON>) {
+	public override async index(
+		data: { a: string },
+		request: BaseRequest,
+		response: BaseResponse<JSON>,
+	) {
 		response.header('Request-Left', 10)
 	}
 }
@@ -146,6 +150,7 @@ class AuthorizedController extends BaseController {
 	}
 }
 
+// Fix this RateLimitMiddleware has input
 Instance.useMiddlewares(new RateLimitMiddleware())
 
 rootRouter.post(
