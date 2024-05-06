@@ -1,5 +1,3 @@
-import BaseMiddleware from 'Internals/BaseMiddleware'
-
 import BaseController from '../../BaseController'
 import {
 	MiddlewareArray,
