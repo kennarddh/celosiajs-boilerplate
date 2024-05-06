@@ -1,7 +1,5 @@
 import { z } from 'zod'
 
-import { JSON } from 'Types/JSON'
-
 import BaseRequest from './Providers/Base/BaseRequest'
 import BaseResponse from './Providers/Base/BaseResponse'
 
@@ -10,7 +8,7 @@ const emptyZodObject = z.object({})
 abstract class BaseController<
 	T extends Record<string, any> = {},
 	Request extends BaseRequest<any, any, any, any> = BaseRequest<any, any, any, any>,
-	Response extends BaseResponse<any> = BaseResponse<JSON>,
+	Response extends BaseResponse<any> = BaseResponse<any>,
 > {
 	public abstract index(data: T, request: Request, response: Response): void
 
