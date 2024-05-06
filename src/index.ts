@@ -1,16 +1,19 @@
 import 'dotenv/config'
 import { z } from 'zod'
 
-import BaseController from 'Internals/BaseController'
-import BaseMiddleware from 'Internals/BaseMiddleware'
-import BaseRequest from 'Internals/Providers/Base/BaseRequest'
-import BaseResponse from 'Internals/Providers/Base/BaseResponse'
-import ExpressInstance from 'Internals/Providers/Express/ExpressInstance'
-import { EmptyObject, IControllerRequest } from 'Internals/Types'
-
 import { JSON } from 'Types/JSON'
 
 import Logger from 'Utils/Logger/Logger'
+
+import {
+	BaseController,
+	BaseMiddleware,
+	BaseRequest,
+	BaseResponse,
+	EmptyObject,
+	ExpressInstance,
+	IControllerRequest,
+} from './Internals'
 
 export const Port = parseInt(process.env.PORT || '8080', 10)
 
