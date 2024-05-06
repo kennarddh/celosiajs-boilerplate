@@ -1,5 +1,4 @@
-import BaseRequest from './Providers/Base/BaseRequest'
-import BaseResponse from './Providers/Base/BaseResponse'
+import { BaseRequest, BaseResponse } from 'Internals'
 
 abstract class BaseMiddleware<
 	Request extends BaseRequest<any, any, any, any> = BaseRequest<any, any, any, any>,

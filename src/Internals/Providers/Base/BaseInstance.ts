@@ -1,8 +1,6 @@
 import { Server } from 'http'
 
-import { NoInputMiddleware } from 'Internals/Types'
-
-import BaseRouter from './BaseRouter'
+import { BaseRouter, NoInputMiddleware } from 'Internals'
 
 export interface IListenOptions {
 	port?: number

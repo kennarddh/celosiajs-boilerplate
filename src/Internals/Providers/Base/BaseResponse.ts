@@ -1,7 +1,6 @@
 import { OutgoingHttpHeaders } from 'http'
 
-import { CookieOptions, DownloadOptions, Headers, SendFileOptions } from 'Internals/Types'
-import { JSON } from 'Types/JSON'
+import { CookieOptions, DownloadOptions, Headers, JSON, SendFileOptions } from 'Internals'
 import { Readable } from 'stream'
 import { TypedEmitter } from 'tiny-typed-emitter'
 

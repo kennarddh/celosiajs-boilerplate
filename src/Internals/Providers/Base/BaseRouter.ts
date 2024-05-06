@@ -1,10 +1,10 @@
-import BaseController from '../../BaseController'
 import {
+	BaseController,
 	MiddlewareArray,
 	NoInputMiddleware,
 	ValidateController,
 	ValidateMiddlewares,
-} from '../../Types'
+} from 'Internals'
 
 export interface ParsingInput {
 	body: unknown

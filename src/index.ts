@@ -1,10 +1,3 @@
-import 'dotenv/config'
-import { z } from 'zod'
-
-import { JSON } from 'Types/JSON'
-
-import Logger from 'Utils/Logger/Logger'
-
 import {
 	BaseController,
 	BaseMiddleware,
@@ -13,7 +6,12 @@ import {
 	EmptyObject,
 	ExpressInstance,
 	IControllerRequest,
-} from './Internals'
+	JSON,
+} from 'Internals'
+import 'dotenv/config'
+import { z } from 'zod'
+
+import Logger from 'Utils/Logger/Logger'
 
 export const Port = parseInt(process.env.PORT || '8080', 10)
 
@@ -172,8 +170,6 @@ rootRouter.post(
 rootRouter.get('/', [], new RootController())
 rootRouter.post('/', [], new PostController())
 
-rootRouter.all('*', [], new NotFoundController())
-
 const authRouter = new Instance.Router()
 
 authRouter.useMiddlewares('/1', new AuthMiddleware())
@@ -185,6 +181,8 @@ authRouter.get('/user/:id', [new Auth2Middleware()], new AuthUserController())
 rootRouter.useRouters('/auth', authRouter)
 
 Instance.useRouters(rootRouter)
+
+rootRouter.all('*', [], new NotFoundController())
 
 Instance.addErrorHandler()
 

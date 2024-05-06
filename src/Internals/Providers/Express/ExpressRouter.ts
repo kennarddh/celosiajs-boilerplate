@@ -1,11 +1,16 @@
 import express, { NextFunction, Request, Response } from 'express'
 
-import BaseController from '../../BaseController'
-import BaseMiddleware from '../../BaseMiddleware'
-import { MiddlewareArray, NoInputMiddleware, ValidateController, ValidateMiddlewares } from '../../Types'
-import BaseRouter from '../Base/BaseRouter'
-import ExpressRequest from './ExpressRequest'
-import ExpressResponse from './ExpressResponse'
+import {
+	BaseController,
+	BaseMiddleware,
+	BaseRouter,
+	ExpressRequest,
+	ExpressResponse,
+	MiddlewareArray,
+	NoInputMiddleware,
+	ValidateController,
+	ValidateMiddlewares,
+} from 'Internals'
 
 class ExpressRouter extends BaseRouter {
 	private _expressRouter = express.Router()

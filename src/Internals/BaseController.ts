@@ -1,7 +1,5 @@
+import { BaseRequest, BaseResponse } from 'Internals'
 import { z } from 'zod'
-
-import BaseRequest from './Providers/Base/BaseRequest'
-import BaseResponse from './Providers/Base/BaseResponse'
 
 const emptyZodObject = z.object({})
 

@@ -1,16 +1,8 @@
 import { IncomingHttpHeaders } from 'http'
 
+import { CookiesObject, EmptyObject, HeaderValue, JSON, PathParams, QueryParams } from 'Internals'
 import RangeParser from 'range-parser'
 import { TypedEmitter } from 'tiny-typed-emitter'
-
-import {
-	BodyObject,
-	CookiesObject,
-	EmptyObject,
-	HeaderValue,
-	PathParams,
-	QueryParams,
-} from 'Internals/Types'
 
 export interface RequestEvents {
 	close: () => void
@@ -23,7 +15,7 @@ export interface RequestEvents {
 }
 
 abstract class BaseRequest<
-	Body extends BodyObject = EmptyObject,
+	Body extends JSON = EmptyObject,
 	Query extends QueryParams = EmptyObject,
 	Params extends PathParams = EmptyObject,
 	Cookies extends CookiesObject = EmptyObject,

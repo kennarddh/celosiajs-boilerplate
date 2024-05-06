@@ -3,19 +3,18 @@ import { Request } from 'express'
 import { IncomingHttpHeaders } from 'http'
 
 import {
-	BodyObject,
+	BaseRequest,
 	CookiesObject,
 	EmptyObject,
 	HeaderValue,
+	JSON,
 	PathParams,
 	QueryParams,
-} from 'Internals/Types'
+} from 'Internals'
 import RangeParser from 'range-parser'
 
-import BaseRequest from '../Base/BaseRequest'
-
 class ExpressRequest<
-	Body extends BodyObject = EmptyObject,
+	Body extends JSON = EmptyObject,
 	Query extends QueryParams = EmptyObject,
 	Params extends PathParams = EmptyObject,
 	Cookies extends CookiesObject = EmptyObject,
@@ -43,20 +42,20 @@ class ExpressRequest<
 		expressRequest.on('resume', () => this.emit('resume'))
 	}
 
-	public get body(): {} extends Body ? EmptyObject : Body {
+	public get body(): Body {
 		return this.expressRequest.body
 	}
 
-	public get query(): {} extends Query ? EmptyObject : Query {
-		return this.expressRequest.query as {} extends Query ? EmptyObject : Query
+	public get query(): Query {
+		return this.expressRequest.query as Query
 	}
 
-	public get params(): {} extends Params ? EmptyObject : Params {
-		return this.expressRequest.params as {} extends Params ? EmptyObject : Params
+	public get params(): Params {
+		return this.expressRequest.params as Params
 	}
 
-	public get cookies(): {} extends Cookies ? EmptyObject : Cookies {
-		return this.expressRequest.cookies as {} extends Cookies ? EmptyObject : Cookies
+	public get cookies(): Cookies {
+		return this.expressRequest.cookies as Cookies
 	}
 
 	public get headers(): IncomingHttpHeaders {

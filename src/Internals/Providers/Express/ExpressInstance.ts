@@ -8,15 +8,18 @@ import cookieParser from 'cookie-parser'
 
 import helmet from 'helmet'
 
-import BaseMiddleware from 'Internals/BaseMiddleware'
-import { NoInputMiddleware } from 'Internals/Types'
+import {
+	BaseInstance,
+	BaseMiddleware,
+	ExpressRequest,
+	ExpressResponse,
+	ExpressRouter,
+	IListenOptions,
+	NoInputMiddleware,
+} from 'Internals'
 
 import Logger from 'Utils/Logger/Logger'
 
-import BaseInstance, { IListenOptions } from '../Base/BaseInstance'
-import ExpressRequest from './ExpressRequest'
-import ExpressResponse from './ExpressResponse'
-import ExpressRouter from './ExpressRouter'
 import ParseJson from './Middlewares/ParseJson'
 import ParseUrlencoded from './Middlewares/ParseUrlencoded'
 
