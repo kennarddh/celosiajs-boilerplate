@@ -158,7 +158,6 @@ class AuthorizedController extends BaseController {
 	}
 }
 
-// Fix this RateLimitMiddleware has input
 Instance.useMiddlewares(new RateLimitMiddleware())
 
 rootRouter.post(
