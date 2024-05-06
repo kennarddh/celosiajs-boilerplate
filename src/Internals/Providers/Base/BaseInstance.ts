@@ -1,6 +1,6 @@
 import { Server } from 'http'
 
-import BaseMiddleware from 'Internals/BaseMiddleware'
+import { NoInputMiddleware } from 'Internals/Types'
 
 import BaseRouter from './BaseRouter'
 
@@ -33,13 +33,15 @@ abstract class BaseInstance {
 	 */
 	public abstract useMiddlewares(
 		path: string,
-		...middlewares: [BaseMiddleware, ...BaseMiddleware[]]
+		...middlewares: [NoInputMiddleware, ...NoInputMiddleware[]]
 	): this
 
 	/**
 	 * For middlewares without any input or output
 	 */
-	public abstract useMiddlewares(...middlewares: [BaseMiddleware, ...BaseMiddleware[]]): this
+	public abstract useMiddlewares(
+		...middlewares: [NoInputMiddleware, ...NoInputMiddleware[]]
+	): this
 }
 
 export default BaseInstance

@@ -66,7 +66,7 @@ class NotFoundController extends BaseController {
 
 class PostController extends BaseController {
 	public override index(
-		data: {},
+		data: EmptyObject,
 		request: IControllerRequest<PostController>,
 		response: BaseResponse,
 	) {
@@ -85,7 +85,7 @@ class PostController extends BaseController {
 
 class RateLimitMiddleware extends BaseMiddleware {
 	public override async index(
-		data: { a: string },
+		data: EmptyObject,
 		request: BaseRequest,
 		response: BaseResponse<JSON>,
 	) {
@@ -94,20 +94,28 @@ class RateLimitMiddleware extends BaseMiddleware {
 }
 
 class AuthMiddleware extends BaseMiddleware {
-	public override async index(data: {}, request: BaseRequest, response: BaseResponse<JSON>) {
+	public override async index(
+		data: EmptyObject,
+		request: BaseRequest,
+		response: BaseResponse<JSON>,
+	) {
 		response.header('Auth', 1)
 	}
 }
 
 class Auth2Middleware extends BaseMiddleware {
-	public override async index(data: {}, request: BaseRequest, response: BaseResponse<JSON>) {
+	public override async index(
+		data: EmptyObject,
+		request: BaseRequest,
+		response: BaseResponse<JSON>,
+	) {
 		response.header('Auth2', 1)
 	}
 }
 
 class VerifyMiddleware extends BaseMiddleware {
 	public override async index(
-		data: {},
+		data: EmptyObject,
 		request: BaseRequest<{ id: string }>,
 		response: BaseResponse<JSON>,
 	): Promise<{ username: string }> {

@@ -2,7 +2,7 @@ import express, { NextFunction, Request, Response } from 'express'
 
 import BaseController from '../../BaseController'
 import BaseMiddleware from '../../BaseMiddleware'
-import { MiddlewareArray, ValidateController, ValidateMiddlewares } from '../../Types'
+import { MiddlewareArray, NoInputMiddleware, ValidateController, ValidateMiddlewares } from '../../Types'
 import BaseRouter from '../Base/BaseRouter'
 import ExpressRequest from './ExpressRequest'
 import ExpressResponse from './ExpressResponse'
@@ -37,15 +37,18 @@ class ExpressRouter extends BaseRouter {
 	/**
 	 * For middlewares without any input or output
 	 */
-	public useMiddlewares(path: string, ...routers: [BaseMiddleware, ...BaseMiddleware[]]): this
+	public useMiddlewares(
+		path: string,
+		...routers: [NoInputMiddleware, ...NoInputMiddleware[]]
+	): this
 
 	/**
 	 * For middlewares without any input or output
 	 */
-	public useMiddlewares(...routers: [BaseMiddleware, ...BaseMiddleware[]]): this
+	public useMiddlewares(...routers: [NoInputMiddleware, ...NoInputMiddleware[]]): this
 
 	public useMiddlewares(
-		...middlewaresAndPath: [string | BaseMiddleware, ...(string | BaseMiddleware)[]]
+		...middlewaresAndPath: [string | NoInputMiddleware, ...(string | NoInputMiddleware)[]]
 	): this {
 		const possiblyPath = middlewaresAndPath[0]
 		const path = typeof possiblyPath === 'string' ? possiblyPath : null

@@ -9,6 +9,7 @@ import cookieParser from 'cookie-parser'
 import helmet from 'helmet'
 
 import BaseMiddleware from 'Internals/BaseMiddleware'
+import { NoInputMiddleware } from 'Internals/Types'
 
 import Logger from 'Utils/Logger/Logger'
 
@@ -119,15 +120,18 @@ class ExpressInstance extends BaseInstance {
 	/**
 	 * For middlewares without any input or output
 	 */
-	public useMiddlewares(path: string, ...routers: [BaseMiddleware, ...BaseMiddleware[]]): this
+	public useMiddlewares(
+		path: string,
+		...routers: [NoInputMiddleware, ...NoInputMiddleware[]]
+	): this
 
 	/**
 	 * For middlewares without any input or output
 	 */
-	public useMiddlewares(...routers: [BaseMiddleware, ...BaseMiddleware[]]): this
+	public useMiddlewares(...routers: [NoInputMiddleware, ...NoInputMiddleware[]]): this
 
 	public useMiddlewares(
-		...middlewaresAndPath: [string | BaseMiddleware, ...(string | BaseMiddleware)[]]
+		...middlewaresAndPath: [string | NoInputMiddleware, ...(string | NoInputMiddleware)[]]
 	): this {
 		const possiblyPath = middlewaresAndPath[0]
 		const path = typeof possiblyPath === 'string' ? possiblyPath : null

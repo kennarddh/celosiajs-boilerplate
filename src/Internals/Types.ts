@@ -5,6 +5,7 @@ import { JSON } from 'Types/JSON'
 import BaseController from './BaseController'
 import BaseMiddleware from './BaseMiddleware'
 import BaseRequest from './Providers/Base/BaseRequest'
+import BaseResponse from './Providers/Base/BaseResponse'
 
 // https://github.com/sindresorhus/type-fest/blob/main/source/empty-object.d.ts
 declare const emptyObjectSymbol: unique symbol
@@ -12,6 +13,8 @@ declare const emptyObjectSymbol: unique symbol
 export type EmptyObject = { [emptyObjectSymbol]?: never }
 
 export type MiddlewareArray = BaseMiddleware<any, any, any, any>[]
+
+export type NoInputMiddleware = BaseMiddleware<BaseRequest<any, any, any, any>, BaseResponse<any>, EmptyObject>
 
 /**
  * I don't know how that "& 1" fixes the problem but it does.
