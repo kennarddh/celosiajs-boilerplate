@@ -28,6 +28,16 @@ class RootController extends BaseController {
 	}
 }
 
+class HeadController extends BaseController {
+	public override index(
+		data: EmptyObject,
+		request: IControllerBaseRequest<typeof this>,
+		response: BaseResponse<JSON>,
+	) {
+		response.sendStatus(204)
+	}
+}
+
 class AuthController extends BaseController {
 	public override index(
 		data: EmptyObject,
@@ -176,6 +186,7 @@ rootRouter.get(
 	new AuthorizedController(),
 )
 
+rootRouter.head('/head', [], new HeadController())
 rootRouter.get('/', [], new RootController())
 rootRouter.post('/', [], new PostController())
 
