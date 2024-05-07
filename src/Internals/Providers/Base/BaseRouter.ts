@@ -39,7 +39,7 @@ abstract class BaseRouter<Strict extends boolean = true> {
 	>(
 		path: string,
 		middlewares: Middlewares & ValidateMiddlewares<Controller, Middlewares>,
-		controller: Controller & ValidateControllerWithoutBody<Controller, Middlewares>,
+		controller: Controller & ValidateControllerWithoutBody<Controller, Middlewares, Strict>,
 	): this
 
 	public abstract head<
@@ -48,7 +48,7 @@ abstract class BaseRouter<Strict extends boolean = true> {
 	>(
 		path: string,
 		middlewares: Middlewares & ValidateMiddlewares<Controller, Middlewares>,
-		controller: Controller & ValidateController<Controller, Middlewares>,
+		controller: Controller & ValidateControllerWithoutBody<Controller, Middlewares, Strict>,
 	): this
 
 	public abstract post<
@@ -84,7 +84,7 @@ abstract class BaseRouter<Strict extends boolean = true> {
 	>(
 		path: string,
 		middlewares: Middlewares & ValidateMiddlewares<Controller, Middlewares>,
-		controller: Controller & ValidateController<Controller, Middlewares>,
+		controller: Controller & ValidateControllerWithoutBody<Controller, Middlewares, Strict>,
 	): this
 
 	public abstract options<
@@ -93,7 +93,7 @@ abstract class BaseRouter<Strict extends boolean = true> {
 	>(
 		path: string,
 		middlewares: Middlewares & ValidateMiddlewares<Controller, Middlewares>,
-		controller: Controller & ValidateController<Controller, Middlewares>,
+		controller: Controller & ValidateControllerWithoutBody<Controller, Middlewares, Strict>,
 	): this
 
 	public abstract all<

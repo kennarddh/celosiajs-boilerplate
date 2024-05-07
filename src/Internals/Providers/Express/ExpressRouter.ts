@@ -101,6 +101,7 @@ class ExpressRouter<Strict extends boolean = true> extends BaseRouter<Strict> {
 			ValidateControllerWithoutBody<
 				Controller,
 				Middlewares,
+				Strict,
 				ExpressRequest<any, any, any, any>,
 				ExpressResponse<any>
 			>,
@@ -117,9 +118,10 @@ class ExpressRouter<Strict extends boolean = true> extends BaseRouter<Strict> {
 		path: string,
 		middlewares: Middlewares & ValidateMiddlewares<Controller, Middlewares>,
 		controller: Controller &
-			ValidateController<
+			ValidateControllerWithoutBody<
 				Controller,
 				Middlewares,
+				Strict,
 				ExpressRequest<any, any, any, any>,
 				ExpressResponse<any>
 			>,
@@ -193,9 +195,10 @@ class ExpressRouter<Strict extends boolean = true> extends BaseRouter<Strict> {
 		path: string,
 		middlewares: Middlewares & ValidateMiddlewares<Controller, Middlewares>,
 		controller: Controller &
-			ValidateController<
+			ValidateControllerWithoutBody<
 				Controller,
 				Middlewares,
+				Strict,
 				ExpressRequest<any, any, any, any>,
 				ExpressResponse<any>
 			>,
@@ -212,9 +215,10 @@ class ExpressRouter<Strict extends boolean = true> extends BaseRouter<Strict> {
 		path: string,
 		middlewares: Middlewares & ValidateMiddlewares<Controller, Middlewares>,
 		controller: Controller &
-			ValidateController<
+			ValidateControllerWithoutBody<
 				Controller,
 				Middlewares,
+				Strict,
 				ExpressRequest<any, any, any, any>,
 				ExpressResponse<any>
 			>,

@@ -115,9 +115,9 @@ export type ValidateController<
 export type ValidateControllerWithoutBody<
 	Controller extends BaseController<any, any, any>,
 	Middlewares extends BaseMiddlewareArray | [],
+	Strict extends Boolean = true,
 	RequiredRequest extends BaseRequest<any, any, any, any> = BaseRequest<any, any, any, any>,
 	RequiredResponse extends BaseResponse<any> = BaseResponse<any>,
-	Strict extends Boolean = true,
 > =
 	z.infer<Controller['body']> extends EmptyObject
 		? ValidateController<Controller, Middlewares, RequiredRequest, RequiredResponse>

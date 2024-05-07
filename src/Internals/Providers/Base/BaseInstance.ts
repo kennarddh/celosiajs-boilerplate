@@ -15,6 +15,10 @@ abstract class BaseInstance {
 		...args: ConstructorParameters<typeof BaseRouter>
 	) => BaseRouter
 
+	public abstract get NonStrictRouter(): new (
+		...args: ConstructorParameters<typeof BaseRouter>
+	) => BaseRouter<false>
+
 	/**
 	 * Must be called last after all router is registered
 	 */

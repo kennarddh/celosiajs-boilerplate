@@ -60,6 +60,12 @@ class ExpressInstance extends BaseInstance {
 		return ExpressRouter
 	}
 
+	public get NonStrictRouter(): new (
+		...args: ConstructorParameters<typeof ExpressRouter>
+	) => ExpressRouter<false> {
+		return ExpressRouter
+	}
+
 	/**
 	 * Must be called last after all router is registered
 	 *
