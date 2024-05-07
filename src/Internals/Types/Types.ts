@@ -5,15 +5,9 @@ import {
 	BaseMiddleware,
 	BaseRequest,
 	BaseResponse,
+	EmptyObject,
 	IControllerBaseRequest,
 } from 'Internals'
-
-// https://github.com/sindresorhus/type-fest/blob/main/source/empty-object.d.ts
-declare const emptyObjectSymbol: unique symbol
-
-export type EmptyObject = { [emptyObjectSymbol]?: never }
-
-export type StrictOmit<T, K extends keyof T> = {} extends Omit<T, K> ? EmptyObject : Omit<T, K>
 
 export type BaseMiddlewareArray = BaseMiddleware<any, any, any, any>[]
 
