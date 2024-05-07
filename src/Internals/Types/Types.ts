@@ -12,7 +12,7 @@ import {
 export type BaseMiddlewareArray = BaseMiddleware<any, any, any, any>[]
 
 export type NoInputBaseMiddleware = BaseMiddleware<
-	BaseRequest<any, any, any, any>,
+	BaseRequest<EmptyObject, EmptyObject, EmptyObject, EmptyObject>,
 	BaseResponse<any>,
 	EmptyObject
 >
