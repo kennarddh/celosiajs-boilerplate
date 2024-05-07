@@ -15,7 +15,10 @@ import {
 	ExpressResponse,
 	ExpressRouter,
 	IListenOptions,
+	InstanceConstructorOptions,
 	NoInputBaseMiddleware,
+	RouterConstructorOptions,
+	StrictOmit,
 } from 'Internals'
 
 import Logger from 'Utils/Logger/Logger'
@@ -23,23 +26,12 @@ import Logger from 'Utils/Logger/Logger'
 import ParseJson from './Middlewares/ParseJson'
 import ParseUrlencoded from './Middlewares/ParseUrlencoded'
 
-class ExpressInstance extends BaseInstance {
+class ExpressInstance<Strict extends boolean> extends BaseInstance<Strict> {
 	protected _express: ReturnType<typeof express>
 	protected _server: Server | null = null
 
-	/**
-	 * Harder migration to other http library if used
-	 */
-	public get express() {
-		return this._express
-	}
-
-	public get server() {
-		return this._server
-	}
-
-	constructor() {
-		super()
+	constructor(options: InstanceConstructorOptions<Strict>) {
+		super(options)
 
 		this._express = express()
 
@@ -54,16 +46,33 @@ class ExpressInstance extends BaseInstance {
 		this._express.use(cookieParser())
 	}
 
-	public get Router(): new (
-		...args: ConstructorParameters<typeof ExpressRouter>
-	) => ExpressRouter {
-		return ExpressRouter
+	/**
+	 * Harder migration to other http library if used
+	 */
+	public get express() {
+		return this._express
 	}
 
-	public get NonStrictRouter(): new (
-		...args: ConstructorParameters<typeof ExpressRouter>
-	) => ExpressRouter<false> {
-		return ExpressRouter
+	public get server() {
+		return this._server
+	}
+
+	public createRouter<StrictRouter extends boolean = true>(
+		options: RouterConstructorOptions<StrictRouter>,
+	): ExpressRouter<StrictRouter> {
+		return new ExpressRouter<StrictRouter>(options)
+	}
+
+	public createStrictRouter(
+		options: StrictOmit<RouterConstructorOptions<true>, 'strict'>,
+	): ExpressRouter<true> {
+		return new ExpressRouter<true>({ ...options, strict: true })
+	}
+
+	public createNonStrictRouter(
+		options: StrictOmit<RouterConstructorOptions<false>, 'strict'>,
+	): ExpressRouter<false> {
+		return new ExpressRouter<false>({ ...options, strict: false })
 	}
 
 	/**
@@ -106,10 +115,13 @@ class ExpressInstance extends BaseInstance {
 		})
 	}
 
-	public useRouters(path: string, ...routers: [ExpressRouter, ...ExpressRouter[]]): this
-	public useRouters(...routers: [ExpressRouter, ...ExpressRouter[]]): this
 	public useRouters(
-		...routersAndPath: [string | ExpressRouter, ...(string | ExpressRouter)[]]
+		path: string,
+		...routers: [ExpressRouter<Strict>, ...ExpressRouter<Strict>[]]
+	): this
+	public useRouters(...routers: [ExpressRouter<Strict>, ...ExpressRouter<Strict>[]]): this
+	public useRouters(
+		...routersAndPath: [string | ExpressRouter<Strict>, ...(string | ExpressRouter<Strict>)[]]
 	): this {
 		const possiblyPath = routersAndPath[0]
 		const path = typeof possiblyPath === 'string' ? possiblyPath : null

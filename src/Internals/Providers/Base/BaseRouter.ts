@@ -14,7 +14,21 @@ export interface ParsingInput {
 	cookies: unknown
 }
 
+export type RouterConstructorOptions<Strict extends boolean = true> = {
+	strict: Strict
+}
+
 abstract class BaseRouter<Strict extends boolean = true> {
+	protected _isStrict: Strict
+
+	constructor(options: RouterConstructorOptions<Strict>) {
+		this._isStrict = options.strict
+	}
+
+	public get isStrict(): Strict {
+		return this._isStrict
+	}
+
 	public abstract useRouters(path: string, ...routers: [BaseRouter, ...BaseRouter[]]): this
 	public abstract useRouters(...routers: [BaseRouter, ...BaseRouter[]]): this
 

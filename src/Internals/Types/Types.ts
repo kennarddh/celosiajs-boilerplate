@@ -13,6 +13,8 @@ declare const emptyObjectSymbol: unique symbol
 
 export type EmptyObject = { [emptyObjectSymbol]?: never }
 
+export type StrictOmit<T, K extends keyof T> = {} extends Omit<T, K> ? EmptyObject : Omit<T, K>
+
 export type BaseMiddlewareArray = BaseMiddleware<any, any, any, any>[]
 
 export type NoInputBaseMiddleware = BaseMiddleware<

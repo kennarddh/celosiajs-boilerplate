@@ -1,6 +1,6 @@
 import { Server } from 'http'
 
-import { BaseRouter, NoInputBaseMiddleware } from 'Internals'
+import { BaseRouter, NoInputBaseMiddleware, RouterConstructorOptions, StrictOmit } from 'Internals'
 
 export interface IListenOptions {
 	port?: number
@@ -8,16 +8,34 @@ export interface IListenOptions {
 	backlog?: number
 }
 
-abstract class BaseInstance {
+export type InstanceConstructorOptions<Strict extends boolean = true> = {
+	strict: Strict
+}
+
+abstract class BaseInstance<Strict extends boolean = true> {
+	protected _isStrict: Strict
+
+	constructor(options: InstanceConstructorOptions<Strict>) {
+		this._isStrict = options.strict
+	}
+
+	public get isStrict(): Strict {
+		return this._isStrict
+	}
+
 	public abstract get server(): Server | null
 
-	public abstract get Router(): new (
-		...args: ConstructorParameters<typeof BaseRouter>
-	) => BaseRouter
+	public abstract createRouter<StrictRouter extends boolean = true>(
+		options: RouterConstructorOptions<StrictRouter>,
+	): BaseRouter<StrictRouter>
 
-	public abstract get NonStrictRouter(): new (
-		...args: ConstructorParameters<typeof BaseRouter>
-	) => BaseRouter<false>
+	public abstract createStrictRouter(
+		options: StrictOmit<RouterConstructorOptions<true>, 'strict'>,
+	): BaseRouter<true>
+
+	public abstract createNonStrictRouter(
+		options: StrictOmit<RouterConstructorOptions<false>, 'strict'>,
+	): BaseRouter<false>
 
 	/**
 	 * Must be called last after all router is registered
@@ -27,8 +45,11 @@ abstract class BaseInstance {
 	public abstract listen(options: IListenOptions): Promise<void>
 	public abstract close(): Promise<void>
 
-	public abstract useRouters(path: string, ...routers: [BaseRouter, ...BaseRouter[]]): this
-	public abstract useRouters(...routers: [BaseRouter, ...BaseRouter[]]): this
+	public abstract useRouters(
+		path: string,
+		...routers: [BaseRouter<Strict>, ...BaseRouter<Strict>[]]
+	): this
+	public abstract useRouters(...routers: [BaseRouter<Strict>, ...BaseRouter<Strict>[]]): this
 
 	/**
 	 * For middlewares without any input or output

@@ -7,6 +7,7 @@ import {
 	BaseMiddleware,
 	BaseRequest,
 	BaseResponse,
+	BaseRouter,
 	EmptyObject,
 	ExpressInstance,
 	IControllerBaseRequest,
@@ -168,9 +169,9 @@ class AuthorizedController extends BaseController {
 	}
 }
 
-export const Instance = new ExpressInstance()
+export const Instance = new ExpressInstance({ strict: true })
 
-const rootRouter = new Instance.Router()
+const rootRouter = Instance.createStrictRouter({})
 
 Instance.useMiddlewares(new RateLimitMiddleware())
 
@@ -180,17 +181,17 @@ rootRouter.post(
 	new AuthorizedController(),
 )
 
-rootRouter.get(
-	'/authorized',
-	[new VerifyMiddleware(), new Verify2Middleware()],
-	new AuthorizedController(),
-)
+// rootRouter.get(
+// 	'/authorized',
+// 	[new VerifyMiddleware(), new Verify2Middleware()],
+// 	new AuthorizedController(),
+// )
 
 rootRouter.head('/head', [], new HeadController())
 rootRouter.get('/', [], new RootController())
 rootRouter.post('/', [], new PostController())
 
-const authRouter = new Instance.Router()
+const authRouter = Instance.createRouter({ strict: true })
 
 authRouter.useMiddlewares('/1', new AuthMiddleware())
 
@@ -207,6 +208,8 @@ rootRouter.all('*', [], new NotFoundController())
 Instance.addErrorHandler()
 
 await Instance.listen({ port: Port })
+
+type x = BaseRouter<false> extends BaseRouter<true> ? 1 : 2
 
 Logger.info(`Server running`, {
 	port: Port,
