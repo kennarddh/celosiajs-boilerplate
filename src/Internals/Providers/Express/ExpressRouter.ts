@@ -109,6 +109,25 @@ class ExpressRouter extends BaseRouter {
 		return this
 	}
 
+	public head<
+		Controller extends BaseController<any, ExpressRequest<any, any, any, any>, any>,
+		Middlewares extends ExpressMiddlewareArray,
+	>(
+		path: string,
+		middlewares: Middlewares & ValidateMiddlewares<Controller, Middlewares>,
+		controller: Controller &
+			ValidateController<
+				Controller,
+				Middlewares,
+				ExpressRequest<any, any, any, any>,
+				ExpressResponse<any>
+			>,
+	) {
+		this._expressRouter.head(path, this.handler(middlewares, controller))
+
+		return this
+	}
+
 	public post<
 		Controller extends BaseController<any, ExpressRequest<any, any, any, any>, any>,
 		Middlewares extends ExpressMiddlewareArray,

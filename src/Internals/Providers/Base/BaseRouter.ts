@@ -41,6 +41,15 @@ abstract class BaseRouter {
 		controller: Controller & ValidateController<Controller, Middlewares>,
 	): this
 
+	public abstract head<
+		Controller extends BaseController<any, any, any>,
+		Middlewares extends BaseMiddlewareArray,
+	>(
+		path: string,
+		middlewares: Middlewares & ValidateMiddlewares<Controller, Middlewares>,
+		controller: Controller & ValidateController<Controller, Middlewares>,
+	): this
+
 	public abstract post<
 		Controller extends BaseController<any, any, any>,
 		Middlewares extends BaseMiddlewareArray,
