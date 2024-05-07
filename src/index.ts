@@ -1,3 +1,7 @@
+import 'dotenv/config'
+
+import { z } from 'zod'
+
 import {
 	BaseController,
 	BaseMiddleware,
@@ -9,8 +13,6 @@ import {
 	IControllerExpressRequest,
 	JSON,
 } from 'Internals'
-import 'dotenv/config'
-import { z } from 'zod'
 
 import Logger from 'Utils/Logger/Logger'
 
@@ -163,6 +165,12 @@ const rootRouter = new Instance.Router()
 Instance.useMiddlewares(new RateLimitMiddleware())
 
 rootRouter.post(
+	'/authorized',
+	[new VerifyMiddleware(), new Verify2Middleware()],
+	new AuthorizedController(),
+)
+
+rootRouter.get(
 	'/authorized',
 	[new VerifyMiddleware(), new Verify2Middleware()],
 	new AuthorizedController(),
