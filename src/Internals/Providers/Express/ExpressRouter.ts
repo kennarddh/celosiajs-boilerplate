@@ -8,6 +8,7 @@ import {
 	ExpressResponse,
 	NoInputBaseMiddleware,
 	ValidateController,
+	ValidateControllerWithoutBody,
 	ValidateMiddlewares,
 } from 'Internals'
 
@@ -18,7 +19,7 @@ export type ExpressMiddlewareArray = BaseMiddleware<
 	any
 >[]
 
-class ExpressRouter extends BaseRouter {
+class ExpressRouter<Strict extends boolean = true> extends BaseRouter<Strict> {
 	private _expressRouter = express.Router()
 
 	public get expressRouter() {
@@ -97,7 +98,7 @@ class ExpressRouter extends BaseRouter {
 		path: string,
 		middlewares: Middlewares & ValidateMiddlewares<Controller, Middlewares>,
 		controller: Controller &
-			ValidateController<
+			ValidateControllerWithoutBody<
 				Controller,
 				Middlewares,
 				ExpressRequest<any, any, any, any>,

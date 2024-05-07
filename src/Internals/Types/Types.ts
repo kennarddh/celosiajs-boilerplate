@@ -1,3 +1,5 @@
+import { z } from 'zod'
+
 import {
 	BaseController,
 	BaseMiddleware,
@@ -109,6 +111,19 @@ export type ValidateController<
 				: never
 			: never
 		: never
+
+export type ValidateControllerWithoutBody<
+	Controller extends BaseController<any, any, any>,
+	Middlewares extends BaseMiddlewareArray | [],
+	RequiredRequest extends BaseRequest<any, any, any, any> = BaseRequest<any, any, any, any>,
+	RequiredResponse extends BaseResponse<any> = BaseResponse<any>,
+	Strict extends Boolean = true,
+> =
+	z.infer<Controller['body']> extends EmptyObject
+		? ValidateController<Controller, Middlewares, RequiredRequest, RequiredResponse>
+		: Strict extends true
+			? never
+			: ValidateController<Controller, Middlewares, RequiredRequest, RequiredResponse>
 
 export type HeaderValue = string | string[]
 export type Headers = Record<string, HeaderValue>

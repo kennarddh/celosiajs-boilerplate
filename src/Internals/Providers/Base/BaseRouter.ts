@@ -3,6 +3,7 @@ import {
 	BaseMiddlewareArray,
 	NoInputBaseMiddleware,
 	ValidateController,
+	ValidateControllerWithoutBody,
 	ValidateMiddlewares,
 } from 'Internals'
 
@@ -13,7 +14,7 @@ export interface ParsingInput {
 	cookies: unknown
 }
 
-abstract class BaseRouter {
+abstract class BaseRouter<Strict extends boolean = true> {
 	public abstract useRouters(path: string, ...routers: [BaseRouter, ...BaseRouter[]]): this
 	public abstract useRouters(...routers: [BaseRouter, ...BaseRouter[]]): this
 
@@ -38,7 +39,7 @@ abstract class BaseRouter {
 	>(
 		path: string,
 		middlewares: Middlewares & ValidateMiddlewares<Controller, Middlewares>,
-		controller: Controller & ValidateController<Controller, Middlewares>,
+		controller: Controller & ValidateControllerWithoutBody<Controller, Middlewares>,
 	): this
 
 	public abstract head<
