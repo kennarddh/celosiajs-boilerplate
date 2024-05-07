@@ -1,6 +1,6 @@
 import { Server } from 'http'
 
-import { BaseRouter, NoInputMiddleware } from 'Internals'
+import { BaseRouter, NoInputBaseMiddleware } from 'Internals'
 
 export interface IListenOptions {
 	port?: number
@@ -31,14 +31,14 @@ abstract class BaseInstance {
 	 */
 	public abstract useMiddlewares(
 		path: string,
-		...middlewares: [NoInputMiddleware, ...NoInputMiddleware[]]
+		...middlewares: [NoInputBaseMiddleware, ...NoInputBaseMiddleware[]]
 	): this
 
 	/**
 	 * For middlewares without any input or output
 	 */
 	public abstract useMiddlewares(
-		...middlewares: [NoInputMiddleware, ...NoInputMiddleware[]]
+		...middlewares: [NoInputBaseMiddleware, ...NoInputBaseMiddleware[]]
 	): this
 }
 

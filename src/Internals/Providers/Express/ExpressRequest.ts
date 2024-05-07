@@ -3,6 +3,7 @@ import { Request } from 'express'
 import { IncomingHttpHeaders } from 'http'
 
 import {
+	BaseController,
 	BaseRequest,
 	CookiesObject,
 	EmptyObject,
@@ -12,6 +13,15 @@ import {
 	QueryParams,
 } from 'Internals'
 import RangeParser from 'range-parser'
+import { z } from 'zod'
+
+export type IControllerExpressRequest<Controller extends BaseController<any, any, any>> =
+	ExpressRequest<
+		{} extends z.infer<Controller['body']> ? EmptyObject : z.infer<Controller['body']>,
+		{} extends z.infer<Controller['query']> ? EmptyObject : z.infer<Controller['query']>,
+		{} extends z.infer<Controller['params']> ? EmptyObject : z.infer<Controller['params']>,
+		{} extends z.infer<Controller['cookies']> ? EmptyObject : z.infer<Controller['cookies']>
+	>
 
 class ExpressRequest<
 	Body extends JSON = EmptyObject,

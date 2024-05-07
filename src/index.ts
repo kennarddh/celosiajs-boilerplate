@@ -5,7 +5,8 @@ import {
 	BaseResponse,
 	EmptyObject,
 	ExpressInstance,
-	IControllerRequest,
+	IControllerBaseRequest,
+	IControllerExpressRequest,
 	JSON,
 } from 'Internals'
 import 'dotenv/config'
@@ -15,14 +16,10 @@ import Logger from 'Utils/Logger/Logger'
 
 export const Port = parseInt(process.env.PORT || '8080', 10)
 
-export const Instance = new ExpressInstance()
-
-const rootRouter = new Instance.Router()
-
 class RootController extends BaseController {
 	public override index(
 		data: EmptyObject,
-		request: IControllerRequest<typeof this>,
+		request: IControllerBaseRequest<typeof this>,
 		response: BaseResponse<JSON>,
 	) {
 		response.status(200).json({ message: 'Hello world' })
@@ -32,7 +29,7 @@ class RootController extends BaseController {
 class AuthController extends BaseController {
 	public override index(
 		data: EmptyObject,
-		request: IControllerRequest<typeof this>,
+		request: IControllerBaseRequest<typeof this>,
 		response: BaseResponse<JSON>,
 	) {
 		response.status(200).json({ message: 'Auth' })
@@ -42,7 +39,7 @@ class AuthController extends BaseController {
 class AuthUserController extends BaseController {
 	public override index(
 		data: EmptyObject,
-		request: IControllerRequest<AuthUserController>,
+		request: IControllerBaseRequest<AuthUserController>,
 		response: BaseResponse<JSON>,
 	) {
 		response.status(200).json({ message: `User ID: ${request.params.id}` })
@@ -58,7 +55,7 @@ class AuthUserController extends BaseController {
 class NotFoundController extends BaseController {
 	public override index(
 		data: EmptyObject,
-		request: IControllerRequest<typeof this>,
+		request: IControllerBaseRequest<typeof this>,
 		response: BaseResponse<JSON>,
 	) {
 		response.status(404).json({ message: 'Not Found' })
@@ -68,7 +65,7 @@ class NotFoundController extends BaseController {
 class PostController extends BaseController {
 	public override index(
 		data: EmptyObject,
-		request: IControllerRequest<PostController>,
+		request: IControllerBaseRequest<PostController>,
 		response: BaseResponse,
 	) {
 		response.status(200).json({
@@ -144,7 +141,7 @@ class Verify2Middleware extends BaseMiddleware {
 class AuthorizedController extends BaseController {
 	public override index(
 		data: { username: string },
-		request: IControllerRequest<AuthorizedController>,
+		request: IControllerExpressRequest<AuthorizedController>,
 		response: BaseResponse<{ message: string }>,
 	) {
 		response
@@ -158,6 +155,10 @@ class AuthorizedController extends BaseController {
 		})
 	}
 }
+
+export const Instance = new ExpressInstance()
+
+const rootRouter = new Instance.Router()
 
 Instance.useMiddlewares(new RateLimitMiddleware())
 

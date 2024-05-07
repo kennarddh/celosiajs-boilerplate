@@ -1,8 +1,17 @@
 import { IncomingHttpHeaders } from 'http'
 
-import { CookiesObject, EmptyObject, HeaderValue, JSON, PathParams, QueryParams } from 'Internals'
+import {
+	BaseController,
+	CookiesObject,
+	EmptyObject,
+	HeaderValue,
+	JSON,
+	PathParams,
+	QueryParams,
+} from 'Internals'
 import RangeParser from 'range-parser'
 import { TypedEmitter } from 'tiny-typed-emitter'
+import { z } from 'zod'
 
 export interface RequestEvents {
 	close: () => void
@@ -13,6 +22,13 @@ export interface RequestEvents {
 	readable: () => void
 	resume: () => void
 }
+
+export type IControllerBaseRequest<Controller extends BaseController<any, any, any>> = BaseRequest<
+	{} extends z.infer<Controller['body']> ? EmptyObject : z.infer<Controller['body']>,
+	{} extends z.infer<Controller['query']> ? EmptyObject : z.infer<Controller['query']>,
+	{} extends z.infer<Controller['params']> ? EmptyObject : z.infer<Controller['params']>,
+	{} extends z.infer<Controller['cookies']> ? EmptyObject : z.infer<Controller['cookies']>
+>
 
 abstract class BaseRequest<
 	Body extends JSON = EmptyObject,

@@ -15,7 +15,7 @@ import {
 	ExpressResponse,
 	ExpressRouter,
 	IListenOptions,
-	NoInputMiddleware,
+	NoInputBaseMiddleware,
 } from 'Internals'
 
 import Logger from 'Utils/Logger/Logger'
@@ -125,16 +125,19 @@ class ExpressInstance extends BaseInstance {
 	 */
 	public useMiddlewares(
 		path: string,
-		...routers: [NoInputMiddleware, ...NoInputMiddleware[]]
+		...routers: [NoInputBaseMiddleware, ...NoInputBaseMiddleware[]]
 	): this
 
 	/**
 	 * For middlewares without any input or output
 	 */
-	public useMiddlewares(...routers: [NoInputMiddleware, ...NoInputMiddleware[]]): this
+	public useMiddlewares(...routers: [NoInputBaseMiddleware, ...NoInputBaseMiddleware[]]): this
 
 	public useMiddlewares(
-		...middlewaresAndPath: [string | NoInputMiddleware, ...(string | NoInputMiddleware)[]]
+		...middlewaresAndPath: [
+			string | NoInputBaseMiddleware,
+			...(string | NoInputBaseMiddleware)[],
+		]
 	): this {
 		const possiblyPath = middlewaresAndPath[0]
 		const path = typeof possiblyPath === 'string' ? possiblyPath : null

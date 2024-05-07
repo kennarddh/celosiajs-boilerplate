@@ -1,7 +1,7 @@
 import {
 	BaseController,
-	MiddlewareArray,
-	NoInputMiddleware,
+	BaseMiddlewareArray,
+	NoInputBaseMiddleware,
 	ValidateController,
 	ValidateMiddlewares,
 } from 'Internals'
@@ -22,19 +22,19 @@ abstract class BaseRouter {
 	 */
 	public abstract useMiddlewares(
 		path: string,
-		...middlewares: [NoInputMiddleware, ...NoInputMiddleware[]]
+		...middlewares: [NoInputBaseMiddleware, ...NoInputBaseMiddleware[]]
 	): this
 
 	/**
 	 * For middlewares without any input or output
 	 */
 	public abstract useMiddlewares(
-		...middlewares: [NoInputMiddleware, ...NoInputMiddleware[]]
+		...middlewares: [NoInputBaseMiddleware, ...NoInputBaseMiddleware[]]
 	): this
 
 	public abstract get<
 		Controller extends BaseController<any, any, any>,
-		Middlewares extends MiddlewareArray,
+		Middlewares extends BaseMiddlewareArray,
 	>(
 		path: string,
 		middlewares: Middlewares & ValidateMiddlewares<Controller, Middlewares>,
@@ -43,7 +43,7 @@ abstract class BaseRouter {
 
 	public abstract post<
 		Controller extends BaseController<any, any, any>,
-		Middlewares extends MiddlewareArray,
+		Middlewares extends BaseMiddlewareArray,
 	>(
 		path: string,
 		middlewares: Middlewares & ValidateMiddlewares<Controller, Middlewares>,
@@ -52,7 +52,7 @@ abstract class BaseRouter {
 
 	public abstract put<
 		Controller extends BaseController<any, any, any>,
-		Middlewares extends MiddlewareArray,
+		Middlewares extends BaseMiddlewareArray,
 	>(
 		path: string,
 		middlewares: Middlewares & ValidateMiddlewares<Controller, Middlewares>,
@@ -61,7 +61,7 @@ abstract class BaseRouter {
 
 	public abstract patch<
 		Controller extends BaseController<any, any, any>,
-		Middlewares extends MiddlewareArray,
+		Middlewares extends BaseMiddlewareArray,
 	>(
 		path: string,
 		middlewares: Middlewares & ValidateMiddlewares<Controller, Middlewares>,
@@ -70,7 +70,7 @@ abstract class BaseRouter {
 
 	public abstract delete<
 		Controller extends BaseController<any, any, any>,
-		Middlewares extends MiddlewareArray,
+		Middlewares extends BaseMiddlewareArray,
 	>(
 		path: string,
 		middlewares: Middlewares & ValidateMiddlewares<Controller, Middlewares>,
@@ -79,7 +79,7 @@ abstract class BaseRouter {
 
 	public abstract options<
 		Controller extends BaseController<any, any, any>,
-		Middlewares extends MiddlewareArray,
+		Middlewares extends BaseMiddlewareArray,
 	>(
 		path: string,
 		middlewares: Middlewares & ValidateMiddlewares<Controller, Middlewares>,
@@ -88,7 +88,7 @@ abstract class BaseRouter {
 
 	public abstract all<
 		Controller extends BaseController<any, any, any>,
-		Middlewares extends MiddlewareArray,
+		Middlewares extends BaseMiddlewareArray,
 	>(
 		path: string,
 		middlewares: Middlewares & ValidateMiddlewares<Controller, Middlewares>,

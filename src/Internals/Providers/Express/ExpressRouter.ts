@@ -6,11 +6,17 @@ import {
 	BaseRouter,
 	ExpressRequest,
 	ExpressResponse,
-	MiddlewareArray,
-	NoInputMiddleware,
+	NoInputBaseMiddleware,
 	ValidateController,
 	ValidateMiddlewares,
 } from 'Internals'
+
+export type ExpressMiddlewareArray = BaseMiddleware<
+	ExpressRequest<any, any, any, any>,
+	any,
+	any,
+	any
+>[]
 
 class ExpressRouter extends BaseRouter {
 	private _expressRouter = express.Router()
@@ -44,16 +50,19 @@ class ExpressRouter extends BaseRouter {
 	 */
 	public useMiddlewares(
 		path: string,
-		...routers: [NoInputMiddleware, ...NoInputMiddleware[]]
+		...routers: [NoInputBaseMiddleware, ...NoInputBaseMiddleware[]]
 	): this
 
 	/**
 	 * For middlewares without any input or output
 	 */
-	public useMiddlewares(...routers: [NoInputMiddleware, ...NoInputMiddleware[]]): this
+	public useMiddlewares(...routers: [NoInputBaseMiddleware, ...NoInputBaseMiddleware[]]): this
 
 	public useMiddlewares(
-		...middlewaresAndPath: [string | NoInputMiddleware, ...(string | NoInputMiddleware)[]]
+		...middlewaresAndPath: [
+			string | NoInputBaseMiddleware,
+			...(string | NoInputBaseMiddleware)[],
+		]
 	): this {
 		const possiblyPath = middlewaresAndPath[0]
 		const path = typeof possiblyPath === 'string' ? possiblyPath : null
@@ -82,12 +91,18 @@ class ExpressRouter extends BaseRouter {
 	}
 
 	public get<
-		Controller extends BaseController<any, any, any>,
-		Middlewares extends MiddlewareArray,
+		Controller extends BaseController<any, ExpressRequest<any, any, any, any>, any>,
+		Middlewares extends ExpressMiddlewareArray,
 	>(
 		path: string,
 		middlewares: Middlewares & ValidateMiddlewares<Controller, Middlewares>,
-		controller: Controller & ValidateController<Controller, Middlewares>,
+		controller: Controller &
+			ValidateController<
+				Controller,
+				Middlewares,
+				ExpressRequest<any, any, any, any>,
+				ExpressResponse<any>
+			>,
 	) {
 		this._expressRouter.get(path, this.handler(middlewares, controller))
 
@@ -95,12 +110,18 @@ class ExpressRouter extends BaseRouter {
 	}
 
 	public post<
-		Controller extends BaseController<any, any, any>,
-		Middlewares extends MiddlewareArray,
+		Controller extends BaseController<any, ExpressRequest<any, any, any, any>, any>,
+		Middlewares extends ExpressMiddlewareArray,
 	>(
 		path: string,
 		middlewares: Middlewares & ValidateMiddlewares<Controller, Middlewares>,
-		controller: Controller & ValidateController<Controller, Middlewares>,
+		controller: Controller &
+			ValidateController<
+				Controller,
+				Middlewares,
+				ExpressRequest<any, any, any, any>,
+				ExpressResponse<any>
+			>,
 	) {
 		this._expressRouter.post(path, this.handler(middlewares, controller))
 
@@ -108,12 +129,18 @@ class ExpressRouter extends BaseRouter {
 	}
 
 	public put<
-		Controller extends BaseController<any, any, any>,
-		Middlewares extends MiddlewareArray,
+		Controller extends BaseController<any, ExpressRequest<any, any, any, any>, any>,
+		Middlewares extends ExpressMiddlewareArray,
 	>(
 		path: string,
 		middlewares: Middlewares & ValidateMiddlewares<Controller, Middlewares>,
-		controller: Controller & ValidateController<Controller, Middlewares>,
+		controller: Controller &
+			ValidateController<
+				Controller,
+				Middlewares,
+				ExpressRequest<any, any, any, any>,
+				ExpressResponse<any>
+			>,
 	) {
 		this._expressRouter.put(path, this.handler(middlewares, controller))
 
@@ -121,12 +148,18 @@ class ExpressRouter extends BaseRouter {
 	}
 
 	public patch<
-		Controller extends BaseController<any, any, any>,
-		Middlewares extends MiddlewareArray,
+		Controller extends BaseController<any, ExpressRequest<any, any, any, any>, any>,
+		Middlewares extends ExpressMiddlewareArray,
 	>(
 		path: string,
 		middlewares: Middlewares & ValidateMiddlewares<Controller, Middlewares>,
-		controller: Controller & ValidateController<Controller, Middlewares>,
+		controller: Controller &
+			ValidateController<
+				Controller,
+				Middlewares,
+				ExpressRequest<any, any, any, any>,
+				ExpressResponse<any>
+			>,
 	) {
 		this._expressRouter.patch(path, this.handler(middlewares, controller))
 
@@ -134,12 +167,18 @@ class ExpressRouter extends BaseRouter {
 	}
 
 	public delete<
-		Controller extends BaseController<any, any, any>,
-		Middlewares extends MiddlewareArray,
+		Controller extends BaseController<any, ExpressRequest<any, any, any, any>, any>,
+		Middlewares extends ExpressMiddlewareArray,
 	>(
 		path: string,
 		middlewares: Middlewares & ValidateMiddlewares<Controller, Middlewares>,
-		controller: Controller & ValidateController<Controller, Middlewares>,
+		controller: Controller &
+			ValidateController<
+				Controller,
+				Middlewares,
+				ExpressRequest<any, any, any, any>,
+				ExpressResponse<any>
+			>,
 	) {
 		this._expressRouter.delete(path, this.handler(middlewares, controller))
 
@@ -147,12 +186,18 @@ class ExpressRouter extends BaseRouter {
 	}
 
 	public options<
-		Controller extends BaseController<any, any, any>,
-		Middlewares extends MiddlewareArray,
+		Controller extends BaseController<any, ExpressRequest<any, any, any, any>, any>,
+		Middlewares extends ExpressMiddlewareArray,
 	>(
 		path: string,
 		middlewares: Middlewares & ValidateMiddlewares<Controller, Middlewares>,
-		controller: Controller & ValidateController<Controller, Middlewares>,
+		controller: Controller &
+			ValidateController<
+				Controller,
+				Middlewares,
+				ExpressRequest<any, any, any, any>,
+				ExpressResponse<any>
+			>,
 	) {
 		this._expressRouter.options(path, this.handler(middlewares, controller))
 
@@ -160,12 +205,18 @@ class ExpressRouter extends BaseRouter {
 	}
 
 	public all<
-		Controller extends BaseController<any, any, any>,
-		Middlewares extends MiddlewareArray,
+		Controller extends BaseController<any, ExpressRequest<any, any, any, any>, any>,
+		Middlewares extends ExpressMiddlewareArray,
 	>(
 		path: string,
 		middlewares: Middlewares & ValidateMiddlewares<Controller, Middlewares>,
-		controller: Controller & ValidateController<Controller, Middlewares>,
+		controller: Controller &
+			ValidateController<
+				Controller,
+				Middlewares,
+				ExpressRequest<any, any, any, any>,
+				ExpressResponse<any>
+			>,
 	) {
 		this._expressRouter.all(path, this.handler(middlewares, controller))
 
@@ -173,7 +224,7 @@ class ExpressRouter extends BaseRouter {
 	}
 
 	private handler<
-		Controller extends BaseController<any, any, any>,
+		Controller extends BaseController<any, ExpressRequest<any, any, any, any>, any>,
 		Middlewares extends BaseMiddleware[],
 	>(middlewares: Middlewares, controller: Controller) {
 		return async (request: Request, response: Response) => {
