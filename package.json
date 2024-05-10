@@ -69,7 +69,7 @@
 		"prettier": "^3.2.5",
 		"prisma": "^5.12.1",
 		"rimraf": "^5.0.5",
-		"tsc-alias": "^1.8.8",
+		"tsc-alias": "^1.8.9",
 		"tsx": "^4.7.2",
 		"typescript": "^5.4.3",
 		"typescript-eslint": "^7.5.0"
