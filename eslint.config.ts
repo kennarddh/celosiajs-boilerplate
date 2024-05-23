@@ -70,6 +70,7 @@ export default tsEslint.config(
 					allowNumber: true,
 				},
 			],
+			'@typescript-eslint/require-await': 'off',
 			'import/prefer-default-export': 'off',
 			'import/extensions': ['warn', { ts: 'never', json: 'never' }],
 			'prettier/prettier': 'warn',

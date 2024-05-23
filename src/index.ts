@@ -13,7 +13,6 @@ import {
 	ExpressResponse,
 	ExpressRouter,
 	IControllerRequest,
-	JSON,
 } from 'Internals'
 
 import Logger from 'Utils/Logger/Logger'
@@ -22,9 +21,9 @@ export const Port = parseInt(process.env.PORT || '8080', 10)
 
 class RootController extends BaseController {
 	public override index(
-		data: EmptyObject,
-		request: IControllerRequest<typeof this>,
-		response: ExpressResponse<JSON>,
+		_: EmptyObject,
+		__: IControllerRequest<RootController>,
+		response: ExpressResponse,
 	) {
 		response.status(200).json({ message: 'Hello world' })
 	}
@@ -32,9 +31,9 @@ class RootController extends BaseController {
 
 class HeadController extends BaseController {
 	public override index(
-		data: EmptyObject,
-		request: IControllerRequest<typeof this>,
-		response: ExpressResponse<JSON>,
+		_: EmptyObject,
+		__: IControllerRequest<HeadController>,
+		response: ExpressResponse,
 	) {
 		response.sendStatus(204)
 	}
@@ -42,9 +41,9 @@ class HeadController extends BaseController {
 
 class AuthController extends BaseController {
 	public override index(
-		data: EmptyObject,
-		request: IControllerRequest<typeof this>,
-		response: ExpressResponse<JSON>,
+		_: EmptyObject,
+		__: IControllerRequest<AuthController>,
+		response: ExpressResponse,
 	) {
 		response.status(200).json({ message: 'Auth' })
 	}
@@ -52,9 +51,9 @@ class AuthController extends BaseController {
 
 class AuthUserController extends BaseController {
 	public override index(
-		data: EmptyObject,
+		_: EmptyObject,
 		request: IControllerRequest<AuthUserController>,
-		response: ExpressResponse<JSON>,
+		response: ExpressResponse,
 	) {
 		response.status(200).json({ message: `User ID: ${request.params.id}` })
 	}
@@ -68,9 +67,9 @@ class AuthUserController extends BaseController {
 
 class NotFoundController extends BaseController {
 	public override index(
-		data: EmptyObject,
-		request: IControllerRequest<typeof this>,
-		response: ExpressResponse<JSON>,
+		_: EmptyObject,
+		__: IControllerRequest<NotFoundController>,
+		response: ExpressResponse,
 	) {
 		response.status(404).json({ message: 'Not Found' })
 	}
@@ -78,7 +77,7 @@ class NotFoundController extends BaseController {
 
 class PostController extends BaseController {
 	public override index(
-		data: EmptyObject,
+		_: EmptyObject,
 		request: IControllerRequest<PostController>,
 		response: ExpressResponse,
 	) {
@@ -96,44 +95,32 @@ class PostController extends BaseController {
 }
 
 class RateLimitMiddleware extends BaseMiddleware {
-	public override async index(
-		data: EmptyObject,
-		request: ExpressRequest,
-		response: ExpressResponse<JSON>,
-	) {
+	public override async index(_: EmptyObject, __: ExpressRequest, response: ExpressResponse) {
 		response.header('Request-Left', 10)
 	}
 }
 
 class AuthMiddleware extends BaseMiddleware {
-	public override async index(
-		data: EmptyObject,
-		request: ExpressRequest,
-		response: ExpressResponse<JSON>,
-	) {
+	public override async index(_: EmptyObject, __: ExpressRequest, response: ExpressResponse) {
 		response.header('Auth', 1)
 	}
 }
 
 class Auth2Middleware extends BaseMiddleware {
-	public override async index(
-		data: EmptyObject,
-		request: ExpressRequest,
-		response: ExpressResponse<JSON>,
-	) {
+	public override async index(_: EmptyObject, __: ExpressRequest, response: ExpressResponse) {
 		response.header('Auth2', 1)
 	}
 }
 
 class VerifyMiddleware extends BaseMiddleware {
 	public override async index(
-		data: EmptyObject,
+		_: EmptyObject,
 		request: ExpressRequest<{ id: string }>,
-		response: ExpressResponse<JSON>,
+		response: ExpressResponse,
 	): Promise<{ username: string }> {
 		response.header('Auth2', 1)
 
-		return { username: `${request.body.id}` }
+		return { username: request.body.id }
 	}
 }
 
@@ -141,7 +128,7 @@ class Verify2Middleware extends BaseMiddleware {
 	public override async index(
 		data: { username: string },
 		request: ExpressRequest<{ id: string }>,
-		response: ExpressResponse<JSON>,
+		response: ExpressResponse,
 	): Promise<{ email: string }> {
 		response.header('Auth2', 1)
 
@@ -153,9 +140,9 @@ class Verify2Middleware extends BaseMiddleware {
 
 class Verify3Middleware extends BaseMiddleware {
 	public override async index(
-		data: EmptyObject,
-		request: ExpressRequest<{ id: string }>,
-		response: ExpressResponse<JSON>,
+		_: EmptyObject,
+		__: ExpressRequest<{ id: string }>,
+		response: ExpressResponse,
 	): Promise<{ id: number }> {
 		response.header('Auth2', 1)
 

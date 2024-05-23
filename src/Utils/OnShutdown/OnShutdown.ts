@@ -5,7 +5,7 @@ import Logger from 'Utils/Logger/Logger'
 import prisma from 'Database/index'
 
 const OnShutdown =
-	(signal: string, exitCode: number = 0) =>
+	(signal: string, exitCode = 0) =>
 	async () => {
 		let port = -1
 		let serverApp = null
