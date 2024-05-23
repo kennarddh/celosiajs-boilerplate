@@ -27,7 +27,6 @@
 		"resolveJsonModule": true,
 		"moduleResolution": "Bundler",
 		"outDir": "./dist/",
-		"typeRoots": ["./node_modules/@types"],
 		"baseUrl": "src",
 		"paths": {
 			"Utils/*": ["./Utils/*"],

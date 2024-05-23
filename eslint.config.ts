@@ -1,100 +1,100 @@
 import js from '@eslint/js'
-import type { FlatConfig } from '@typescript-eslint/utils/ts-eslint'
-import airbnbBase from 'eslint-config-airbnb-base'
+import { FlatConfig } from '@typescript-eslint/utils/ts-eslint'
 import importPlugin from 'eslint-plugin-import'
 import json from 'eslint-plugin-json'
 import prettier from 'eslint-plugin-prettier'
+import prettierRecommended from 'eslint-plugin-prettier/recommended'
 import security from 'eslint-plugin-security'
 import globals from 'globals'
-import { createRequire } from 'node:module'
-import { dirname } from 'node:path'
-import { fileURLToPath } from 'node:url'
 import tsEslint from 'typescript-eslint'
 
-const require = createRequire(import.meta.url)
-const __dirname = dirname(fileURLToPath(import.meta.url))
-
 export default tsEslint.config(
+	{ ignores: ['build/**/*', 'eslint.config.d.ts'] },
 	{
-		files: [
-			'./src/**/*.{ts,tsx,json}',
-			'./eslint.config.ts',
-			'./scripts/**/*',
-		],
 		languageOptions: {
 			parser: tsEslint.parser as FlatConfig.Parser,
 			parserOptions: {
 				ecmaVersion: 'latest',
-				project: './tsconfig.json',
-				tsconfigRootDir: __dirname,
+				sourceType: 'module',
+				project: 'tsconfig.json',
+				tsconfigRootDir: import.meta.dirname,
+				extraFileExtensions: ['.json'],
 			},
-			globals: { ...globals.node },
+			globals: {
+				...globals.node,
+				...globals.browser,
+				...globals.es2021,
+			},
 		},
+	},
+	js.configs.recommended,
+	security.configs.recommended,
+	...tsEslint.configs.strictTypeChecked,
+	...tsEslint.configs.stylisticTypeChecked,
+	prettierRecommended,
+	{
+		files: ['./src/**/*.ts', './eslint.config.ts', './scripts/**/*'],
 		plugins: {
-			security,
-			prettier,
 			json,
 			import: importPlugin,
 			'@typescript-eslint': tsEslint.plugin,
+			prettier,
+		},
+		rules: {
+			...json.configs['recommended'].rules,
+			...importPlugin.configs['recommended'].rules,
+			...importPlugin.configs['typescript'].rules,
+			'@typescript-eslint/no-unused-vars': 'warn',
+			'@typescript-eslint/no-empty-function': [
+				'error',
+				{ allow: ['private-constructors', 'protected-constructors'] },
+			],
+			'@typescript-eslint/no-confusing-void-expression': [
+				'error',
+				{
+					ignoreArrowShorthand: true,
+					ignoreVoidOperator: true,
+				},
+			],
+			'@typescript-eslint/no-misused-promises': [
+				'error',
+				{
+					checksVoidReturn: {
+						arguments: false,
+					},
+				},
+			],
+			'@typescript-eslint/restrict-template-expressions': [
+				'error',
+				{
+					allowNumber: true,
+				},
+			],
+			'import/prefer-default-export': 'off',
+			'import/extensions': ['warn', { ts: 'never', json: 'never' }],
+			'prettier/prettier': 'warn',
 		},
 		settings: {
 			'import/resolver': {
 				typescript: {},
 			},
 		},
-		rules: {
-			...tsEslint.configs['eslintRecommended'].rules,
-			...tsEslint.configs['recommended']
-				.map(config => config.rules)
-				.reduce((acc, val) => ({ ...acc, ...val }), {}),
-			...js.configs['recommended'].rules,
-			...json.configs['recommended'].rules,
-			...security.configs['recommended'].rules,
-			...prettier.configs['recommended'].rules,
-			...importPlugin.configs['recommended'].rules,
-			...importPlugin.configs['typescript'].rules,
-			...airbnbBase.rules,
-			...(airbnbBase.extends as string[])
-				.map(extend => require(extend).rules)
-				.reduce((acc, val) => ({ ...acc, ...val }), {}),
-			'prettier/prettier': [
-				'warn',
-				{
-					endOfLine: 'lf',
-				},
-			],
-			'import/prefer-default-export': 'off',
-			'no-underscore-dangle': [
-				'error',
-				{
-					allow: ['_id'],
-				},
-			],
-			'no-console': 'warn',
-			'consistent-return': 'off',
-			'import/extensions': ['warn', { ts: 'never', json: 'never' }],
-			'prefer-promise-reject-errors': 'off',
-			'@typescript-eslint/no-unused-vars': [
-				'warn',
-				{ varsIgnorePattern: '^_' },
-			],
-		},
 	},
 	{
-		files: ['./eslint.config.ts'],
+		files: ['eslint.config.ts', 'eslint.d.ts'],
 		languageOptions: {
 			parserOptions: {
-				project: './tsconfig.eslint.json',
+				project: 'tsconfig.eslint.json',
 			},
+		},
+		plugins: {
+			import: importPlugin,
 		},
 		rules: {
 			'import/no-extraneous-dependencies': [
 				'error',
 				{
-					devDependencies: [
-						'typescript-eslint',
-						'@typescript-eslint/utils',
-					],
+					devDependencies: true,
 				},
 			],
 		},
@@ -105,6 +105,17 @@ export default tsEslint.config(
 			parserOptions: {
 				project: './tsconfig.dev.json',
 			},
+		},
+		plugins: {
+			import: importPlugin,
+		},
+		rules: {
+			'import/no-extraneous-dependencies': [
+				'error',
+				{
+					devDependencies: true,
+				},
+			],
 		},
 	},
 )

@@ -1,5 +1,0 @@
-{
-	"src/**/*.{js,json}": ["prettier -w", "eslint --fix"],
-	"scripts/**/*.{js,json}": ["prettier -w", "eslint --fix"],
-	"*.md": "prettier -w"
-}
