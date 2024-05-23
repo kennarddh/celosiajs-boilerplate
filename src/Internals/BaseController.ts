@@ -1,12 +1,12 @@
-import { BaseRequest, BaseResponse } from 'Internals'
+import { ExpressRequest, ExpressResponse } from 'Internals'
 import { z } from 'zod'
 
 const emptyZodObject = z.object({})
 
 abstract class BaseController<
 	T extends Record<string, any> = {},
-	Request extends BaseRequest<any, any, any, any> = BaseRequest<any, any, any, any>,
-	Response extends BaseResponse<any> = BaseResponse<any>,
+	Request extends ExpressRequest<any, any, any, any> = ExpressRequest<any, any, any, any>,
+	Response extends ExpressResponse<any> = ExpressResponse<any>,
 > {
 	public abstract index(data: T, request: Request, response: Response): void
 

@@ -2,38 +2,29 @@ import { Request } from 'express'
 
 import { IncomingHttpHeaders } from 'http'
 
-import {
-	BaseController,
-	BaseRequest,
-	CookiesObject,
-	EmptyObject,
-	HeaderValue,
-	JSON,
-	PathParams,
-	QueryParams,
-} from 'Internals'
 import RangeParser from 'range-parser'
-import { z } from 'zod'
+import { TypedEmitter } from 'tiny-typed-emitter'
 
-export type IControllerExpressRequest<Controller extends BaseController<any, any, any>> =
-	ExpressRequest<
-		{} extends z.infer<Controller['body']> ? EmptyObject : z.infer<Controller['body']>,
-		{} extends z.infer<Controller['query']> ? EmptyObject : z.infer<Controller['query']>,
-		{} extends z.infer<Controller['params']> ? EmptyObject : z.infer<Controller['params']>,
-		{} extends z.infer<Controller['cookies']> ? EmptyObject : z.infer<Controller['cookies']>
-	>
+import { CookiesObject, EmptyObject, HeaderValue, JSON, PathParams, QueryParams } from 'Internals'
+
+export interface RequestEvents {
+	close: () => void
+	data: (chunk: any) => void
+	end: () => void
+	error: (error: Error) => void
+	pause: () => void
+	readable: () => void
+	resume: () => void
+}
 
 class ExpressRequest<
 	Body extends JSON = EmptyObject,
 	Query extends QueryParams = EmptyObject,
 	Params extends PathParams = EmptyObject,
 	Cookies extends CookiesObject = EmptyObject,
-> extends BaseRequest<Body, Query, Params, Cookies> {
+> extends TypedEmitter<RequestEvents> {
 	protected _expressRequest: Request
 
-	/**
-	 * Harder migration to other http library if used
-	 */
 	public get expressRequest() {
 		return this._expressRequest
 	}

@@ -2,21 +2,23 @@ import { Response } from 'express'
 
 import { OutgoingHttpHeaders } from 'http'
 
-import {
-	BaseResponse,
-	CookieOptions,
-	DownloadOptions,
-	Headers,
-	JSON,
-	SendFileOptions,
-} from 'Internals'
+import { Readable } from 'stream'
+import { TypedEmitter } from 'tiny-typed-emitter'
 
-class ExpressResponse<Body = JSON> extends BaseResponse<Body> {
+import { CookieOptions, DownloadOptions, Headers, JSON, SendFileOptions } from 'Internals'
+
+export interface ResponseEvents {
+	close: () => void
+	drain: () => void
+	error: (error: Error) => void
+	finish: () => void
+	pipe: (src: Readable) => void
+	unpipe: (src: Readable) => void
+}
+
+class ExpressResponse<Body = JSON> extends TypedEmitter<ResponseEvents> {
 	protected _expressResponse: Response
 
-	/**
-	 * Harder migration to other http library if used
-	 */
 	public get expressResponse() {
 		return this._expressResponse
 	}

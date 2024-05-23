@@ -3,38 +3,48 @@ import { z } from 'zod'
 import {
 	BaseController,
 	BaseMiddleware,
-	BaseRequest,
-	BaseResponse,
 	EmptyObject,
-	IControllerBaseRequest,
+	ExpressRequest,
+	ExpressResponse,
 } from 'Internals'
 
-export type BaseMiddlewareArray = BaseMiddleware<any, any, any, any>[]
+export type MiddlewareArray = BaseMiddleware<any, any, any, any>[]
 
-export type NoInputBaseMiddleware = BaseMiddleware<
-	BaseRequest<EmptyObject, EmptyObject, EmptyObject, EmptyObject>,
-	BaseResponse<any>,
+export type NoInputMiddleware = BaseMiddleware<
+	ExpressRequest<EmptyObject, EmptyObject, EmptyObject, EmptyObject>,
+	ExpressResponse<any>,
 	EmptyObject
+>
+
+// & EmptyObject is used so that `{ x: string } extends EmptyObject` become true, because EmptyObject has it's own brand symbol.
+export type IControllerRequest<Controller extends BaseController<any, any, any>> = ExpressRequest<
+	{} extends z.infer<Controller['body']>
+		? EmptyObject
+		: z.infer<Controller['body']> & EmptyObject,
+	{} extends z.infer<Controller['query']>
+		? EmptyObject
+		: z.infer<Controller['query']> & EmptyObject,
+	{} extends z.infer<Controller['params']>
+		? EmptyObject
+		: z.infer<Controller['params']> & EmptyObject,
+	{} extends z.infer<Controller['cookies']>
+		? EmptyObject
+		: z.infer<Controller['cookies']> & EmptyObject
 >
 
 export type IControllerResponse<Controller extends BaseController<any, any, any>> =
 	Controller extends BaseController<any, any, infer Response> ? Response : never
 
-/**
- * I don't know how that "& 1" fixes the problem but it does.
- *
- * The problem is when a middleware require a body in request but the controller doesn't provide it.
- */
 export type ValidateMiddlewares<
 	Controller extends BaseController<any, any, any>,
-	T extends BaseMiddlewareArray,
+	T extends MiddlewareArray,
 	Input extends Record<string, any> = EmptyObject,
-	Results extends BaseMiddlewareArray = [],
+	Results extends MiddlewareArray = [],
 > = T extends [
 	BaseMiddleware<infer Request, infer Response, infer RequiredInput, infer Output>,
-	...infer Tail extends BaseMiddlewareArray,
+	...infer Tail extends MiddlewareArray,
 ]
-	? IControllerBaseRequest<Controller> extends Request
+	? IControllerRequest<Controller> extends Request
 		? Response extends IControllerResponse<Controller>
 			? RequiredInput extends Input
 				? ValidateMiddlewares<Controller, Tail, Input & Output, [...Results, T[0]]>
@@ -45,9 +55,9 @@ export type ValidateMiddlewares<
 						[
 							...Results,
 							BaseMiddleware<
-								IControllerBaseRequest<Controller> & 1,
+								IControllerRequest<Controller>,
 								IControllerResponse<Controller>,
-								Input,
+								{ requiredInput: RequiredInput; input: Input },
 								Output
 							>,
 						]
@@ -59,7 +69,7 @@ export type ValidateMiddlewares<
 					[
 						...Results,
 						BaseMiddleware<
-							IControllerBaseRequest<Controller> & 1,
+							IControllerRequest<Controller>,
 							IControllerResponse<Controller>,
 							Input,
 							Output
@@ -73,7 +83,7 @@ export type ValidateMiddlewares<
 				[
 					...Results,
 					BaseMiddleware<
-						IControllerBaseRequest<Controller> & 1,
+						IControllerRequest<Controller>,
 						IControllerResponse<Controller>,
 						Input,
 						Output
@@ -83,43 +93,32 @@ export type ValidateMiddlewares<
 	: Results
 
 export type MergeMiddlewaresOutput<
-	T extends BaseMiddlewareArray,
+	T extends MiddlewareArray,
 	Input extends Record<string, any> = {},
-> = T extends [
-	BaseMiddleware<any, any, any, infer Output>,
-	...infer Tail extends BaseMiddlewareArray,
-]
+> = T extends [BaseMiddleware<any, any, any, infer Output>, ...infer Tail extends MiddlewareArray]
 	? MergeMiddlewaresOutput<Tail, Output & Input>
 	: Input
 
 export type ValidateController<
 	Controller extends BaseController<any, any, any>,
-	Middlewares extends BaseMiddlewareArray | [],
-	RequiredRequest extends BaseRequest<any, any, any, any> = BaseRequest<any, any, any, any>,
-	RequiredResponse extends BaseResponse<any> = BaseResponse<any>,
+	Middlewares extends MiddlewareArray | [],
 > =
-	Controller extends BaseController<infer Data, infer Request, infer Response>
-		? RequiredRequest extends Request
-			? RequiredResponse extends Response
-				? MergeMiddlewaresOutput<Middlewares> extends Data
-					? Controller
-					: never
-				: never
+	Controller extends BaseController<infer Data, any, any>
+		? MergeMiddlewaresOutput<Middlewares> extends Data
+			? Controller
 			: never
 		: never
 
 export type ValidateControllerWithoutBody<
 	Controller extends BaseController<any, any, any>,
-	Middlewares extends BaseMiddlewareArray | [],
+	Middlewares extends MiddlewareArray | [],
 	Strict extends Boolean = true,
-	RequiredRequest extends BaseRequest<any, any, any, any> = BaseRequest<any, any, any, any>,
-	RequiredResponse extends BaseResponse<any> = BaseResponse<any>,
 > =
 	z.infer<Controller['body']> extends EmptyObject
-		? ValidateController<Controller, Middlewares, RequiredRequest, RequiredResponse>
+		? ValidateController<Controller, Middlewares>
 		: Strict extends true
 			? never
-			: ValidateController<Controller, Middlewares, RequiredRequest, RequiredResponse>
+			: ValidateController<Controller, Middlewares>
 
 export type HeaderValue = string | string[]
 export type Headers = Record<string, HeaderValue>

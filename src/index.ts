@@ -5,13 +5,12 @@ import { z } from 'zod'
 import {
 	BaseController,
 	BaseMiddleware,
-	BaseRequest,
-	BaseResponse,
-	BaseRouter,
 	EmptyObject,
 	ExpressInstance,
-	IControllerBaseRequest,
-	IControllerExpressRequest,
+	ExpressRequest,
+	ExpressResponse,
+	ExpressRouter,
+	IControllerRequest,
 	JSON,
 } from 'Internals'
 
@@ -22,8 +21,8 @@ export const Port = parseInt(process.env.PORT || '8080', 10)
 class RootController extends BaseController {
 	public override index(
 		data: EmptyObject,
-		request: IControllerBaseRequest<typeof this>,
-		response: BaseResponse<JSON>,
+		request: IControllerRequest<typeof this>,
+		response: ExpressResponse<JSON>,
 	) {
 		response.status(200).json({ message: 'Hello world' })
 	}
@@ -32,8 +31,8 @@ class RootController extends BaseController {
 class HeadController extends BaseController {
 	public override index(
 		data: EmptyObject,
-		request: IControllerBaseRequest<typeof this>,
-		response: BaseResponse<JSON>,
+		request: IControllerRequest<typeof this>,
+		response: ExpressResponse<JSON>,
 	) {
 		response.sendStatus(204)
 	}
@@ -42,8 +41,8 @@ class HeadController extends BaseController {
 class AuthController extends BaseController {
 	public override index(
 		data: EmptyObject,
-		request: IControllerBaseRequest<typeof this>,
-		response: BaseResponse<JSON>,
+		request: IControllerRequest<typeof this>,
+		response: ExpressResponse<JSON>,
 	) {
 		response.status(200).json({ message: 'Auth' })
 	}
@@ -52,8 +51,8 @@ class AuthController extends BaseController {
 class AuthUserController extends BaseController {
 	public override index(
 		data: EmptyObject,
-		request: IControllerBaseRequest<AuthUserController>,
-		response: BaseResponse<JSON>,
+		request: IControllerRequest<AuthUserController>,
+		response: ExpressResponse<JSON>,
 	) {
 		response.status(200).json({ message: `User ID: ${request.params.id}` })
 	}
@@ -68,8 +67,8 @@ class AuthUserController extends BaseController {
 class NotFoundController extends BaseController {
 	public override index(
 		data: EmptyObject,
-		request: IControllerBaseRequest<typeof this>,
-		response: BaseResponse<JSON>,
+		request: IControllerRequest<typeof this>,
+		response: ExpressResponse<JSON>,
 	) {
 		response.status(404).json({ message: 'Not Found' })
 	}
@@ -78,8 +77,8 @@ class NotFoundController extends BaseController {
 class PostController extends BaseController {
 	public override index(
 		data: EmptyObject,
-		request: IControllerBaseRequest<PostController>,
-		response: BaseResponse,
+		request: IControllerRequest<PostController>,
+		response: ExpressResponse,
 	) {
 		response.status(200).json({
 			message: `Hello ${request.body.name}${request.body.lastName ? ` ${request.body.lastName}` : ''}`,
@@ -97,8 +96,8 @@ class PostController extends BaseController {
 class RateLimitMiddleware extends BaseMiddleware {
 	public override async index(
 		data: EmptyObject,
-		request: BaseRequest,
-		response: BaseResponse<JSON>,
+		request: ExpressRequest,
+		response: ExpressResponse<JSON>,
 	) {
 		response.header('Request-Left', 10)
 	}
@@ -107,8 +106,8 @@ class RateLimitMiddleware extends BaseMiddleware {
 class AuthMiddleware extends BaseMiddleware {
 	public override async index(
 		data: EmptyObject,
-		request: BaseRequest,
-		response: BaseResponse<JSON>,
+		request: ExpressRequest,
+		response: ExpressResponse<JSON>,
 	) {
 		response.header('Auth', 1)
 	}
@@ -117,8 +116,8 @@ class AuthMiddleware extends BaseMiddleware {
 class Auth2Middleware extends BaseMiddleware {
 	public override async index(
 		data: EmptyObject,
-		request: BaseRequest,
-		response: BaseResponse<JSON>,
+		request: ExpressRequest,
+		response: ExpressResponse<JSON>,
 	) {
 		response.header('Auth2', 1)
 	}
@@ -127,8 +126,8 @@ class Auth2Middleware extends BaseMiddleware {
 class VerifyMiddleware extends BaseMiddleware {
 	public override async index(
 		data: EmptyObject,
-		request: BaseRequest<{ id: string }>,
-		response: BaseResponse<JSON>,
+		request: ExpressRequest<{ id: string }>,
+		response: ExpressResponse<JSON>,
 	): Promise<{ username: string }> {
 		response.header('Auth2', 1)
 
@@ -139,23 +138,36 @@ class VerifyMiddleware extends BaseMiddleware {
 class Verify2Middleware extends BaseMiddleware {
 	public override async index(
 		data: { username: string },
-		request: BaseRequest<{ id: string }>,
-		response: BaseResponse<JSON>,
-	): Promise<{ username: string; email: string }> {
+		request: ExpressRequest<{ id: string }>,
+		response: ExpressResponse<JSON>,
+	): Promise<{ email: string }> {
 		response.header('Auth2', 1)
 
 		return {
-			username: `${request.body.id}`,
 			email: `${request.body.id}+${data.username}@example.com`,
+		}
+	}
+}
+
+class Verify3Middleware extends BaseMiddleware {
+	public override async index(
+		data: EmptyObject,
+		request: ExpressRequest<{ id: string }>,
+		response: ExpressResponse<JSON>,
+	): Promise<{ id: number }> {
+		response.header('Auth2', 1)
+
+		return {
+			id: Math.random(),
 		}
 	}
 }
 
 class AuthorizedController extends BaseController {
 	public override index(
-		data: { username: string },
-		request: IControllerExpressRequest<AuthorizedController>,
-		response: BaseResponse<{ message: string }>,
+		data: { username: string; email: string },
+		request: IControllerRequest<AuthorizedController>,
+		response: ExpressResponse<{ message: string }>,
 	) {
 		response
 			.status(200)
@@ -171,13 +183,13 @@ class AuthorizedController extends BaseController {
 
 export const Instance = new ExpressInstance({ strict: true })
 
-const rootRouter = Instance.createStrictRouter({})
+const rootRouter = new ExpressRouter({ strict: true })
 
 Instance.useMiddlewares(new RateLimitMiddleware())
 
 rootRouter.post(
 	'/authorized',
-	[new VerifyMiddleware(), new Verify2Middleware()],
+	[new VerifyMiddleware(), new Verify2Middleware(), new Verify3Middleware()],
 	new AuthorizedController(),
 )
 
@@ -191,7 +203,7 @@ rootRouter.head('/head', [], new HeadController())
 rootRouter.get('/', [], new RootController())
 rootRouter.post('/', [], new PostController())
 
-const authRouter = Instance.createRouter({ strict: true })
+const authRouter = new ExpressRouter({ strict: true })
 
 authRouter.useMiddlewares('/1', new AuthMiddleware())
 
@@ -208,8 +220,6 @@ rootRouter.all('*', [], new NotFoundController())
 Instance.addErrorHandler()
 
 await Instance.listen({ port: Port })
-
-type x = BaseRouter<false> extends BaseRouter<true> ? 1 : 2
 
 Logger.info(`Server running`, {
 	port: Port,

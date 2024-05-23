@@ -9,16 +9,11 @@ import cookieParser from 'cookie-parser'
 import helmet from 'helmet'
 
 import {
-	BaseInstance,
 	BaseMiddleware,
 	ExpressRequest,
 	ExpressResponse,
 	ExpressRouter,
-	IListenOptions,
-	InstanceConstructorOptions,
-	NoInputBaseMiddleware,
-	RouterConstructorOptions,
-	StrictOmit,
+	NoInputMiddleware,
 } from 'Internals'
 
 import Logger from 'Utils/Logger/Logger'
@@ -26,12 +21,23 @@ import Logger from 'Utils/Logger/Logger'
 import ParseJson from './Middlewares/ParseJson'
 import ParseUrlencoded from './Middlewares/ParseUrlencoded'
 
-class ExpressInstance<Strict extends boolean> extends BaseInstance<Strict> {
+export interface IListenOptions {
+	port?: number
+	host?: string
+	backlog?: number
+}
+
+export type InstanceConstructorOptions<Strict extends boolean = true> = {
+	strict: Strict
+}
+
+class ExpressInstance<Strict extends boolean> {
+	protected _isStrict: Strict
 	protected _express: ReturnType<typeof express>
 	protected _server: Server | null = null
 
 	constructor(options: InstanceConstructorOptions<Strict>) {
-		super(options)
+		this._isStrict = options.strict
 
 		this._express = express()
 
@@ -46,33 +52,16 @@ class ExpressInstance<Strict extends boolean> extends BaseInstance<Strict> {
 		this._express.use(cookieParser())
 	}
 
-	/**
-	 * Harder migration to other http library if used
-	 */
+	public get isStrict(): Strict {
+		return this._isStrict
+	}
+
 	public get express() {
 		return this._express
 	}
 
 	public get server() {
 		return this._server
-	}
-
-	public createRouter<StrictRouter extends boolean = true>(
-		options: RouterConstructorOptions<StrictRouter>,
-	): ExpressRouter<StrictRouter> {
-		return new ExpressRouter<StrictRouter>(options)
-	}
-
-	public createStrictRouter(
-		options: StrictOmit<RouterConstructorOptions<true>, 'strict'>,
-	): ExpressRouter<true> {
-		return new ExpressRouter<true>({ ...options, strict: true })
-	}
-
-	public createNonStrictRouter(
-		options: StrictOmit<RouterConstructorOptions<false>, 'strict'>,
-	): ExpressRouter<false> {
-		return new ExpressRouter<false>({ ...options, strict: false })
 	}
 
 	/**
@@ -143,19 +132,16 @@ class ExpressInstance<Strict extends boolean> extends BaseInstance<Strict> {
 	 */
 	public useMiddlewares(
 		path: string,
-		...routers: [NoInputBaseMiddleware, ...NoInputBaseMiddleware[]]
+		...routers: [NoInputMiddleware, ...NoInputMiddleware[]]
 	): this
 
 	/**
 	 * For middlewares without any input or output
 	 */
-	public useMiddlewares(...routers: [NoInputBaseMiddleware, ...NoInputBaseMiddleware[]]): this
+	public useMiddlewares(...routers: [NoInputMiddleware, ...NoInputMiddleware[]]): this
 
 	public useMiddlewares(
-		...middlewaresAndPath: [
-			string | NoInputBaseMiddleware,
-			...(string | NoInputBaseMiddleware)[],
-		]
+		...middlewaresAndPath: [string | NoInputMiddleware, ...(string | NoInputMiddleware)[]]
 	): this {
 		const possiblyPath = middlewaresAndPath[0]
 		const path = typeof possiblyPath === 'string' ? possiblyPath : null

@@ -1,8 +1,8 @@
-import { BaseRequest, BaseResponse } from 'Internals'
+import { ExpressRequest, ExpressResponse } from 'Internals'
 
 abstract class BaseMiddleware<
-	Request extends BaseRequest<any, any, any, any> = BaseRequest<any, any, any, any>,
-	Response extends BaseResponse<any> = BaseResponse<any>,
+	Request extends ExpressRequest<any, any, any, any> = ExpressRequest<any, any, any, any>,
+	Response extends ExpressResponse<any> = ExpressResponse<any>,
 	Input extends Record<string, any> = {},
 	Output extends Record<string, any> = {},
 > {
