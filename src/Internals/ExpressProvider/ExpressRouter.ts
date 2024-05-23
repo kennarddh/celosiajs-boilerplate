@@ -57,13 +57,13 @@ class ExpressRouter<Strict extends boolean = true> {
 	 */
 	public useMiddlewares(
 		path: string,
-		...routers: [NoInputMiddleware, ...NoInputMiddleware[]]
+		...middlewares: [NoInputMiddleware, ...NoInputMiddleware[]]
 	): this
 
 	/**
 	 * For middlewares without any input or output
 	 */
-	public useMiddlewares(...routers: [NoInputMiddleware, ...NoInputMiddleware[]]): this
+	public useMiddlewares(...middlewares: [NoInputMiddleware, ...NoInputMiddleware[]]): this
 
 	public useMiddlewares(
 		...middlewaresAndPath: [string | NoInputMiddleware, ...(string | NoInputMiddleware)[]]
