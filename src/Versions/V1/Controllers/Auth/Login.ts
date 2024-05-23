@@ -1,7 +1,8 @@
 import { Request, Response } from 'express'
 
-import { IUserJWTPayload } from 'Types/Http'
 import argon2 from 'argon2'
+
+import { IUserJWTPayload } from 'Types/Http'
 
 import Logger from 'Utils/Logger/Logger'
 import JWTSign from 'Utils/Promises/JWTSign'

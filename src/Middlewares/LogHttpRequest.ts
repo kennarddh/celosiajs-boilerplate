@@ -5,12 +5,7 @@ import { IncomingHttpHeaders, OutgoingHttpHeaders } from 'http'
 import Logger from 'Utils/Logger/Logger'
 
 const FilterHeaders = (headers: IncomingHttpHeaders | OutgoingHttpHeaders) => {
-	const {
-		'access-token': _,
-		'set-cookie': __,
-		cookie: ___,
-		...newHeaders
-	} = headers
+	const { 'access-token': _, 'set-cookie': __, cookie: ___, ...newHeaders } = headers
 
 	return newHeaders
 }

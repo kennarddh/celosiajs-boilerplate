@@ -25,8 +25,7 @@ const Register = () => {
 						select: { id: true },
 					})
 
-					if (user != null)
-						throw new Error('Username or email has already taken')
+					if (user != null) throw new Error('Username or email has already taken')
 				} catch (error) {
 					Logger.error('Username validation findFirst error', {
 						error,

@@ -5,11 +5,7 @@ import { validationResult } from 'express-validator'
 import Logger from 'Utils/Logger/Logger'
 
 const CheckValidationErrorFactory = () => {
-	const CheckValidationError = (
-		req: Request,
-		res: Response,
-		next: NextFunction,
-	) => {
+	const CheckValidationError = (req: Request, res: Response, next: NextFunction) => {
 		const result = validationResult(req)
 
 		if (!result.isEmpty()) {

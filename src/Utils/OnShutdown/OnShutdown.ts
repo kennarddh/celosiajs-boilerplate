@@ -28,8 +28,7 @@ const OnShutdown =
 			env: process.env.NODE_ENV,
 		})
 
-		if (serverApp && serverApp.listening)
-			await new Promise(resolve => ServerApp.close(resolve))
+		if (serverApp && serverApp.listening) await new Promise(resolve => ServerApp.close(resolve))
 
 		Logger.info('Server closed', {
 			port,

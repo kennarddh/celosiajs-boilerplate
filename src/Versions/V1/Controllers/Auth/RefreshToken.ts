@@ -1,7 +1,8 @@
 import { Request, Response } from 'express'
 
-import { IUserJWTPayload } from 'Types/Http'
 import jwt from 'jsonwebtoken'
+
+import { IUserJWTPayload } from 'Types/Http'
 
 import Logger from 'Utils/Logger/Logger'
 import JWTSign from 'Utils/Promises/JWTSign'
@@ -21,26 +22,19 @@ const RefreshToken = async (req: Request, res: Response) => {
 		})
 
 	try {
-		const user = await JWTVerify<IUserJWTPayload>(
-			refreshToken,
-			process.env.REFRESH_JWT_SECRET,
-		)
+		const user = await JWTVerify<IUserJWTPayload>(refreshToken, process.env.REFRESH_JWT_SECRET)
 
 		const payload = user
 
 		try {
 			const token = await JWTSign(payload, process.env.JWT_SECRET, {
-				expiresIn: parseInt(process.env.JWT_EXPIRE, 10) 
+				expiresIn: parseInt(process.env.JWT_EXPIRE, 10),
 			})
 
 			try {
-				const refreshToken = await JWTSign(
-					payload,
-					process.env.REFRESH_JWT_SECRET,
-					{
-						expiresIn: parseInt(process.env.REFRESH_JWT_EXPIRE, 10),
-					},
-				)
+				const refreshToken = await JWTSign(payload, process.env.REFRESH_JWT_SECRET, {
+					expiresIn: parseInt(process.env.REFRESH_JWT_EXPIRE, 10),
+				})
 
 				res.cookie('refreshToken', refreshToken, {
 					secure: process.env.NODE_ENV === 'production',
@@ -55,13 +49,10 @@ const RefreshToken = async (req: Request, res: Response) => {
 					},
 				})
 			} catch (error) {
-				Logger.error(
-					'RefreshToken controller failed to sign refresh token JWT',
-					{
-						userID: user.id,
-						error,
-					},
-				)
+				Logger.error('RefreshToken controller failed to sign refresh token JWT', {
+					userID: user.id,
+					error,
+				})
 
 				return res.status(500).json({
 					errors: ['Internal server error'],
@@ -86,10 +77,7 @@ const RefreshToken = async (req: Request, res: Response) => {
 				data: {},
 			})
 
-		if (
-			error instanceof jwt.JsonWebTokenError &&
-			error.message === 'invalid signature'
-		)
+		if (error instanceof jwt.JsonWebTokenError && error.message === 'invalid signature')
 			return res.status(401).json({
 				errors: ['Invalid refresh token'],
 				data: {},

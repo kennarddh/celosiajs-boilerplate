@@ -1,5 +1,6 @@
-import { ExpressRequest, ExpressResponse } from 'Internals'
 import { z } from 'zod'
+
+import { ExpressRequest, ExpressResponse } from 'Internals'
 
 const emptyZodObject = z.object({})
 
