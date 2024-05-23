@@ -1,0 +1,43 @@
+name: Check and Fix Code
+on:
+    pull_request:
+        branches: '**'
+    push:
+        branches: '**'
+concurrency:
+    group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+    cancel-in-progress: true
+
+permissions:
+    contents: write
+
+jobs:
+    check-and-fix-code:
+        name: Check and Fix Code
+        runs-on: ubuntu-22.04
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
+
+            - name: Setup Node
+              uses: actions/setup-node@v4
+              with:
+                  node-version: 21
+                  cache: 'npm'
+
+            - name: Clean Install
+              run: npm ci
+
+            - name: Prettier Fix
+              run: npm run prettier:fix
+
+            - name: Lint Fix
+              run: npm run lint:fix
+
+            - name: Types Check
+              run: npm run types:check
+
+            - name: Commit
+              uses: stefanzweifel/git-auto-commit-action@v5
+              with:
+                  commit_message: 'chore: Fix code'
