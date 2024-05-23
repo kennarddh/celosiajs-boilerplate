@@ -1,10 +1,7 @@
-import { dirname, resolve } from 'node:path'
-import { fileURLToPath } from 'node:url'
-
-const __dirname = dirname(fileURLToPath(import.meta.url))
+import { resolve } from 'node:path'
 
 const GetRootDirectory = (): string => {
-	return resolve(__dirname, '../..')
+	return resolve(import.meta.dirname, '../..')
 }
 
 export default GetRootDirectory
