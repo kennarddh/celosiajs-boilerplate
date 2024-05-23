@@ -1,1 +1,1 @@
-export * from './Express'
+export { default as ConvertExpressMiddleware } from './ConvertExpressMiddleware'

@@ -9,7 +9,7 @@ const ConvertExpressMiddleware = (expressMiddleware: RequestHandler) => {
 	return class extends BaseMiddleware {
 		public override async index(
 			_: EmptyObject,
-			request: ExpressRequest<{ id: string }>,
+			request: ExpressRequest,
 			response: ExpressResponse<JSON>,
 		) {
 			await new Promise<void>((resolve, reject) => {

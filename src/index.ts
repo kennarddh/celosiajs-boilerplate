@@ -1,10 +1,12 @@
 import 'dotenv/config'
 
+import cors from 'cors'
 import { z } from 'zod'
 
 import {
 	BaseController,
 	BaseMiddleware,
+	ConvertExpressMiddleware,
 	EmptyObject,
 	ExpressInstance,
 	ExpressRequest,
@@ -182,6 +184,8 @@ class AuthorizedController extends BaseController {
 }
 
 export const Instance = new ExpressInstance({ strict: true })
+
+Instance.useMiddlewares(new (ConvertExpressMiddleware(cors()))())
 
 const rootRouter = new ExpressRouter({ strict: true })
 
