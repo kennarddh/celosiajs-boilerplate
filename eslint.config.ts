@@ -1,7 +1,6 @@
 import js from '@eslint/js'
 import { FlatConfig } from '@typescript-eslint/utils/ts-eslint'
 import importPlugin from 'eslint-plugin-import'
-import json from 'eslint-plugin-json'
 import prettier from 'eslint-plugin-prettier'
 import prettierRecommended from 'eslint-plugin-prettier/recommended'
 import security from 'eslint-plugin-security'
@@ -9,7 +8,7 @@ import globals from 'globals'
 import tsEslint from 'typescript-eslint'
 
 export default tsEslint.config(
-	{ ignores: ['build/**/*', 'eslint.config.d.ts'] },
+	{ ignores: ['./build/**/*', 'eslint.config.d.ts'] },
 	{
 		languageOptions: {
 			parser: tsEslint.parser as FlatConfig.Parser,
@@ -22,7 +21,6 @@ export default tsEslint.config(
 			},
 			globals: {
 				...globals.node,
-				...globals.browser,
 				...globals.es2021,
 			},
 		},
@@ -33,17 +31,23 @@ export default tsEslint.config(
 	...tsEslint.configs.stylisticTypeChecked,
 	prettierRecommended,
 	{
-		files: ['./src/**/*.ts', './eslint.config.ts', './scripts/**/*'],
 		plugins: {
-			json,
+			'@typescript-eslint': tsEslint.plugin,
+		},
+		rules:{
+			'@typescript-eslint/require-await': 'off',
+		}
+	},
+	{
+		files: ['./**/*.ts', './eslint.config.ts'],
+		plugins: {
 			import: importPlugin,
 			'@typescript-eslint': tsEslint.plugin,
 			prettier,
 		},
 		rules: {
-			...json.configs['recommended'].rules,
-			...importPlugin.configs['recommended'].rules,
-			...importPlugin.configs['typescript'].rules,
+			...importPlugin.configs.recommended.rules,
+			...importPlugin.configs.typescript.rules,
 			'@typescript-eslint/no-unused-vars': 'warn',
 			'@typescript-eslint/no-empty-function': [
 				'error',
@@ -70,7 +74,6 @@ export default tsEslint.config(
 					allowNumber: true,
 				},
 			],
-			'@typescript-eslint/require-await': 'off',
 			'import/prefer-default-export': 'off',
 			'import/extensions': ['warn', { ts: 'never', json: 'never' }],
 			'prettier/prettier': 'warn',
