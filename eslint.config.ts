@@ -33,22 +33,31 @@ export default tsEslint.config(
 	{
 		plugins: {
 			'@typescript-eslint': tsEslint.plugin,
+			prettier,
 		},
-		rules:{
+		rules: {
 			'@typescript-eslint/require-await': 'off',
-		}
+			'prettier/prettier': 'warn',
+			'@typescript-eslint/no-unused-vars': [
+				'warn',
+				{
+					argsIgnorePattern: '^_',
+					caughtErrorsIgnorePattern: '^_',
+					destructuredArrayIgnorePattern: '^_',
+					varsIgnorePattern: '^_',
+				},
+			],
+		},
 	},
 	{
 		files: ['./**/*.ts', './eslint.config.ts'],
 		plugins: {
 			import: importPlugin,
 			'@typescript-eslint': tsEslint.plugin,
-			prettier,
 		},
 		rules: {
 			...importPlugin.configs.recommended.rules,
 			...importPlugin.configs.typescript.rules,
-			'@typescript-eslint/no-unused-vars': 'warn',
 			'@typescript-eslint/no-empty-function': [
 				'error',
 				{ allow: ['private-constructors', 'protected-constructors'] },
@@ -76,7 +85,6 @@ export default tsEslint.config(
 			],
 			'import/prefer-default-export': 'off',
 			'import/extensions': ['warn', { ts: 'never', json: 'never' }],
-			'prettier/prettier': 'warn',
 		},
 		settings: {
 			'import/resolver': {
