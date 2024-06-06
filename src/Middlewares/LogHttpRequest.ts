@@ -1,6 +1,8 @@
-import { NextFunction, Request, Response } from 'express'
-
 import { IncomingHttpHeaders, OutgoingHttpHeaders } from 'http'
+
+import BaseMiddleware from 'Internals/BaseMiddleware'
+import { ExpressRequest, ExpressResponse } from 'Internals/ExpressProvider'
+import { EmptyObject } from 'Internals/Types'
 
 import Logger from 'Utils/Logger/Logger'
 
@@ -10,37 +12,42 @@ const FilterHeaders = (headers: IncomingHttpHeaders | OutgoingHttpHeaders) => {
 	return newHeaders
 }
 
-const LogHttpRequest = (req: Request, res: Response, next: NextFunction) => {
-	const requestStart = Date.now()
+class LogHttpRequest extends BaseMiddleware {
+	public override async index(
+		_: EmptyObject,
+		request: ExpressRequest,
+		response: ExpressResponse,
+	): Promise<EmptyObject> {
+		const requestStart = Date.now()
 
-	res.on('finish', () => {
-		const {
-			headers,
-			httpVersion,
-			method,
-			socket: { remoteFamily },
-			url,
-		} = req
+		response.on('finish', () => {
+			const {
+				headers,
+				httpVersion,
+				method,
+				socket: { remoteFamily },
+				url,
+			} = request
 
-		const { statusCode, statusMessage } = res
-		const responseHeaders = res.getHeaders()
+			const { statusCode, statusMessage } = response
 
-		Logger.http({
-			processingTime: Date.now() - requestStart,
-			headers: FilterHeaders(headers),
-			httpVersion,
-			method,
-			remoteFamily,
-			url,
-			response: {
-				statusCode,
-				statusMessage,
-				headers: FilterHeaders(responseHeaders),
-			},
+			Logger.http({
+				processingTime: Date.now() - requestStart,
+				headers: FilterHeaders(headers),
+				httpVersion,
+				method,
+				remoteFamily,
+				url,
+				response: {
+					statusCode,
+					statusMessage,
+					headers: FilterHeaders(response.headers),
+				},
+			})
 		})
-	})
 
-	next()
+		return {}
+	}
 }
 
 export default LogHttpRequest

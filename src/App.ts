@@ -1,44 +1,14 @@
-import express from 'express'
-
-import compression from 'compression'
-
-import cookieParser from 'cookie-parser'
-
-import helmet from 'helmet'
-
-/* eslint-disable prettier/prettier */
 import Cors from 'Middlewares/Cors'
 import LogHttpRequest from 'Middlewares/LogHttpRequest'
-import ParseJson from 'Middlewares/ParseJson'
-import RateLimiter from 'Middlewares/RateLimiter'
-
-import Routes from 'Routes/index'
 
 import 'Database/index'
 
-/* eslint-enable prettier/prettier */
+import { ConvertExpressMiddleware, ExpressInstance } from './Internals'
 
-const app = express()
-
-// Settings
-app.disable('x-powered-by')
+const Instance = new ExpressInstance({ strict: true })
 
 // Middleware
-app.use(compression())
-app.use(helmet())
+Instance.useMiddlewares(new (ConvertExpressMiddleware(Cors))())
+Instance.useMiddlewares(new LogHttpRequest())
 
-app.use(express.urlencoded({ extended: false }))
-app.use(ParseJson)
-
-app.use(cookieParser())
-
-app.use(Cors)
-
-app.use(RateLimiter)
-
-app.use(LogHttpRequest)
-
-// Router
-app.use('/api/', Routes)
-
-export default app
+export default Instance

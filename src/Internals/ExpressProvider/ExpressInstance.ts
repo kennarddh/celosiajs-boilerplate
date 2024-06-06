@@ -65,6 +65,10 @@ class ExpressInstance<Strict extends boolean> {
 		return this._server
 	}
 
+	public get isListening(): boolean {
+		return this._server?.listening ?? false
+	}
+
 	/**
 	 * Must be called last after all router is registered
 	 *

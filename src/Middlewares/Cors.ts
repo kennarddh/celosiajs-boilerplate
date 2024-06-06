@@ -1,10 +1,13 @@
 import cors from 'cors'
 
-const whitelist = process.env.CORS_ORIGIN?.split(',') || []
+const whitelist = process.env.CORS_ORIGIN?.split(',') ?? []
 
 const Cors = cors({
 	origin: (origin, callback) => {
-		if (whitelist.includes(origin ?? '')) return callback(null, true)
+		if (whitelist.includes(origin ?? '')) {
+			callback(null, true)
+			return
+		}
 
 		callback(null, false)
 	},

@@ -1,4 +1,6 @@
-import { Port, ServerApp } from 'index.js'
+import { Port } from 'index'
+
+import Instance from 'App'
 
 import Logger from 'Utils/Logger/Logger'
 
@@ -7,31 +9,23 @@ import prisma from 'Database/index'
 const OnShutdown =
 	(signal: string, exitCode = 0) =>
 	async () => {
-		let port = -1
-		let serverApp = null
-
-		try {
-			port = Port
-		} catch (error) {
-			// Ignore cannot access 'Port' before initialization error
-		}
-
-		try {
-			serverApp = ServerApp
-		} catch (error) {
-			// Ignore cannot access 'ServerApp' before initialization error
-		}
-
 		Logger.info(`${signal} signal received: Stopping server`, {
-			port,
+			port: Port,
 			pid: process.pid,
 			env: process.env.NODE_ENV,
 		})
 
-		if (serverApp && serverApp.listening) await new Promise(resolve => ServerApp.close(resolve))
+		if (Instance.isListening)
+			await new Promise(resolve => {
+				Instance.close()
+					.then(resolve)
+					.catch(() => {
+						Logger.info('Failed to close Instance')
+					})
+			})
 
 		Logger.info('Server closed', {
-			port,
+			port: Port,
 			pid: process.pid,
 			env: process.env.NODE_ENV,
 		})
