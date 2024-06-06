@@ -11,23 +11,34 @@ const ConvertExpressMiddleware = (expressMiddleware: RequestHandler) => {
 			_: EmptyObject,
 			request: ExpressRequest,
 			response: ExpressResponse<JSON>,
-		) {
+		): Promise<EmptyObject> {
 			await new Promise<void>((resolve, reject) => {
 				expressMiddleware(
 					request.expressRequest,
 					response.expressResponse,
+					// eslint-disable-next-line @typescript-eslint/no-explicit-any
 					(errorOrDeferToNext?: any) => {
 						// If value is truthy
-						if (!errorOrDeferToNext) return resolve()
+						if (!errorOrDeferToNext) {
+							resolve()
+
+							return
+						}
 
 						// Ignore defer to next
-						if (errorOrDeferToNext === 'route' || errorOrDeferToNext === 'router')
-							return resolve()
+						if (errorOrDeferToNext === 'route' || errorOrDeferToNext === 'router') {
+							resolve()
 
+							return
+						}
+
+						// eslint-disable-next-line @typescript-eslint/prefer-promise-reject-errors
 						reject(errorOrDeferToNext)
 					},
 				)
 			})
+
+			return {}
 		}
 	}
 }

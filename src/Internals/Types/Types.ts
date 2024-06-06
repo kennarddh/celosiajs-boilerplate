@@ -1,20 +1,13 @@
+/* eslint-disable @typescript-eslint/ban-types */
+
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { z } from 'zod'
 
-import {
-	BaseController,
-	BaseMiddleware,
-	EmptyObject,
-	ExpressRequest,
-	ExpressResponse,
-} from 'Internals'
+import { BaseController, BaseMiddleware, EmptyObject, ExpressRequest } from 'Internals'
 
 export type MiddlewareArray = BaseMiddleware<any, any, any, any>[]
 
-export type NoInputMiddleware = BaseMiddleware<
-	ExpressRequest<EmptyObject, EmptyObject, EmptyObject, EmptyObject>,
-	ExpressResponse<any>,
-	EmptyObject
->
+export type NoInputMiddleware = BaseMiddleware<ExpressRequest>
 
 // & EmptyObject is used so that `{ x: string } extends EmptyObject` become true, because EmptyObject has it's own brand symbol.
 export type IControllerRequest<Controller extends BaseController<any, any, any>> = ExpressRequest<
@@ -245,10 +238,6 @@ export interface QueryParams {
 	[key: string]: string | QueryParams | QueryParams[]
 }
 
-export interface PathParams {
-	[key: string]: string
-}
+export type PathParams = Record<string, string>
 
-export interface CookiesObject {
-	[key: string]: string
-}
+export type CookiesObject = Record<string, string>

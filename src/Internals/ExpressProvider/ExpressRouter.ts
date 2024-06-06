@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
+
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import express, { NextFunction, Request, Response } from 'express'
 
 import {
@@ -12,7 +15,9 @@ import {
 	ValidateMiddlewares,
 } from 'Internals'
 
-export type RouterConstructorOptions<Strict extends boolean = true> = {
+import Logger from 'Utils/Logger/Logger'
+
+export interface RouterConstructorOptions<Strict extends boolean = true> {
 	strict: Strict
 }
 
@@ -82,9 +87,14 @@ class ExpressRouter<Strict extends boolean = true> {
 				const newRequest = new ExpressRequest(request)
 				const newResponse = new ExpressResponse(response)
 
-				middleware.index({}, newRequest, newResponse).then(() => {
-					next()
-				})
+				middleware
+					.index({}, newRequest, newResponse)
+					.then(() => {
+						next()
+					})
+					.catch((error: unknown) => {
+						Logger.error('Unknown middleware error occured', error)
+					})
 			}
 
 			if (path === null) this._expressRouter.use(handler)
@@ -256,7 +266,7 @@ class ExpressRouter<Strict extends boolean = true> {
 				try {
 					const output = await middleware.index(data, newRequest, newResponse)
 
-					data = output ?? {}
+					data = output
 				} catch {
 					if (!response.writableEnded) {
 						response.status(500).json({

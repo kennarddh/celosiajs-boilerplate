@@ -27,7 +27,7 @@ export interface IListenOptions {
 	backlog?: number
 }
 
-export type InstanceConstructorOptions<Strict extends boolean = true> = {
+export interface InstanceConstructorOptions<Strict extends boolean = true> {
 	strict: Strict
 }
 
@@ -41,6 +41,7 @@ class ExpressInstance<Strict extends boolean> {
 
 		this._express = express()
 
+		// Settings
 		this._express.disable('x-powered-by')
 
 		this._express.use(compression())
@@ -88,7 +89,7 @@ class ExpressInstance<Strict extends boolean> {
 				options.port ?? 0,
 				options.host ?? '127.0.0.1',
 				options.backlog ?? 511,
-				() => resolve(),
+				resolve,
 			)
 		})
 	}
@@ -157,9 +158,14 @@ class ExpressInstance<Strict extends boolean> {
 				const newRequest = new ExpressRequest(request)
 				const newResponse = new ExpressResponse(response)
 
-				middleware.index({}, newRequest, newResponse).then(() => {
-					next()
-				})
+				middleware
+					.index({}, newRequest, newResponse)
+					.then(() => {
+						next()
+					})
+					.catch((error: unknown) => {
+						Logger.error('Unknown middleware error occured', error)
+					})
 			}
 
 			if (path === null) this.express.use(handler)

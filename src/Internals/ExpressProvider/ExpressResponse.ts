@@ -1,7 +1,8 @@
 import { Response } from 'express'
 
-import { OutgoingHttpHeaders } from 'http'
+import { OutgoingHttpHeader, OutgoingHttpHeaders } from 'http'
 
+import { Socket } from 'net'
 import { Readable } from 'stream'
 import { TypedEmitter } from 'tiny-typed-emitter'
 
@@ -134,12 +135,13 @@ class ExpressResponse<Body = JSON> extends TypedEmitter<ResponseEvents> {
 	 *
 	 * @api public
 	 */
-	public sendFile(path: string): Promise<void>
-	public sendFile(path: string, options: SendFileOptions): Promise<void>
 	public async sendFile(path: string, options?: SendFileOptions): Promise<void> {
 		return new Promise((resolve, reject) => {
-			const errorCallback = (error: Error) => {
-				if (error) return reject(error)
+			const errorCallback = (error?: Error) => {
+				if (error) {
+					reject(error)
+					return
+				}
 
 				resolve()
 			}
@@ -165,17 +167,18 @@ class ExpressResponse<Body = JSON> extends TypedEmitter<ResponseEvents> {
 	 *
 	 * This method uses `res.sendfile()`.
 	 */
-	public download(path: string): Promise<void>
-	public download(path: string, filename: string): Promise<void>
-	public download(path: string, filename: string, options: DownloadOptions): Promise<void>
 	public async download(
 		path: string,
 		filename?: string,
 		options?: DownloadOptions,
 	): Promise<void> {
 		return new Promise((resolve, reject) => {
-			const errorCallback = (error: Error) => {
-				if (error) return reject(error)
+			const errorCallback = (error?: Error) => {
+				if (error) {
+					reject(error)
+
+					return
+				}
 
 				resolve()
 			}
@@ -210,12 +213,6 @@ class ExpressResponse<Body = JSON> extends TypedEmitter<ResponseEvents> {
 
 	public write(body: Body): this {
 		this.expressResponse.write(body)
-
-		return this
-	}
-
-	public writeHead(statusCode: number, headers: OutgoingHttpHeaders): this {
-		this.expressResponse.writeHead(statusCode, headers)
 
 		return this
 	}
@@ -288,8 +285,6 @@ class ExpressResponse<Body = JSON> extends TypedEmitter<ResponseEvents> {
 	 *    // save as above
 	 *    res.cookie('rememberme', '1', { maxAge: 900000, httpOnly: true })
 	 */
-	public cookie(name: string, value: string, options: CookieOptions): this
-	public cookie(name: string, value: string): this
 	public cookie(name: string, value: string, options?: CookieOptions): this {
 		if (options) this.expressResponse.cookie(name, value, options)
 		else this.expressResponse.cookie(name, value)
@@ -350,9 +345,186 @@ class ExpressResponse<Body = JSON> extends TypedEmitter<ResponseEvents> {
 	public redirect(status: number, url: string): this
 	public redirect(urlOrStatus: string | number, url?: string): this {
 		if (typeof urlOrStatus === 'string') this.expressResponse.redirect(urlOrStatus)
-		else this.expressResponse.redirect(urlOrStatus, url as string)
+		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+		else this.expressResponse.redirect(urlOrStatus, url!)
 
 		return this
+	}
+
+	/**
+	 * When using implicit headers (not calling `response.writeHead()` explicitly),
+	 * this property controls the status code that will be sent to the client when
+	 * the headers get flushed.
+	 *
+	 * ```js
+	 * response.statusCode = 404;
+	 * ```
+	 *
+	 * After response header was sent to the client, this property indicates the
+	 * status code which was sent out.
+	 */
+	public get statusCode(): number {
+		return this.expressResponse.statusCode
+	}
+
+	/**
+	 * When using implicit headers (not calling `response.writeHead()` explicitly),
+	 * this property controls the status message that will be sent to the client when
+	 * the headers get flushed. If this is left as `undefined` then the standard
+	 * message for the status code will be used.
+	 *
+	 * ```js
+	 * response.statusMessage = 'Not found';
+	 * ```
+	 *
+	 * After response header was sent to the client, this property indicates the
+	 * status message which was sent out.
+	 */
+	public get statusMessage(): string {
+		return this.expressResponse.statusMessage
+	}
+
+	/**
+	 * If set to `true`, Node.js will check whether the `Content-Length` header value and the size of the body, in bytes, are equal.
+	 * Mismatching the `Content-Length` header value will result
+	 * in an `Error` being thrown, identified by `code:``'ERR_HTTP_CONTENT_LENGTH_MISMATCH'`.
+	 */
+	public get strictContentLength(): boolean {
+		return this.expressResponse.strictContentLength
+	}
+
+	public assignSocket(socket: Socket): void {
+		this.expressResponse.assignSocket(socket)
+	}
+
+	public detachSocket(socket: Socket): void {
+		this.expressResponse.detachSocket(socket)
+	}
+
+	/**
+	 * Sends an HTTP/1.1 100 Continue message to the client, indicating that
+	 * the request body should be sent. See the `'checkContinue'` event on `Server`.
+	 */
+	public writeContinue(callback?: () => void): void {
+		this.expressResponse.writeContinue(callback)
+	}
+
+	/**
+	 * Sends an HTTP/1.1 103 Early Hints message to the client with a Link header,
+	 * indicating that the user agent can preload/preconnect the linked resources.
+	 * The `hints` is an object containing the values of headers to be sent with
+	 * early hints message. The optional `callback` argument will be called when
+	 * the response message has been written.
+	 *
+	 * **Example**
+	 *
+	 * ```js
+	 * const earlyHintsLink = '</styles.css>; rel=preload; as=style';
+	 * response.writeEarlyHints({
+	 *   'link': earlyHintsLink,
+	 * });
+	 *
+	 * const earlyHintsLinks = [
+	 *   '</styles.css>; rel=preload; as=style',
+	 *   '</scripts.js>; rel=preload; as=script',
+	 * ];
+	 * response.writeEarlyHints({
+	 *   'link': earlyHintsLinks,
+	 *   'x-trace-id': 'id for diagnostics',
+	 * });
+	 *
+	 * const earlyHintsCallback = () => console.log('early hints message sent');
+	 * response.writeEarlyHints({
+	 *   'link': earlyHintsLinks,
+	 * }, earlyHintsCallback);
+	 * ```
+	 * @param hints An object containing the values of headers
+	 * @param callback Will be called when the response message has been written
+	 */
+
+	public writeEarlyHints(hints: Record<string, string | string[]>, callback?: () => void): void {
+		this.expressResponse.writeEarlyHints(hints, callback)
+	}
+
+	/**
+	 * Sends a response header to the request. The status code is a 3-digit HTTP
+	 * status code, like `404`. The last argument, `headers`, are the response headers.
+	 * Optionally one can give a human-readable `statusMessage` as the second
+	 * argument.
+	 *
+	 * `headers` may be an `Array` where the keys and values are in the same list.
+	 * It is _not_ a list of tuples. So, the even-numbered offsets are key values,
+	 * and the odd-numbered offsets are the associated values. The array is in the same
+	 * format as `request.rawHeaders`.
+	 *
+	 * Returns a reference to the `ServerResponse`, so that calls can be chained.
+	 *
+	 * ```js
+	 * const body = 'hello world';
+	 * response
+	 *   .writeHead(200, {
+	 *     'Content-Length': Buffer.byteLength(body),
+	 *     'Content-Type': 'text/plain',
+	 *   })
+	 *   .end(body);
+	 * ```
+	 *
+	 * This method must only be called once on a message and it must
+	 * be called before `response.end()` is called.
+	 *
+	 * If `response.write()` or `response.end()` are called before calling
+	 * this, the implicit/mutable headers will be calculated and call this function.
+	 *
+	 * When headers have been set with `response.setHeader()`, they will be merged
+	 * with any headers passed to `response.writeHead()`, with the headers passed
+	 * to `response.writeHead()` given precedence.
+	 *
+	 * If this method is called and `response.setHeader()` has not been called,
+	 * it will directly write the supplied header values onto the network channel
+	 * without caching internally, and the `response.getHeader()` on the header
+	 * will not yield the expected result. If progressive population of headers is
+	 * desired with potential future retrieval and modification, use `response.setHeader()` instead.
+	 *
+	 * ```js
+	 * // Returns content-type = text/plain
+	 * const server = http.createServer((req, res) => {
+	 *   res.setHeader('Content-Type', 'text/html');
+	 *   res.setHeader('X-Foo', 'bar');
+	 *   res.writeHead(200, { 'Content-Type': 'text/plain' });
+	 *   res.end('ok');
+	 * });
+	 * ```
+	 *
+	 * `Content-Length` is read in bytes, not characters. Use `Buffer.byteLength()` to determine the length of the body in bytes. Node.js
+	 * will check whether `Content-Length` and the length of the body which has
+	 * been transmitted are equal or not.
+	 *
+	 * Attempting to set a header field name or value that contains invalid characters
+	 * will result in a \[`Error`\]\[\] being thrown.
+	 */
+	public writeHead(
+		statusCode: number,
+		statusMessage?: string,
+		headers?: OutgoingHttpHeaders | OutgoingHttpHeader[],
+	): this
+	public writeHead(statusCode: number, headers?: OutgoingHttpHeaders | OutgoingHttpHeader[]): this
+	public writeHead(
+		statusCode: number,
+		headersOrStatusMessage?: string | OutgoingHttpHeaders | OutgoingHttpHeader[],
+		headers?: OutgoingHttpHeaders | OutgoingHttpHeader[],
+	): this {
+		if (typeof headersOrStatusMessage === 'string')
+			this.expressResponse.writeHead(statusCode, headersOrStatusMessage, headers)
+		else this.expressResponse.writeHead(statusCode, headersOrStatusMessage)
+		return this
+	}
+
+	/**
+	 * Sends a HTTP/1.1 102 Processing message to the client, indicating that
+	 * the request body should be sent.
+	 */
+	public writeProcessing(): void {
+		this.expressResponse.writeProcessing()
 	}
 }
 
