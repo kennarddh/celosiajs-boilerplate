@@ -9,6 +9,9 @@ import { ExpressInstance } from './Internals'
 
 const Instance = new ExpressInstance({ strict: true })
 
+// TODO: Use https://www.npmjs.com/package/rate-limiter-flexible
+// TODO: Update readme
+
 // Middleware
 Instance.useMiddlewares(new Cors())
 Instance.useMiddlewares(new LogHttpRequest())
