@@ -6,7 +6,9 @@ type FlagConfigPluginWithoutConfigs = Omit<FlagConfigPlugin, 'configs'>
 
 type IConfig = FlatConfigConfig
 
-type IConfigs<T extends string, V = IConfig> = { configs: { [I in T]: V } }
+interface IConfigs<T extends string, V = IConfig> {
+	configs: { [I in T]: V }
+}
 
 declare module 'eslint-plugin-import' {
 	const plugin: FlagConfigPluginWithoutConfigs &

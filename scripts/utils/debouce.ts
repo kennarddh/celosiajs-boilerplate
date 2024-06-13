@@ -1,10 +1,8 @@
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type Args = any[]
-
-const Debounce = (callback: (...args: Args) => void, delay: number) => {
+const Debounce = <T extends (...args: any[]) => void>(callback: T, delay: number) => {
 	let timerId: NodeJS.Timeout
 
-	return (...args: Args) => {
+	return (...args: Parameters<T>) => {
 		clearTimeout(timerId)
 
 		timerId = setTimeout(() => callback(...args), delay)

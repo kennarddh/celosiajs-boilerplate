@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { z } from 'zod'
 
 import { ExpressRequest, ExpressResponse } from 'Internals'
@@ -5,6 +6,7 @@ import { ExpressRequest, ExpressResponse } from 'Internals'
 const emptyZodObject = z.object({})
 
 abstract class BaseController<
+	// eslint-disable-next-line @typescript-eslint/ban-types
 	T extends Record<string, any> = {},
 	Request extends ExpressRequest<any, any, any, any> = ExpressRequest<any, any, any, any>,
 	Response extends ExpressResponse<any> = ExpressResponse<any>,

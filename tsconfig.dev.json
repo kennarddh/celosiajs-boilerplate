@@ -4,6 +4,6 @@
 		"composite": true,
 		"allowJs": true
 	},
-	"include": ["./scripts/**/*", "package.json"],
+	"include": ["scripts", "package.json"],
 	"exclude": ["src"]
 }

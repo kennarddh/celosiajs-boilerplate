@@ -1,27 +1,29 @@
 import jwt from 'jsonwebtoken'
 
-import BaseMiddleware from 'Internals/BaseMiddleware'
-import BaseRequest from 'Internals/Providers/Base/BaseRequest'
-import BaseResponse from 'Internals/Providers/Base/BaseResponse'
-import { EmptyObject } from 'Internals/Types'
+import { BaseMiddleware, EmptyObject, ExpressRequest, ExpressResponse, StopHere } from 'Internals'
 
-import { IUserJWTPayload } from 'Types/Http'
+import { ITokenJWTPayload } from 'Types/Types'
 
 import Logger from 'Utils/Logger/Logger'
 import JWTVerify from 'Utils/Promises/JWTVerify'
 
-export interface JWTVerified {
+export interface JWTVerifiedData {
 	user: {
 		id: number
 	}
 }
 
-class VerifyJWT extends BaseMiddleware {
+class VerifyJWT extends BaseMiddleware<
+	ExpressRequest,
+	ExpressResponse,
+	EmptyObject,
+	JWTVerifiedData
+> {
 	public override async index(
 		_: EmptyObject,
-		request: BaseRequest,
-		response: BaseResponse,
-	): Promise<JWTVerified> {
+		request: ExpressRequest,
+		response: ExpressResponse,
+	) {
 		const tokenHeader = request.header('Access-Token')
 
 		if (!tokenHeader) {
@@ -32,7 +34,7 @@ class VerifyJWT extends BaseMiddleware {
 				data: {},
 			})
 
-			throw new Error()
+			return StopHere
 		}
 
 		if (Array.isArray(tokenHeader)) {
@@ -43,10 +45,10 @@ class VerifyJWT extends BaseMiddleware {
 				data: {},
 			})
 
-			throw new Error()
+			return StopHere
 		}
 
-		const token = tokenHeader?.split(' ')[1]
+		const token = tokenHeader.split(' ')[1]
 
 		if (!token) {
 			response.status(401).json({
@@ -56,11 +58,11 @@ class VerifyJWT extends BaseMiddleware {
 				data: {},
 			})
 
-			throw new Error()
+			return StopHere
 		}
 
 		try {
-			const user = await JWTVerify<IUserJWTPayload>(token, process.env.JWT_SECRET)
+			const user = await JWTVerify<ITokenJWTPayload>(token, process.env.JWT_SECRET)
 
 			return {
 				user: {
@@ -76,7 +78,7 @@ class VerifyJWT extends BaseMiddleware {
 					data: {},
 				})
 
-				throw new Error()
+				return StopHere
 			}
 
 			if (error instanceof jwt.JsonWebTokenError && error.message === 'invalid signature') {
@@ -85,7 +87,7 @@ class VerifyJWT extends BaseMiddleware {
 					data: {},
 				})
 
-				throw new Error()
+				return StopHere
 			}
 
 			Logger.error('Unknown error while verifying JWT', {
@@ -100,7 +102,7 @@ class VerifyJWT extends BaseMiddleware {
 				data: {},
 			})
 
-			throw new Error()
+			return StopHere
 		}
 	}
 }

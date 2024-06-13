@@ -3,12 +3,12 @@ import LogHttpRequest from 'Middlewares/LogHttpRequest'
 
 import 'Database/index'
 
-import { ConvertExpressMiddleware, ExpressInstance } from './Internals'
+import { ExpressInstance } from './Internals'
 
 const Instance = new ExpressInstance({ strict: true })
 
 // Middleware
-Instance.useMiddlewares(new (ConvertExpressMiddleware(Cors))())
+Instance.useMiddlewares(new Cors())
 Instance.useMiddlewares(new LogHttpRequest())
 
 export default Instance

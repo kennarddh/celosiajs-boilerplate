@@ -1,93 +1,99 @@
-import { Request, Response } from 'express'
-
 import jwt from 'jsonwebtoken'
+import { z } from 'zod'
 
-import { IUserJWTPayload } from 'Types/Http'
+import { BaseController, EmptyObject, ExpressResponse, IControllerRequest } from 'Internals'
+
+import { ITokenJWTPayload } from 'Types/Types'
 
 import Logger from 'Utils/Logger/Logger'
 import JWTSign from 'Utils/Promises/JWTSign'
 import JWTVerify from 'Utils/Promises/JWTVerify'
 
-interface ICookies {
-	refreshToken: string
-}
-
-const RefreshToken = async (req: Request, res: Response) => {
-	const { refreshToken }: ICookies = req.cookies
-
-	if (!refreshToken)
-		return res.status(400).json({
-			errors: ['No refresh token provided'],
-			data: {},
-		})
-
-	try {
-		const user = await JWTVerify<IUserJWTPayload>(refreshToken, process.env.REFRESH_JWT_SECRET)
-
-		const payload = user
+class RefreshToken extends BaseController {
+	public async index(
+		_: EmptyObject,
+		request: IControllerRequest<RefreshToken>,
+		response: ExpressResponse,
+	) {
+		const { refreshToken } = request.cookies
 
 		try {
-			const token = await JWTSign(payload, process.env.JWT_SECRET, {
-				expiresIn: parseInt(process.env.JWT_EXPIRE, 10),
-			})
+			const user = await JWTVerify<ITokenJWTPayload>(
+				refreshToken,
+				process.env.REFRESH_JWT_SECRET,
+			)
+
+			const payload = user
 
 			try {
-				const refreshToken = await JWTSign(payload, process.env.REFRESH_JWT_SECRET, {
-					expiresIn: parseInt(process.env.REFRESH_JWT_EXPIRE, 10),
+				const token = await JWTSign(payload, process.env.JWT_SECRET, {
+					expiresIn: parseInt(process.env.JWT_EXPIRE, 10),
 				})
 
-				res.cookie('refreshToken', refreshToken, {
-					secure: process.env.NODE_ENV === 'production',
-					httpOnly: true,
-					sameSite: 'lax',
-				})
+				try {
+					const refreshToken = await JWTSign(payload, process.env.REFRESH_JWT_SECRET, {
+						expiresIn: parseInt(process.env.REFRESH_JWT_EXPIRE, 10),
+					})
 
-				return res.status(200).json({
-					errors: [],
-					data: {
-						token: `Bearer ${token}`,
-					},
-				})
+					response.cookie('refreshToken', refreshToken, {
+						secure: process.env.NODE_ENV === 'production',
+						httpOnly: true,
+						sameSite: 'lax',
+					})
+
+					return response.status(200).json({
+						errors: [],
+						data: {
+							token: `Bearer ${token}`,
+						},
+					})
+				} catch (error) {
+					Logger.error('RefreshToken controller failed to sign refresh token JWT', {
+						userID: user.id,
+						error,
+					})
+
+					return response.status(500).json({
+						errors: ['Internal server error'],
+						data: {},
+					})
+				}
 			} catch (error) {
-				Logger.error('RefreshToken controller failed to sign refresh token JWT', {
+				Logger.error('RefreshToken controller failed to sign token JWT', {
 					userID: user.id,
 					error,
 				})
 
-				return res.status(500).json({
+				return response.status(500).json({
 					errors: ['Internal server error'],
 					data: {},
 				})
 			}
 		} catch (error) {
-			Logger.error('RefreshToken controller failed to sign token JWT', {
-				userID: user.id,
-				error,
-			})
+			if (error instanceof jwt.TokenExpiredError)
+				return response.status(401).json({
+					errors: ['Expired refresh token'],
+					data: {},
+				})
 
-			return res.status(500).json({
+			if (error instanceof jwt.JsonWebTokenError && error.message === 'invalid signature')
+				return response.status(401).json({
+					errors: ['Invalid refresh token'],
+					data: {},
+				})
+
+			Logger.error('Unknown error while verifying refresh token', { error })
+
+			return response.status(500).json({
 				errors: ['Internal server error'],
 				data: {},
 			})
 		}
-	} catch (error) {
-		if (error instanceof jwt.TokenExpiredError)
-			return res.status(401).json({
-				errors: ['Expired refresh token'],
-				data: {},
-			})
+	}
 
-		if (error instanceof jwt.JsonWebTokenError && error.message === 'invalid signature')
-			return res.status(401).json({
-				errors: ['Invalid refresh token'],
-				data: {},
-			})
-
-		Logger.error('Unknown error while verifying refresh token', { error })
-
-		return res.status(500).json({
-			errors: ['Internal server error'],
-			data: {},
+	public override get cookies() {
+		return z.object({
+			refreshToken: z.string(),
 		})
 	}
 }

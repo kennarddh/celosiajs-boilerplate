@@ -1,112 +1,126 @@
-import { Request, Response } from 'express'
-
 import argon2 from 'argon2'
+import { z } from 'zod'
 
-import { IUserJWTPayload } from 'Types/Http'
+import { BaseController, EmptyObject, ExpressResponse, IControllerRequest } from 'Internals'
+
+import { ITokenJWTPayload } from 'Types/Http'
 
 import Logger from 'Utils/Logger/Logger'
 import JWTSign from 'Utils/Promises/JWTSign'
 
 import prisma from 'Database/index'
 
-interface IBody {
-	username: string
-	password: string
-}
-
-const Login = async (req: Request, res: Response) => {
-	const { username, password }: IBody = req.body
-
-	try {
-		const user = await prisma.user.findFirst({
-			where: { username },
-			select: { id: true, password: true },
-		})
-
-		if (!user) {
-			return res.status(403).json({
-				errors: ['Cannot find user with the same username'],
-				data: {},
-			})
-		}
+class Login extends BaseController {
+	public async index(
+		_: EmptyObject,
+		request: IControllerRequest<Login>,
+		response: ExpressResponse,
+	) {
+		const { username, password } = request.body
 
 		try {
-			const isValidHash = await argon2.verify(user.password, password, {
-				hashLength: 64,
+			const user = await prisma.user.findFirst({
+				where: { username },
+				select: { id: true, password: true },
 			})
 
-			if (!isValidHash)
-				return res.status(403).json({
-					errors: ['Wrong password'],
+			if (!user)
+				return response.status(403).json({
+					errors: ['Cannot find user with the same username'],
 					data: {},
 				})
 
-			const payload: IUserJWTPayload = { id: user.id }
-
 			try {
-				const token = await JWTSign(payload, process.env.JWT_SECRET, {
-					expiresIn: parseInt(process.env.JWT_EXPIRE, 10),
-				})
+				const isValidHash = await argon2.verify(user.password, password)
+
+				if (!isValidHash)
+					return response.status(403).json({
+						errors: ['Wrong password'],
+						data: {},
+					})
+
+				const payload: ITokenJWTPayload = { id: user.id }
 
 				try {
-					const refreshToken = await JWTSign(payload, process.env.REFRESH_JWT_SECRET, {
-						expiresIn: parseInt(process.env.REFRESH_JWT_EXPIRE, 10),
+					const token = await JWTSign(payload, process.env.JWT_SECRET, {
+						expiresIn: parseInt(process.env.JWT_EXPIRE, 10),
 					})
 
-					res.cookie('refreshToken', refreshToken, {
-						secure: process.env.NODE_ENV === 'production',
-						httpOnly: true,
-						sameSite: 'lax',
-					})
+					try {
+						const refreshToken = await JWTSign(
+							payload,
+							process.env.REFRESH_JWT_SECRET,
+							{
+								expiresIn: parseInt(process.env.REFRESH_JWT_EXPIRE, 10),
+							},
+						)
 
-					return res.status(200).json({
-						errors: [],
-						data: {
-							token: `Bearer ${token}`,
-						},
-					})
+						response.cookie('refreshToken', refreshToken, {
+							secure: process.env.NODE_ENV === 'production',
+							httpOnly: true,
+							sameSite: 'lax',
+						})
+
+						return response.status(200).json({
+							errors: [],
+							data: {
+								token: `Bearer ${token}`,
+							},
+						})
+					} catch (error) {
+						Logger.error('Login controller failed to sign refresh token JWT', {
+							username,
+							error,
+						})
+
+						return response.status(500).json({
+							errors: ['Internal server error'],
+							data: {},
+						})
+					}
 				} catch (error) {
-					Logger.error('Login controller failed to sign refresh token JWT', {
+					Logger.error('Login controller failed to sign token JWT', {
 						username,
 						error,
 					})
 
-					return res.status(500).json({
+					return response.status(500).json({
 						errors: ['Internal server error'],
 						data: {},
 					})
 				}
 			} catch (error) {
-				Logger.error('Login controller failed to sign token JWT', {
+				Logger.error('Login controller failed verify hash', {
 					username,
 					error,
 				})
 
-				return res.status(500).json({
+				return response.status(500).json({
 					errors: ['Internal server error'],
 					data: {},
 				})
 			}
 		} catch (error) {
-			Logger.error('Login controller failed verify hash', {
+			Logger.error('Login controller failed to get user', {
 				username,
 				error,
 			})
 
-			return res.status(500).json({
+			return response.status(500).json({
 				errors: ['Internal server error'],
 				data: {},
 			})
 		}
-	} catch (error) {
-		Logger.error('Login controller failed to get user', {
-			username,
-			error,
-		})
+	}
 
-		return res.status(500).json({
-			errors: ['Internal server error'],
-			data: {},
+	public override get body() {
+		return z.object({
+			username: z.string().trim().min(1).max(50),
+			password: z
+				.string()
+				.min(8)
+				.max(100)
+				.regex(/^(?!.*\s)/g, 'Must not contains white space.'),
 		})
 	}
 }

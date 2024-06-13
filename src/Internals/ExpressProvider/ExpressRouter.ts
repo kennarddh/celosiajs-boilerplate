@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-misused-promises */
-
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import express, { NextFunction, Request, Response } from 'express'
 
@@ -10,6 +8,7 @@ import {
 	ExpressResponse,
 	MiddlewareArray,
 	NoInputMiddleware,
+	StopHere,
 	ValidateController,
 	ValidateControllerWithoutBody,
 	ValidateMiddlewares,
@@ -89,7 +88,9 @@ class ExpressRouter<Strict extends boolean = true> {
 
 				middleware
 					.index({}, newRequest, newResponse)
-					.then(() => {
+					.then(returnValue => {
+						if (returnValue === StopHere) return
+
 						next()
 					})
 					.catch((error: unknown) => {
@@ -257,6 +258,8 @@ class ExpressRouter<Strict extends boolean = true> {
 					errors,
 				})
 
+			// TODO: Use zod parsed data
+
 			const newRequest = new ExpressRequest(request)
 			const newResponse = new ExpressResponse(response)
 
@@ -265,6 +268,8 @@ class ExpressRouter<Strict extends boolean = true> {
 			for (const middleware of middlewares) {
 				try {
 					const output = await middleware.index(data, newRequest, newResponse)
+
+					if (output === StopHere) return
 
 					data = output
 				} catch {

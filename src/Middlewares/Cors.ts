@@ -1,5 +1,7 @@
 import cors from 'cors'
 
+import { ConvertExpressMiddleware } from 'Internals/Utils'
+
 const whitelist = process.env.CORS_ORIGIN?.split(',') ?? []
 
 const Cors = cors({
@@ -13,4 +15,4 @@ const Cors = cors({
 	},
 })
 
-export default Cors
+export default ConvertExpressMiddleware(Cors)

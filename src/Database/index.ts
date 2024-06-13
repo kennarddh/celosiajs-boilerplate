@@ -16,7 +16,7 @@ try {
 	if (error instanceof PrismaClientInitializationError) {
 		Logger.error('Prisma failed to connect to the database.', { error })
 
-		await OnShutdown('DBFAIL', 1)()
+		await OnShutdown('DBFAIL', 1)
 	}
 }
 

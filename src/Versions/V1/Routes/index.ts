@@ -1,9 +1,9 @@
-import express from 'express'
+import { ExpressRouter } from 'Internals/ExpressProvider'
 
 import AuthRouter from 'Versions/V1/Routes/Auth'
 
-const Router = express.Router()
+const V1Router = new ExpressRouter({ strict: true })
 
-Router.use('/auth', AuthRouter)
+V1Router.useRouters('/auth', AuthRouter)
 
-export default Router
+export default V1Router

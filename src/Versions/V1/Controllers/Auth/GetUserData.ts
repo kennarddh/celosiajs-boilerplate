@@ -1,18 +1,16 @@
-import BaseController from 'Internals/BaseController'
-import BaseResponse from 'Internals/Providers/Base/BaseResponse'
-import { IBaseControllerRequest } from 'Internals/Types'
+import { BaseController, ExpressResponse, IControllerRequest } from 'Internals'
 
 import Logger from 'Utils/Logger/Logger'
 
-import { JWTVerified } from 'Middlewares/VerifyJWT'
+import { JWTVerifiedData } from 'Middlewares/VerifyJWT'
 
 import prisma from 'Database/index'
 
 class GetUserData extends BaseController {
 	public async index(
-		data: JWTVerified,
-		request: IBaseControllerRequest<typeof this>,
-		response: BaseResponse,
+		data: JWTVerifiedData,
+		_: IControllerRequest<GetUserData>,
+		response: ExpressResponse,
 	) {
 		const id = data.user.id
 

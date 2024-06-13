@@ -33,6 +33,7 @@ if (process.env.NODE_ENV === 'development') {
 			maxSize: '1m',
 			maxFiles: '14d',
 			format: winston.format.combine(RemoveHttp(), ...LoggerFormat),
+			// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 			silent: process.env.NODE_ENV !== 'development',
 		}),
 	)

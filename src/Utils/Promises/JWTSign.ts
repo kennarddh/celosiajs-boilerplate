@@ -1,11 +1,16 @@
 import jwt from 'jsonwebtoken'
 
 const JWTSign = <T extends object>(payload: T, secret: jwt.Secret, option: jwt.SignOptions) =>
-	new Promise<string | undefined>((resolve, reject) => {
+	new Promise<string>((resolve, reject) => {
 		jwt.sign(payload, secret, option, (error: Error | null, token: string | undefined) => {
-			if (error) return reject(error)
+			if (error) {
+				reject(error)
 
-			resolve(token)
+				return
+			}
+
+			// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+			resolve(token!)
 		})
 	})
 

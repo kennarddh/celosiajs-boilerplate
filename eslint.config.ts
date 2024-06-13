@@ -7,8 +7,11 @@ import security from 'eslint-plugin-security'
 import globals from 'globals'
 import tsEslint from 'typescript-eslint'
 
+// TODO: Enable eslint-plugin-import again when it supports flat config by uncommenting all commented lines
+// https://github.com/import-js/eslint-plugin-import/issues/2556
+
 export default tsEslint.config(
-	{ ignores: ['./build/**/*', 'eslint.config.d.ts'] },
+	{ ignores: ['build/**/*', 'eslint.config.d.ts', 'eslint.config.js'] },
 	{
 		languageOptions: {
 			parser: tsEslint.parser as FlatConfig.Parser,
@@ -47,17 +50,19 @@ export default tsEslint.config(
 					varsIgnorePattern: '^_',
 				},
 			],
+			'@typescript-eslint/no-confusing-void-expression': 'off',
 		},
 	},
 	{
-		files: ['./**/*.ts', './eslint.config.ts'],
+		files: ['**/*.ts', 'eslint.config.ts'],
 		plugins: {
-			import: importPlugin,
+			// import: importPlugin,
 			'@typescript-eslint': tsEslint.plugin,
+			security,
 		},
 		rules: {
-			...importPlugin.configs.recommended.rules,
-			...importPlugin.configs.typescript.rules,
+			// ...importPlugin.configs.recommended.rules,
+			// ...importPlugin.configs.typescript.rules,
 			'@typescript-eslint/no-empty-function': [
 				'error',
 				{ allow: ['private-constructors', 'protected-constructors'] },
@@ -83,14 +88,14 @@ export default tsEslint.config(
 					allowNumber: true,
 				},
 			],
-			'import/prefer-default-export': 'off',
-			'import/extensions': ['warn', { ts: 'never', json: 'never' }],
+			// 'import/prefer-default-export': 'off',
+			// 'import/extensions': ['warn', { ts: 'never', json: 'never' }],
 		},
-		settings: {
-			'import/resolver': {
-				typescript: {},
-			},
-		},
+		// settings: {
+		// 'import/resolver': {
+		// 	typescript: {},
+		// },
+		// },
 	},
 	{
 		files: ['eslint.config.ts', 'eslint.d.ts'],
@@ -112,22 +117,22 @@ export default tsEslint.config(
 		},
 	},
 	{
-		files: ['./scripts/**/*'],
+		files: ['scripts/**/*'],
 		languageOptions: {
 			parserOptions: {
-				project: './tsconfig.dev.json',
+				project: 'tsconfig.dev.json',
 			},
 		},
-		plugins: {
-			import: importPlugin,
-		},
-		rules: {
-			'import/no-extraneous-dependencies': [
-				'error',
-				{
-					devDependencies: true,
-				},
-			],
-		},
+		// plugins: {
+		// 	import: importPlugin,
+		// },
+		// rules: {
+		// 	'import/no-extraneous-dependencies': [
+		// 		'error',
+		// 		{
+		// 			devDependencies: true,
+		// 		},
+		// 	],
+		// },
 	},
 )

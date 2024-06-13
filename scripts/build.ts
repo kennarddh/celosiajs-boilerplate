@@ -1,4 +1,3 @@
-/* eslint-disable security/detect-non-literal-fs-filename security/detect-child-process */
 import { exec } from 'child_process'
 import { existsSync } from 'fs'
 import { appendFile, copyFile, writeFile } from 'fs/promises'
@@ -32,8 +31,13 @@ newPackageJson.scripts.start = `node ./src/index.js`
 
 const execPromise = (command: string) =>
 	new Promise((resolvePromise, reject) => {
+		// eslint-disable-next-line security/detect-child-process
 		exec(command, (error, stdout) => {
-			if (error) return reject(error)
+			if (error) {
+				reject(error)
+
+				return
+			}
 
 			resolvePromise(stdout)
 		})
@@ -50,21 +54,17 @@ const copyEnv = async () => {
 		path = './.env.example'
 	}
 
-	copyFile(path, resolve(base, '.env')).then(() => {
-		appendFile(resolve(base, '.env'), `\n\nNODE_ENV=${env}`)
-	})
+	await copyFile(path, resolve(base, '.env')).then(() =>
+		appendFile(resolve(base, '.env'), `\n\nNODE_ENV=${env}`),
+	)
 }
 
-const main = async () => {
-	await execPromise(cleanCommand)
+await execPromise(cleanCommand)
 
-	await execPromise(buildCommand)
+await execPromise(buildCommand)
 
-	await execPromise(buildTscAliasCommand)
+await execPromise(buildTscAliasCommand)
 
-	writeFile(resolve(base, 'package.json'), JSON.stringify(newPackageJson))
+await writeFile(resolve(base, 'package.json'), JSON.stringify(newPackageJson))
 
-	copyEnv()
-}
-
-main()
+await copyEnv()
