@@ -3,7 +3,7 @@ import { z } from 'zod'
 
 import { BaseController, EmptyObject, ExpressResponse, IControllerRequest } from 'Internals'
 
-import { ITokenJWTPayload } from 'Types/Http'
+import { ITokenJWTPayload } from 'Types/Types'
 
 import Logger from 'Utils/Logger/Logger'
 import JWTSign from 'Utils/Promises/JWTSign'
@@ -26,7 +26,7 @@ class Login extends BaseController {
 
 			if (!user)
 				return response.status(403).json({
-					errors: ['Cannot find user with the same username'],
+					errors: ['Cannot find user with the username'],
 					data: {},
 				})
 
