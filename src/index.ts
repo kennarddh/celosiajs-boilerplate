@@ -18,7 +18,5 @@ Logger.info(`Server running`, {
 })
 
 // Graceful Shutdown
-// eslint-disable-next-line @typescript-eslint/no-misused-promises
-process.on('SIGTERM', OnShutdown('SIGTERM'))
-// eslint-disable-next-line @typescript-eslint/no-misused-promises
-process.on('SIGINT', OnShutdown('SIGINT'))
+process.on('SIGTERM', () => void OnShutdown('SIGTERM'))
+process.on('SIGINT', () => void OnShutdown('SIGINT'))
