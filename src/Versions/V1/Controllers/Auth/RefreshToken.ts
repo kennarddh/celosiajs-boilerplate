@@ -23,7 +23,7 @@ class RefreshToken extends BaseController {
 				process.env.REFRESH_JWT_SECRET,
 			)
 
-			const payload = user
+			const payload = { id: user.id } satisfies ITokenJWTPayload
 
 			try {
 				const token = await JWTSign(payload, process.env.JWT_SECRET, {

@@ -1,6 +1,8 @@
 import jwt from 'jsonwebtoken'
 
-const JWTSign = <T extends object>(payload: T, secret: jwt.Secret, option: jwt.SignOptions) =>
+import { JSONObject } from 'Internals'
+
+const JWTSign = <T extends JSONObject>(payload: T, secret: jwt.Secret, option: jwt.SignOptions) =>
 	new Promise<string>((resolve, reject) => {
 		jwt.sign(payload, secret, option, (error: Error | null, token: string | undefined) => {
 			if (error) {

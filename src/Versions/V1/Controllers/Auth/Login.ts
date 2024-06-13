@@ -39,7 +39,7 @@ class Login extends BaseController {
 						data: {},
 					})
 
-				const payload: ITokenJWTPayload = { id: user.id }
+				const payload = { id: user.id } satisfies ITokenJWTPayload
 
 				try {
 					const token = await JWTSign(payload, process.env.JWT_SECRET, {
