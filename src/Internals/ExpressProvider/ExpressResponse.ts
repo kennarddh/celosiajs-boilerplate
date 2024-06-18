@@ -6,7 +6,14 @@ import { Socket } from 'net'
 import { Readable } from 'stream'
 import { TypedEmitter } from 'tiny-typed-emitter'
 
-import { CookieOptions, DownloadOptions, Headers, JSON, SendFileOptions } from 'Internals'
+import {
+	CookieOptions,
+	DownloadOptions,
+	JSON,
+	OutgoingHeaderValue,
+	OutgoingHeaders,
+	SendFileOptions,
+} from 'Internals'
 
 export interface ResponseEvents {
 	close: () => void
@@ -227,11 +234,11 @@ class ExpressResponse<Body = JSON> extends TypedEmitter<ResponseEvents> {
 	 *    res.header('Accept', 'application/json');
 	 *    res.header({ Accept: 'text/plain', 'X-API-Key': 'tobi' });
 	 */
-	public header(name: string): number | string | string[] | undefined
-	public header(name: string, value: number | string | string[] | undefined): this
-	public header(headers: Headers): this
+	public header(name: string): OutgoingHeaderValue | undefined
+	public header(name: string, value: OutgoingHeaderValue | undefined): this
+	public header(headers: OutgoingHeaders): this
 	public header(
-		nameOrHeaders: string | Headers,
+		nameOrHeaders: string | OutgoingHeaders,
 		value?: string | string[],
 	): number | string | string[] | undefined | this {
 		if (typeof nameOrHeaders === 'string') {

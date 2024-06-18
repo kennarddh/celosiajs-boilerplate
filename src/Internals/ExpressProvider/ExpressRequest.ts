@@ -6,7 +6,14 @@ import { Socket } from 'net'
 import RangeParser from 'range-parser'
 import { TypedEmitter } from 'tiny-typed-emitter'
 
-import { CookiesObject, EmptyObject, HeaderValue, JSON, PathParams, QueryParams } from 'Internals'
+import {
+	CookiesObject,
+	EmptyObject,
+	IncomingHeaderValue,
+	JSON,
+	PathParams,
+	QueryParams,
+} from 'Internals'
 
 export interface RequestEvents {
 	close: () => void
@@ -81,7 +88,7 @@ class ExpressRequest<
 	 *     req.header('Something');
 	 *     // => undefined
 	 */
-	public header(name: string): HeaderValue | undefined {
+	public header(name: string): IncomingHeaderValue | undefined {
 		return this.expressRequest.header(name)
 	}
 

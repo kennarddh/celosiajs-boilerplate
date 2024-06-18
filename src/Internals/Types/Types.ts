@@ -113,8 +113,10 @@ export type ValidateControllerWithoutBody<
 			? never
 			: ValidateController<Controller, Middlewares>
 
-export type HeaderValue = string | string[]
-export type Headers = Record<string, HeaderValue>
+export type OutgoingHeaderValue = string | string[] | number
+export type IncomingHeaderValue = string | string[]
+export type OutgoingHeaders = Record<string, OutgoingHeaderValue>
+export type IncomingHeaders = Record<string, IncomingHeaderValue>
 
 export interface SendOptions {
 	/**
