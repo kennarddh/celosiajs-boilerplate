@@ -113,6 +113,7 @@ class RateLimiter extends BaseMiddleware {
 			'Retry-After': rateLimiterRes.msBeforeNext / 1000,
 			'RateLimit-Limit': rateLimiter.points,
 			'RateLimit-Remaining': rateLimiterRes.remainingPoints,
+			'RateLimit-Used': this.pointsToConsume,
 			'RateLimit-Reset': Date.now() + rateLimiterRes.msBeforeNext,
 		}
 
