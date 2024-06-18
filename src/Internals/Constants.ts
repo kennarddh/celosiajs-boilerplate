@@ -1,4 +1,4 @@
-// A hacky way to make invariant symbol works in typescriot
+// A hacky way to make invariant symbol works in typescript
 // Just Symbol() won't work
 declare const stopHereSymbol: unique symbol
 
