@@ -83,7 +83,7 @@ class VerifyJWT extends BaseMiddleware<
 
 			if (error instanceof jwt.JsonWebTokenError && error.message === 'invalid signature') {
 				response.status(401).json({
-					errors: ['Invalid token'],
+					errors: { others: ['Invalid token'] },
 					data: {},
 				})
 

@@ -5,7 +5,7 @@ import { EmptyObject } from 'Internals/Types'
 class NoMatchController extends BaseController {
 	public override index(_: EmptyObject, __: ExpressRequest, response: ExpressResponse): void {
 		response.status(404).json({
-			errors: ['Not found'],
+			errors: { others: ['Not found'] },
 			data: {},
 		})
 	}

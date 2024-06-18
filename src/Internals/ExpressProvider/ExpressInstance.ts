@@ -79,7 +79,9 @@ class ExpressInstance<Strict extends boolean> {
 			(error: Error, _: Request, response: Response, __: NextFunction): void => {
 				Logger.error('Error occured.', error)
 
-				response.status(500).json({ errors: ['Internal Server Error'], data: {} })
+				response
+					.status(500)
+					.json({ errors: { others: ['Internal Server Error'] }, data: {} })
 			},
 		)
 	}

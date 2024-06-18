@@ -30,13 +30,13 @@ class GetUserData extends BaseController {
 				})
 
 				return response.status(500).json({
-					errors: ['Internal server error'],
+					errors: { others: ['Internal server error'] },
 					data: {},
 				})
 			}
 
 			return response.status(200).json({
-				errors: [],
+				errors: {},
 				data: {
 					id: user.id,
 					username: user.username,
@@ -50,7 +50,7 @@ class GetUserData extends BaseController {
 			})
 
 			return response.status(500).json({
-				errors: ['Internal server error'],
+				errors: { others: ['Internal server error'] },
 				data: {},
 			})
 		}

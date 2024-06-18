@@ -23,7 +23,7 @@ class Register extends BaseController {
 
 			if (user != null)
 				return response.status(422).json({
-					errors: ['Username is already taken'],
+					errors: { others: ['Username is already taken'] },
 					data: {},
 				})
 		} catch (error) {
@@ -48,7 +48,7 @@ class Register extends BaseController {
 			})
 
 			return response.status(201).json({
-				errors: [],
+				errors: {},
 				data: {
 					id: user.id,
 				},
@@ -60,7 +60,7 @@ class Register extends BaseController {
 			})
 
 			return response.status(500).json({
-				errors: ['Internal server error'],
+				errors: { others: ['Internal server error'] },
 				data: {},
 			})
 		}

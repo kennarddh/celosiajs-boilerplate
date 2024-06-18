@@ -4,7 +4,7 @@ const ParseUrlencoded = (req: Request, res: Response, next: NextFunction) => {
 	const errorHandler = (err: Error | null) => {
 		if (err instanceof Error) {
 			res.status(422).json({
-				errors: ['Invalid urlencoded body'],
+				errors: { others: ['Invalid urlencoded body'] },
 				data: {},
 			})
 

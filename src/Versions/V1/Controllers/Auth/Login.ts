@@ -26,7 +26,7 @@ class Login extends BaseController {
 
 			if (!user)
 				return response.status(403).json({
-					errors: ['Cannot find user with the username'],
+					errors: { others: ['Cannot find user with the username'] },
 					data: {},
 				})
 
@@ -35,7 +35,7 @@ class Login extends BaseController {
 
 				if (!isValidHash)
 					return response.status(403).json({
-						errors: ['Wrong password'],
+						errors: { others: ['Wrong password'] },
 						data: {},
 					})
 
@@ -62,7 +62,7 @@ class Login extends BaseController {
 						})
 
 						return response.status(200).json({
-							errors: [],
+							errors: {},
 							data: {
 								token: `Bearer ${token}`,
 							},
@@ -74,7 +74,7 @@ class Login extends BaseController {
 						})
 
 						return response.status(500).json({
-							errors: ['Internal server error'],
+							errors: { others: ['Internal server error'] },
 							data: {},
 						})
 					}
@@ -85,7 +85,7 @@ class Login extends BaseController {
 					})
 
 					return response.status(500).json({
-						errors: ['Internal server error'],
+						errors: { others: ['Internal server error'] },
 						data: {},
 					})
 				}
@@ -96,7 +96,7 @@ class Login extends BaseController {
 				})
 
 				return response.status(500).json({
-					errors: ['Internal server error'],
+					errors: { others: ['Internal server error'] },
 					data: {},
 				})
 			}
@@ -107,7 +107,7 @@ class Login extends BaseController {
 			})
 
 			return response.status(500).json({
-				errors: ['Internal server error'],
+				errors: { others: ['Internal server error'] },
 				data: {},
 			})
 		}

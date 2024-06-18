@@ -42,7 +42,7 @@ class RefreshToken extends BaseController {
 					})
 
 					return response.status(200).json({
-						errors: [],
+						errors: {},
 						data: {
 							token: `Bearer ${token}`,
 						},
@@ -54,7 +54,7 @@ class RefreshToken extends BaseController {
 					})
 
 					return response.status(500).json({
-						errors: ['Internal server error'],
+						errors: { others: ['Internal server error'] },
 						data: {},
 					})
 				}
@@ -65,27 +65,27 @@ class RefreshToken extends BaseController {
 				})
 
 				return response.status(500).json({
-					errors: ['Internal server error'],
+					errors: { others: ['Internal server error'] },
 					data: {},
 				})
 			}
 		} catch (error) {
 			if (error instanceof jwt.TokenExpiredError)
 				return response.status(401).json({
-					errors: ['Expired refresh token'],
+					errors: { others: ['Expired refresh token'] },
 					data: {},
 				})
 
 			if (error instanceof jwt.JsonWebTokenError && error.message === 'invalid signature')
 				return response.status(401).json({
-					errors: ['Invalid refresh token'],
+					errors: { others: ['Invalid refresh token'] },
 					data: {},
 				})
 
 			Logger.error('Unknown error while verifying refresh token', { error })
 
 			return response.status(500).json({
-				errors: ['Internal server error'],
+				errors: { others: ['Internal server error'] },
 				data: {},
 			})
 		}

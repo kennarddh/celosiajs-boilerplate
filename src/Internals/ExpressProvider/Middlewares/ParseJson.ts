@@ -4,7 +4,7 @@ const ParseJson = (req: Request, res: Response, next: NextFunction) => {
 	const errorHandler = (err: Error | null) => {
 		if (err instanceof Error) {
 			res.status(422).json({
-				errors: ['Invalid json body'],
+				errors: { others: ['Invalid json body'] },
 				data: {},
 			})
 
