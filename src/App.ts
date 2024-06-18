@@ -9,7 +9,7 @@ import { ExpressInstance } from './Internals'
 
 const Instance = new ExpressInstance({ strict: true })
 
-// TODO: Group method for router
+// TODO: Extends ExpressInstance, ExpressRouter, ExpressRequest, ExpressResponse ability to add new functions.
 // TODO: Update readme
 
 // Middleware
