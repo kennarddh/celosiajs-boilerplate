@@ -14,7 +14,7 @@ const ipRateLimiter = new RateLimiterMemory({
 
 const userRateLimiter = new RateLimiterMemory({
 	keyPrefix: 'user',
-	points: 60,
+	points: 100,
 	duration: 60, // In seconds
 })
 
@@ -110,11 +110,11 @@ class RateLimiter extends BaseMiddleware {
 		rateLimiterRes: RateLimiterRes,
 	) {
 		const headers = {
-			'Retry-After': rateLimiterRes.msBeforeNext / 1000,
+			'Retry-After': Math.ceil(rateLimiterRes.msBeforeNext / 1000),
 			'RateLimit-Limit': rateLimiter.points,
 			'RateLimit-Remaining': rateLimiterRes.remainingPoints,
 			'RateLimit-Used': this.pointsToConsume,
-			'RateLimit-Reset': (Date.now() + rateLimiterRes.msBeforeNext) / 1000,
+			'RateLimit-Reset': Math.ceil((Date.now() + rateLimiterRes.msBeforeNext) / 1000),
 		}
 
 		response.header(headers)
