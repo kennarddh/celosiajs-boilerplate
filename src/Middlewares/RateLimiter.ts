@@ -114,7 +114,7 @@ class RateLimiter extends BaseMiddleware {
 			'RateLimit-Limit': rateLimiter.points,
 			'RateLimit-Remaining': rateLimiterRes.remainingPoints,
 			'RateLimit-Used': this.pointsToConsume,
-			'RateLimit-Reset': Date.now() + rateLimiterRes.msBeforeNext,
+			'RateLimit-Reset': (Date.now() + rateLimiterRes.msBeforeNext) / 1000,
 		}
 
 		response.header(headers)
