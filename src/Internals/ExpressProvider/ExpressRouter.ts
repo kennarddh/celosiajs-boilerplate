@@ -20,6 +20,8 @@ export interface RouterConstructorOptions<Strict extends boolean = true> {
 	strict: Strict
 }
 
+export type RouterGroupCallback<Strict extends boolean> = (router: ExpressRouter<Strict>) => void
+
 class ExpressRouter<Strict extends boolean = true> {
 	protected _isStrict: Strict
 	private _expressRouter = express.Router()
@@ -36,10 +38,10 @@ class ExpressRouter<Strict extends boolean = true> {
 		return this._expressRouter
 	}
 
-	public useRouters(path: string, ...routers: [ExpressRouter, ...ExpressRouter[]]): this
-	public useRouters(...routers: [ExpressRouter, ...ExpressRouter[]]): this
+	public useRouters(path: string, ...routers: [ExpressRouter<any>, ...ExpressRouter<any>[]]): this
+	public useRouters(...routers: [ExpressRouter<any>, ...ExpressRouter<any>[]]): this
 	public useRouters(
-		...routersAndPath: [string | ExpressRouter, ...(string | ExpressRouter)[]]
+		...routersAndPath: [string | ExpressRouter<any>, ...(string | ExpressRouter<any>)[]]
 	): this {
 		const possiblyPath = routersAndPath[0]
 		const path = typeof possiblyPath === 'string' ? possiblyPath : null
@@ -103,6 +105,28 @@ class ExpressRouter<Strict extends boolean = true> {
 		})
 
 		return this
+	}
+
+	public group(path: string, callback: RouterGroupCallback<Strict>): void
+	public group(callback: RouterGroupCallback<Strict>): void
+	public group(
+		callbackOrPath: RouterGroupCallback<Strict> | string,
+		callback?: RouterGroupCallback<Strict>,
+	) {
+		const router = new ExpressRouter({ strict: this.isStrict })
+
+		if (typeof callbackOrPath === 'string') {
+			// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+			callback!(router)
+		} else {
+			callbackOrPath(router)
+		}
+
+		if (typeof callbackOrPath === 'string') {
+			this.useRouters(callbackOrPath, router)
+		} else {
+			this.useRouters(router)
+		}
 	}
 
 	public get<
