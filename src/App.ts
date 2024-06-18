@@ -9,7 +9,7 @@ import { ExpressInstance } from './Internals'
 
 const Instance = new ExpressInstance({ strict: true })
 
-// TODO: Use https://www.npmjs.com/package/rate-limiter-flexible
+// TODO: Group method for router
 // TODO: Update readme
 
 // Middleware
