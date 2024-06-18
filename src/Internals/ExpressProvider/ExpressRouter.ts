@@ -258,7 +258,10 @@ class ExpressRouter<Strict extends boolean = true> {
 					errors,
 				})
 
-			// TODO: Use zod parsed data
+			request.body = parsedBody.data
+			request.query = parsedQuery.data
+			request.params = parsedParams.data
+			request.cookies = parsedCookies.data
 
 			const newRequest = new ExpressRequest(request)
 			const newResponse = new ExpressResponse(response)
