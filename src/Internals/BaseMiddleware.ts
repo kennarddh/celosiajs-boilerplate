@@ -11,7 +11,7 @@ abstract class BaseMiddleware<
 		data: Input,
 		request: Request,
 		response: Response,
-	): Promise<Output | typeof StopHere>
+	): Promise<Output | typeof StopHere | undefined> | Promise<void>
 }
 
 export default BaseMiddleware

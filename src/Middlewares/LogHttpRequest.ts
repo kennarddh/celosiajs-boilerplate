@@ -17,7 +17,7 @@ class LogHttpRequest extends BaseMiddleware {
 		_: EmptyObject,
 		request: ExpressRequest,
 		response: ExpressResponse,
-	): Promise<EmptyObject> {
+	) {
 		const requestStart = Date.now()
 
 		response.on('finish', () => {
@@ -45,8 +45,6 @@ class LogHttpRequest extends BaseMiddleware {
 				},
 			})
 		})
-
-		return {}
 	}
 }
 

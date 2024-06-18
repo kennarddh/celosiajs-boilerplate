@@ -40,7 +40,7 @@ class RateLimiter extends BaseMiddleware {
 
 				this.handleRateLimiterRes(response, userRateLimiter, rateLimiterRes)
 
-				return {}
+				return
 			} catch (error: unknown) {
 				if (error instanceof RateLimiterRes) {
 					const rateLimiterRes = error
@@ -101,7 +101,7 @@ class RateLimiter extends BaseMiddleware {
 			return StopHere
 		}
 
-		return {}
+		return
 	}
 
 	private handleRateLimiterRes(

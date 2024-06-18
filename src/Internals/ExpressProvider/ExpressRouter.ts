@@ -274,7 +274,7 @@ class ExpressRouter<Strict extends boolean = true> {
 
 					if (output === StopHere) return
 
-					data = output
+					data = output ?? {}
 				} catch {
 					if (!response.writableEnded) {
 						response.status(500).json({
