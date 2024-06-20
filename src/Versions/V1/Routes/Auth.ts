@@ -1,4 +1,4 @@
-import { ExpressRouter } from 'Internals/ExpressProvider'
+import { ExpressRouter } from 'Internals'
 
 import RateLimiter from 'Middlewares/RateLimiter'
 import VerifyJWT from 'Middlewares/VerifyJWT'

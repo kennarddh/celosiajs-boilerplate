@@ -1,8 +1,6 @@
 import { IncomingHttpHeaders, OutgoingHttpHeaders } from 'http'
 
-import BaseMiddleware from 'Internals/BaseMiddleware'
-import { ExpressRequest, ExpressResponse } from 'Internals/ExpressProvider'
-import { EmptyObject } from 'Internals/Types'
+import { BaseMiddleware, EmptyObject, ExpressRequest, ExpressResponse } from 'Internals'
 
 import Logger from 'Utils/Logger/Logger'
 

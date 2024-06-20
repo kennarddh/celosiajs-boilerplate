@@ -1,4 +1,4 @@
-import { ExpressRouter } from 'Internals/ExpressProvider'
+import { ExpressRouter } from 'Internals'
 
 import AuthRouter from 'Versions/V1/Routes/Auth'
 

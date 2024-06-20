@@ -1,6 +1,6 @@
 import cors from 'cors'
 
-import { ConvertExpressMiddleware } from 'Internals/Utils'
+import { ConvertExpressMiddleware } from 'Internals'
 
 const whitelist = process.env.CORS_ORIGIN?.split(',') ?? []
 

@@ -1,6 +1,4 @@
-import BaseController from 'Internals/BaseController'
-import { ExpressRequest, ExpressResponse } from 'Internals/ExpressProvider'
-import { EmptyObject } from 'Internals/Types'
+import { BaseController, EmptyObject, ExpressRequest, ExpressResponse } from 'Internals'
 
 class NoMatchController extends BaseController {
 	public override index(_: EmptyObject, __: ExpressRequest, response: ExpressResponse): void {

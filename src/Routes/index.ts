@@ -1,6 +1,6 @@
 import NoMatchController from 'Controllers/NoMatchController'
 
-import { ExpressRouter } from 'Internals/ExpressProvider'
+import { ExpressRouter } from 'Internals'
 
 import V1Router from 'Versions/V1/Routes/index'
 
