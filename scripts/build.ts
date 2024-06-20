@@ -9,7 +9,7 @@ const env = process.argv[2]
 
 const base = './build/'
 
-const cleanCommand = 'npm run clean'
+const cleanCommand = 'npm run clean:build'
 const buildCommand = `cross-env NODE_ENV=${env} npx tsc --outDir ${base}`
 const buildTscAliasCommand = `cross-env NODE_ENV=${env} npx tsc-alias -p tsconfig.json --outDir ${base}`
 
