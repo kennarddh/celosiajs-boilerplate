@@ -73,7 +73,7 @@
 		"rimraf": "^5.0.7",
 		"tsc-alias": "^1.8.10",
 		"tsx": "^4.11.0",
-		"typescript": "^5.4.5",
+		"typescript": "^5.5.2",
 		"typescript-eslint": "^7.11.0"
 	}
 }
