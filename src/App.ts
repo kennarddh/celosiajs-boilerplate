@@ -16,6 +16,6 @@ const Instance = new ExpressInstance({ strict: true })
 Instance.useMiddlewares(new Cors())
 Instance.useMiddlewares(new LogHttpRequest())
 
-Instance.useRouters('/api', Router)
+Instance.useRouters(Router)
 
 export default Instance
