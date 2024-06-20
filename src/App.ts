@@ -10,7 +10,6 @@ import { ExpressInstance } from './Internals'
 const Instance = new ExpressInstance({ strict: true })
 
 // TODO: Extends ExpressInstance, ExpressRouter, ExpressRequest, ExpressResponse ability to add new functions.
-// TODO: Update readme
 
 // Middleware
 Instance.useMiddlewares(new Cors())
