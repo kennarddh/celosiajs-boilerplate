@@ -1,7 +1,12 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+
+/* eslint-disable security/detect-object-injection */
 import path from 'path'
 
 import winston from 'winston'
 import WinstonDailyRotateFile from 'winston-daily-rotate-file'
+
+import { MESSAGE } from 'triple-beam'
 
 // Utils
 import GetRootDirectory from 'Utils/GetRootDirectory'
@@ -14,11 +19,47 @@ import RemoveWarn from './Format/RemoveWarn'
 
 const logsRootDirectory = path.resolve(GetRootDirectory(), 'Logs')
 
+const customTimestampFormatter = winston.format(info => {
+	return { ...info, timestamp: new Date().toLocaleString() }
+})
+
+const customFormatter = winston.format(info => {
+	const {
+		message: _,
+		splat: __,
+		level: ___,
+		stack: ____,
+		timestamp: _____,
+		ms: ______,
+		...restInfo
+	} = info
+
+	const stringifiedInfo = JSON.stringify(restInfo, null, 2)
+
+	let message = `${info.timestamp} | ${info.level.padEnd(7, ' ')}: ${info.message}`
+
+	if (info.ms) {
+		message += ` ${info.ms}`
+	}
+
+	if (stringifiedInfo !== '{}') {
+		message += ` ${stringifiedInfo}`
+	}
+
+	if (info.stack) {
+		message += `\n${info.stack}`
+	}
+
+	info[MESSAGE] = message
+
+	return info
+})
+
 const LoggerFormat = [
-	winston.format.timestamp(),
-	winston.format.metadata(),
+	winston.format.errors({ stack: true }),
+	customTimestampFormatter(),
 	winston.format.ms(),
-	winston.format.json(),
+	customFormatter(),
 ]
 
 const transports = []
