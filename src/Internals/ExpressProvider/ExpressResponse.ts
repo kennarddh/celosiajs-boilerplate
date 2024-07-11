@@ -80,7 +80,7 @@ class ExpressResponse<Body = JSON> extends TypedEmitter<ResponseEvents> {
 	 *     res.send('<p>some html</p>');
 	 *     res.status(404).send('Sorry, cant find that');
 	 */
-	public send(body: Body): this {
+	public send(body?: Body): this {
 		this.expressResponse.send(body)
 
 		return this
