@@ -9,6 +9,9 @@ import { TypedEmitter } from 'tiny-typed-emitter'
 import {
 	CookieOptions,
 	DownloadOptions,
+	ExpressInstance,
+	ExtensionsRegistry,
+	InvalidExtensionError,
 	JSON,
 	OutgoingHeaderValue,
 	OutgoingHeaders,
@@ -26,10 +29,7 @@ export interface ResponseEvents {
 
 class ExpressResponse<Body = JSON> extends TypedEmitter<ResponseEvents> {
 	protected _expressResponse: Response
-
-	public get expressResponse() {
-		return this._expressResponse
-	}
+	protected _cachedExtensionsProxy: ExpressFramework.ExpressResponse<Body> | null = null
 
 	constructor(expressResponse: Response) {
 		super()
@@ -42,6 +42,43 @@ class ExpressResponse<Body = JSON> extends TypedEmitter<ResponseEvents> {
 		expressResponse.on('finish', () => this.emit('finish'))
 		expressResponse.on('unpipe', src => this.emit('unpipe', src))
 		expressResponse.on('pipe', src => this.emit('pipe', src))
+	}
+
+	/**
+	 * User-defined extensions method.
+	 * Register by using `ExtensionsRegistry.registerExpressResponseExtension`.
+	 */
+	public get extensions(): ExpressFramework.ExpressResponse<Body> {
+		if (this._cachedExtensionsProxy === null)
+			this._cachedExtensionsProxy = new Proxy(
+				{},
+				{
+					get: (_, property, __) => {
+						const extensionHandler =
+							ExtensionsRegistry.getExpressResponseExtension(property)
+
+						if (extensionHandler === undefined)
+							throw new InvalidExtensionError(
+								`Use of unregistered extension "${property.toString()}".`,
+							)
+
+						// eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-argument
+						return (...args: any[]) => extensionHandler(this, ...args)
+					},
+				},
+			) as ExpressFramework.ExpressResponse<Body>
+
+		return this._cachedExtensionsProxy
+	}
+
+	public get expressResponse() {
+		return this._expressResponse
+	}
+
+	public get instance() {
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-member-access
+		return (this.expressResponse.app as any).__EXPRESS_FRAMEWORK__
+			.instance as ExpressInstance<boolean>
 	}
 
 	/**

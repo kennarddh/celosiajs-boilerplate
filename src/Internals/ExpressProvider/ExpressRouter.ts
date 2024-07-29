@@ -6,6 +6,8 @@ import {
 	BaseMiddleware,
 	ExpressRequest,
 	ExpressResponse,
+	ExtensionsRegistry,
+	InvalidExtensionError,
 	MiddlewareArray,
 	NoInputMiddleware,
 	StopHere,
@@ -26,8 +28,37 @@ class ExpressRouter<Strict extends boolean = true> {
 	protected _isStrict: Strict
 	private _expressRouter = express.Router()
 
+	protected _cachedExtensionsProxy: ExpressFramework.ExpressRouter<Strict> | null = null
+
 	constructor(options: RouterConstructorOptions<Strict>) {
 		this._isStrict = options.strict
+	}
+
+	/**
+	 * User-defined extensions method.
+	 * Register by using `ExtensionsRegistry.registerExpressRequestExtension`.
+	 */
+	public get extensions(): ExpressFramework.ExpressRouter<Strict> {
+		if (this._cachedExtensionsProxy === null)
+			this._cachedExtensionsProxy = new Proxy(
+				{},
+				{
+					get: (_, property, __) => {
+						const extensionHandler =
+							ExtensionsRegistry.getExpressRouterExtension(property)
+
+						if (extensionHandler === undefined)
+							throw new InvalidExtensionError(
+								`Use of unregistered extension "${property.toString()}".`,
+							)
+
+						// eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+						return (...args: any[]) => extensionHandler(this, ...args)
+					},
+				},
+			) as ExpressFramework.ExpressRouter<Strict>
+
+		return this._cachedExtensionsProxy
 	}
 
 	public get isStrict(): Strict {

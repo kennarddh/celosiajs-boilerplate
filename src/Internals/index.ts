@@ -8,6 +8,7 @@ export { default as BaseController } from './BaseController'
 export { default as BaseMiddleware } from './BaseMiddleware'
 export {
 	default as ExtensionsRegistry,
+	ExtensionsRegistryClass,
 	type ExtensionHandler,
 	type ExpressInstanceExtensionHandler,
 	type ExpressRouterExtensionHandler,

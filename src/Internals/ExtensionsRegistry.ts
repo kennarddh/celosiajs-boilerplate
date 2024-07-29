@@ -23,12 +23,12 @@ export type ExpressRouterExtensionHandler<
 export type ExpressRequestExtensionHandler<
 	Args extends any[] = any[],
 	Return = void,
-> = ExtensionHandler<ExpressRequest<boolean>, Args, Return>
+> = ExtensionHandler<ExpressRequest<any>, Args, Return>
 
 export type ExpressResponseExtensionHandler<
 	Args extends any[] = any[],
 	Return = void,
-> = ExtensionHandler<ExpressResponse<boolean>, Args, Return>
+> = ExtensionHandler<ExpressResponse<any>, Args, Return>
 
 export type TransformExtensionHandlerToExtensionType<
 	Handler extends ExtensionHandler<any, any, any>,
@@ -37,7 +37,7 @@ export type TransformExtensionHandlerToExtensionType<
 		? (...args: Args) => Return
 		: never
 
-class ExtensionsRegistry {
+export class ExtensionsRegistryClass {
 	private expressInstanceExtensionsHandler = new Map<
 		string | symbol,
 		ExpressInstanceExtensionHandler
@@ -55,7 +55,7 @@ class ExtensionsRegistry {
 		ExpressResponseExtensionHandler
 	>()
 
-	addExpressInstanceExtension(
+	registerExpressInstanceExtension(
 		key: string | symbol,
 		handler: ExpressInstanceExtensionHandler,
 	): void {
@@ -80,7 +80,10 @@ class ExtensionsRegistry {
 		return this.expressInstanceExtensionsHandler.get(key)
 	}
 
-	addExpressRouterExtension(key: string | symbol, handler: ExpressRouterExtensionHandler): void {
+	registerExpressRouterExtension(
+		key: string | symbol,
+		handler: ExpressRouterExtensionHandler,
+	): void {
 		if (this.expressRouterExtensionsHandler.has(key))
 			throw new DuplicateExtensionError(
 				`Cannot register key "${key.toString()}" because the same key already exists.`,
@@ -102,7 +105,7 @@ class ExtensionsRegistry {
 		return this.expressRouterExtensionsHandler.get(key)
 	}
 
-	addExpressRequestExtension(
+	registerExpressRequestExtension(
 		key: string | symbol,
 		handler: ExpressRequestExtensionHandler,
 	): void {
@@ -127,7 +130,7 @@ class ExtensionsRegistry {
 		return this.expressRequestExtensionsHandler.get(key)
 	}
 
-	addExpressResponseExtension(
+	registerExpressResponseExtension(
 		key: string | symbol,
 		handler: ExpressResponseExtensionHandler,
 	): void {
@@ -152,5 +155,7 @@ class ExtensionsRegistry {
 		return this.expressResponseExtensionsHandler.get(key)
 	}
 }
+
+const ExtensionsRegistry = new ExtensionsRegistryClass()
 
 export default ExtensionsRegistry

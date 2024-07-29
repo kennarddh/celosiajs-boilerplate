@@ -34,14 +34,17 @@ class ExpressInstance<Strict extends boolean> {
 	protected readonly isStrict: Strict
 	protected readonly express: ReturnType<typeof express>
 	protected _server: Server | null = null
-	public readonly extensionsRegistry: ExtensionsRegistry
 
 	constructor(options: InstanceConstructorOptions<Strict>) {
-		this.extensionsRegistry = new ExtensionsRegistry()
-
 		this.isStrict = options.strict
 
 		this.express = express()
+
+		// Only for internal use.
+		// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-explicit-any
+		;(this.express as any).__EXPRESS_FRAMEWORK__ = {
+			instance: this,
+		}
 
 		// Settings
 		this.express.disable('x-powered-by')
@@ -54,7 +57,10 @@ class ExpressInstance<Strict extends boolean> {
 
 		this.express.use(cookieParser())
 	}
-
+	/**
+	 * User-defined extensions method.
+	 * Register by using `ExtensionsRegistry.registerExpressInstanceExtension`.
+	 */
 	public get extensions(): ExpressFramework.ExpressInstance<Strict> {
 		if (this._cachedExtensionsProxy === null)
 			this._cachedExtensionsProxy = new Proxy(
@@ -62,7 +68,7 @@ class ExpressInstance<Strict extends boolean> {
 				{
 					get: (_, property, __) => {
 						const extensionHandler =
-							this.extensionsRegistry.getExpressInstanceExtension(property)
+							ExtensionsRegistry.getExpressInstanceExtension(property)
 
 						if (extensionHandler === undefined)
 							throw new InvalidExtensionError(

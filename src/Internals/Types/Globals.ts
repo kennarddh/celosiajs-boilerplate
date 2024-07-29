@@ -1,14 +1,18 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { CookiesObject, EmptyObject, JSON, PathParams, QueryParams } from 'Internals'
+
 /* eslint-disable @typescript-eslint/no-empty-interface */
 declare global {
 	// eslint-disable-next-line @typescript-eslint/no-namespace
 	namespace ExpressFramework {
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars
 		interface ExpressInstance<Strict extends boolean> {}
-		interface ExpressRequest {}
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars
+		interface ExpressRequest<
+			Body extends EmptyObject | JSON,
+			Query extends EmptyObject | QueryParams,
+			Params extends EmptyObject | PathParams,
+			Cookies extends EmptyObject | CookiesObject,
+		> {}
 		interface ExpressRouter<Strict extends boolean> {}
-		interface ExpressResponse {}
+		interface ExpressResponse<Body> {}
 	}
 }
-
-export {}

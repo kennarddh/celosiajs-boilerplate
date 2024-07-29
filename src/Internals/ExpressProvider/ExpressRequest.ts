@@ -9,7 +9,10 @@ import { TypedEmitter } from 'tiny-typed-emitter'
 import {
 	CookiesObject,
 	EmptyObject,
+	ExpressInstance,
+	ExtensionsRegistry,
 	IncomingHeaderValue,
+	InvalidExtensionError,
 	JSON,
 	PathParams,
 	QueryParams,
@@ -32,10 +35,12 @@ class ExpressRequest<
 	Cookies extends EmptyObject | CookiesObject = EmptyObject,
 > extends TypedEmitter<RequestEvents> {
 	protected _expressRequest: Request
-
-	public get expressRequest() {
-		return this._expressRequest
-	}
+	protected _cachedExtensionsProxy: ExpressFramework.ExpressRequest<
+		Body,
+		Query,
+		Params,
+		Cookies
+	> | null = null
 
 	constructor(expressRequest: Request) {
 		super()
@@ -49,6 +54,43 @@ class ExpressRequest<
 		expressRequest.on('pause', () => this.emit('pause'))
 		expressRequest.on('readable', () => this.emit('readable'))
 		expressRequest.on('resume', () => this.emit('resume'))
+	}
+
+	/**
+	 * User-defined extensions method.
+	 * Register by using `ExtensionsRegistry.registerExpressRequestExtension`.
+	 */
+	public get extensions(): ExpressFramework.ExpressRequest<Body, Query, Params, Cookies> {
+		if (this._cachedExtensionsProxy === null)
+			this._cachedExtensionsProxy = new Proxy(
+				{},
+				{
+					get: (_, property, __) => {
+						const extensionHandler =
+							ExtensionsRegistry.getExpressRequestExtension(property)
+
+						if (extensionHandler === undefined)
+							throw new InvalidExtensionError(
+								`Use of unregistered extension "${property.toString()}".`,
+							)
+
+						// eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-argument
+						return (...args: any[]) => extensionHandler(this, ...args)
+					},
+				},
+			) as ExpressFramework.ExpressRequest<Body, Query, Params, Cookies>
+
+		return this._cachedExtensionsProxy
+	}
+
+	public get expressRequest() {
+		return this._expressRequest
+	}
+
+	public get instance() {
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-member-access
+		return (this.expressRequest.app as any).__EXPRESS_FRAMEWORK__
+			.instance as ExpressInstance<boolean>
 	}
 
 	public get body(): Body {
