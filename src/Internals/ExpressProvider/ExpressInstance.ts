@@ -13,6 +13,9 @@ import {
 	ExpressRequest,
 	ExpressResponse,
 	ExpressRouter,
+	ExtensionsRegistry,
+	IListenOptions,
+	InvalidExtensionError,
 	NoInputMiddleware,
 } from 'Internals'
 
@@ -21,44 +24,58 @@ import Logger from 'Utils/Logger/Logger'
 import ParseJson from './Middlewares/ParseJson'
 import ParseUrlencoded from './Middlewares/ParseUrlencoded'
 
-export interface IListenOptions {
-	port?: number
-	host?: string
-	backlog?: number
-}
-
 export interface InstanceConstructorOptions<Strict extends boolean = true> {
 	strict: Strict
 }
 
 class ExpressInstance<Strict extends boolean> {
-	protected _isStrict: Strict
-	protected _express: ReturnType<typeof express>
+	protected _cachedExtensionsProxy: ExpressFramework.ExpressInstance<Strict> | null = null
+
+	protected readonly isStrict: Strict
+	protected readonly express: ReturnType<typeof express>
 	protected _server: Server | null = null
+	public readonly extensionsRegistry: ExtensionsRegistry
 
 	constructor(options: InstanceConstructorOptions<Strict>) {
-		this._isStrict = options.strict
+		this.extensionsRegistry = new ExtensionsRegistry()
 
-		this._express = express()
+		this.isStrict = options.strict
+
+		this.express = express()
 
 		// Settings
-		this._express.disable('x-powered-by')
+		this.express.disable('x-powered-by')
 
-		this._express.use(compression())
-		this._express.use(helmet())
+		this.express.use(compression())
+		this.express.use(helmet())
 
-		this._express.use(ParseUrlencoded)
-		this._express.use(ParseJson)
+		this.express.use(ParseUrlencoded)
+		this.express.use(ParseJson)
 
-		this._express.use(cookieParser())
+		this.express.use(cookieParser())
 	}
 
-	public get isStrict(): Strict {
-		return this._isStrict
-	}
+	public get extensions(): ExpressFramework.ExpressInstance<Strict> {
+		if (this._cachedExtensionsProxy === null)
+			this._cachedExtensionsProxy = new Proxy(
+				{},
+				{
+					get: (_, property, __) => {
+						const extensionHandler =
+							this.extensionsRegistry.getExpressInstanceExtension(property)
 
-	public get express() {
-		return this._express
+						if (extensionHandler === undefined)
+							throw new InvalidExtensionError(
+								`Use of unregistered extension "${property.toString()}".`,
+							)
+
+						// eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-argument
+						return (...args: any[]) => extensionHandler(this, ...args)
+					},
+				},
+			) as ExpressFramework.ExpressInstance<Strict>
+
+		return this._cachedExtensionsProxy
 	}
 
 	public get server() {
@@ -75,15 +92,11 @@ class ExpressInstance<Strict extends boolean> {
 	 * Doesn't work until Express 5 because Express 4.x won't catch uncaught exception in promise.
 	 */
 	public addErrorHandler() {
-		this._express.use(
-			(error: Error, _: Request, response: Response, __: NextFunction): void => {
-				Logger.error('Error occured.', error)
+		this.express.use((error: Error, _: Request, response: Response, __: NextFunction): void => {
+			Logger.error('Error occured.', error)
 
-				response
-					.status(500)
-					.json({ errors: { others: ['Internal Server Error'] }, data: {} })
-			},
-		)
+			response.status(500).json({ errors: { others: ['Internal Server Error'] }, data: {} })
+		})
 	}
 
 	public listen(options: IListenOptions): Promise<void> {
@@ -91,7 +104,7 @@ class ExpressInstance<Strict extends boolean> {
 
 		return new Promise(resolve => {
 			// https://stackoverflow.com/a/69324331/14813577
-			this._server = this._express.listen(
+			this._server = this.express.listen(
 				options.port ?? 0,
 				options.host ?? '127.0.0.1',
 				options.backlog ?? 511,

@@ -5,6 +5,12 @@ import { z } from 'zod'
 
 import { BaseController, BaseMiddleware, EmptyObject, ExpressRequest } from 'Internals'
 
+export interface IListenOptions {
+	port?: number
+	host?: string
+	backlog?: number
+}
+
 export type MiddlewareArray = BaseMiddleware<any, any, any, any>[]
 
 export type NoInputMiddleware = BaseMiddleware<ExpressRequest>
