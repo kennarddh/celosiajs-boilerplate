@@ -11,11 +11,9 @@
 	"importOrder": [
 		"^dotenv",
 		"^express$",
-		"^express-validator$",
 		"^http$",
 		"^path$",
 		"^bcrypt$",
-		"^mongoose$",
 		"^winston",
 		"^compression$",
 		"^cookie-parser$",
