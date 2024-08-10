@@ -1,4 +1,4 @@
-# Express Boilerplate
+# CelosiaJS Boilerplate
 
 ## Guide
 

@@ -1,7 +1,7 @@
 {
-	"name": "express-boilerplate",
+	"name": "celosiajs-boilerplate",
 	"version": "1.0.0",
-	"description": "Express boilerplate",
+	"description": "CelosiaJS boilerplate",
 	"main": "src/index.ts",
 	"type": "module",
 	"scripts": {
@@ -23,7 +23,7 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/kennarddh/express-boilerplate.git"
+		"url": "https://github.com/kennarddh/celosiajs-boilerplate.git"
 	},
 	"author": "kennarddh",
 	"license": "MIT",
