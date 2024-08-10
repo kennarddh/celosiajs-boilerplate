@@ -16,17 +16,17 @@ The environment variables can be found and modified in the `.env` file. See `.en
 
 ```
 src/
- |--Versions/             # Versions List
+ |--Versions/             # Versions list
  |  |--V{/\d+/}/          # Version (Example: V1, V2, V3)
  |  |  |--Controllers/    # Controllers
  |  |  |--Routes/         # Routes
  |--Controllers/          # Controllers
- |--Routes/               # Main Routes
+ |--Routes/               # Main routes
  |--Database/             # Database configuration
- |--Middlewares/          # Custom express middlewares
+ |--Middlewares/          # Middlewares
  |--Utils/                # Utility classes and functions
  |--Types/                # Typescript types definition
- |--App.ts                # Express app
+ |--App.ts                # CelosiaJS instance
  |--index.ts              # Entry
 ```
 
@@ -42,18 +42,18 @@ npm start
 
 ### Build Production
 
-build the project for production.
+Build the project for production
 
 ```bash
-npm run build:production
+npm run build
 ```
 
-### Build Development
+### Start Production
 
-build the project for development.
+Start the built project
 
 ```bash
-npm run build:development
+npm run prod
 ```
 
 ### Clean
@@ -104,20 +104,20 @@ Fix linting errors.
 npm run lint:fix
 ```
 
-### Prettier fix
-
-Fix the code formatting.
-
-```bash
-npm run prettier:fix
-```
-
 ### Prettier check
 
 Check the code formatting.
 
 ```bash
 npm run prettier:check
+```
+
+### Prettier fix
+
+Fix the code formatting.
+
+```bash
+npm run prettier:fix
 ```
 
 ### Types Check
