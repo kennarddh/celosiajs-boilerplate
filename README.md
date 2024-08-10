@@ -1,5 +1,7 @@
 # CelosiaJS Boilerplate
 
+Uses [`CelosiaJS`](https://github.com/kennarddh/celosiajs) framework.
+
 ## Guide
 
 ### Install Dependencies
