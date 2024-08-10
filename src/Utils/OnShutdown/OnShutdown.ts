@@ -33,7 +33,7 @@ const OnShutdown = async (signal: string, exitCode = 0) => {
 
 		Logger.info('Database connection closed')
 	} catch (error) {
-		Logger.error('Failed to close database connection', { error })
+		Logger.error('Failed to close database connection', error)
 	}
 
 	Logger.info('Exiting')

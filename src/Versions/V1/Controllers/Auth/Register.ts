@@ -27,9 +27,7 @@ class Register extends BaseController {
 					data: {},
 				})
 		} catch (error) {
-			Logger.error('Register controller username validation findFirst error', {
-				error,
-			})
+			Logger.error('Register controller username validation findFirst error', error)
 
 			response.extensions.sendInternalServerError()
 
@@ -56,9 +54,8 @@ class Register extends BaseController {
 				},
 			})
 		} catch (error) {
-			Logger.error('Register controller failed to create user', {
+			Logger.error('Register controller failed to create user', error, {
 				username,
-				error,
 			})
 
 			response.extensions.sendInternalServerError()

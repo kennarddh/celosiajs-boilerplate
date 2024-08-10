@@ -48,19 +48,21 @@ class RefreshToken extends BaseController {
 						},
 					})
 				} catch (error) {
-					Logger.error('RefreshToken controller failed to sign refresh token JWT', {
-						userID: user.id,
+					Logger.error(
+						'RefreshToken controller failed to sign refresh token JWT',
 						error,
-					})
+						{
+							userID: user.id,
+						},
+					)
 
 					response.extensions.sendInternalServerError()
 
 					return
 				}
 			} catch (error) {
-				Logger.error('RefreshToken controller failed to sign token JWT', {
+				Logger.error('RefreshToken controller failed to sign token JWT', error, {
 					userID: user.id,
-					error,
 				})
 
 				response.extensions.sendInternalServerError()
@@ -80,7 +82,7 @@ class RefreshToken extends BaseController {
 					data: {},
 				})
 
-			Logger.error('Unknown error while verifying refresh token', { error })
+			Logger.error('Unknown error while verifying refresh token', error)
 
 			response.extensions.sendInternalServerError()
 
