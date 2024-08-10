@@ -1,5 +1,3 @@
-import 'dotenv/config'
-
 import Instance from 'App'
 
 import Logger from 'Utils/Logger/Logger'

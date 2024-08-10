@@ -26,7 +26,7 @@
 		"skipLibCheck": false,
 		"resolveJsonModule": true,
 		"moduleResolution": "Bundler",
-		"outDir": "./dist/",
+		"outDir": "./build/",
 		"baseUrl": "src",
 		"paths": {
 			"Utils/*": ["./Utils/*"],
@@ -37,6 +37,10 @@
 			"Types/*": ["./Types/*"]
 		}
 	},
-	"references": [{ "path": "./tsconfig.dev.json" }, { "path": "./tsconfig.eslint.json" }],
+	"tsc-alias": {
+		"resolveFullPaths": true,
+		"verbose": false
+	},
+	"references": [{ "path": "./tsconfig.eslint.json" }],
 	"include": ["src"]
 }
