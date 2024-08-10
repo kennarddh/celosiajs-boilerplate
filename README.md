@@ -2,6 +2,8 @@
 
 Uses [`CelosiaJS`](https://github.com/kennarddh/celosiajs) framework.
 
+Previously `express-boilerplate`.
+
 ## Guide
 
 ### Install Dependencies
