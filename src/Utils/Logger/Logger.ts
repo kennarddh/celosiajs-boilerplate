@@ -3,14 +3,13 @@ import path from 'path'
 import winston from 'winston'
 import WinstonDailyRotateFile from 'winston-daily-rotate-file'
 
-import GetRootDirectory from 'Utils/GetRootDirectory'
+import { CelosiaFormat, FilterLevel } from '@celosiajs/logging'
 
-import CustomFormatter from './Format/CustomFormatter'
-import FilterLevel from './Format/FilterLevel'
+import GetRootDirectory from 'Utils/GetRootDirectory'
 
 const logsRootDirectory = path.resolve(GetRootDirectory(), 'Logs')
 
-const LoggerFormat = [winston.format.ms(), CustomFormatter({ inspectOptions: { depth: Infinity } })]
+const LoggerFormat = [winston.format.ms(), CelosiaFormat({ inspectOptions: { depth: Infinity } })]
 
 const transports = []
 

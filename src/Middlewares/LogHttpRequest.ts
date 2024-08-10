@@ -1,6 +1,6 @@
 import { IncomingHttpHeaders, OutgoingHttpHeaders } from 'http'
 
-import { BaseMiddleware, EmptyObject, ExpressRequest, ExpressResponse } from 'Internals'
+import { BaseMiddleware, CelosiaRequest, CelosiaResponse, EmptyObject } from '@celosiajs/core'
 
 import Logger from 'Utils/Logger/Logger'
 
@@ -13,8 +13,8 @@ const FilterHeaders = (headers: IncomingHttpHeaders | OutgoingHttpHeaders) => {
 class LogHttpRequest extends BaseMiddleware {
 	public override async index(
 		_: EmptyObject,
-		request: ExpressRequest,
-		response: ExpressResponse,
+		request: CelosiaRequest,
+		response: CelosiaResponse,
 	) {
 		const requestStart = Date.now()
 

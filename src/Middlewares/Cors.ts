@@ -1,6 +1,6 @@
-import cors from 'cors'
+import { ConvertExpressMiddleware } from '@celosiajs/core'
 
-import { ConvertExpressMiddleware } from 'Internals'
+import cors from 'cors'
 
 const whitelist = process.env.CORS_ORIGIN?.split(',') ?? []
 

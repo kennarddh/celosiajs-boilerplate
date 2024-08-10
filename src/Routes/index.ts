@@ -1,10 +1,10 @@
-import NoMatchController from 'Controllers/NoMatchController'
+import { CelosiaRouter } from '@celosiajs/core'
 
-import { ExpressRouter } from 'Internals'
+import NoMatchController from 'Controllers/NoMatchController'
 
 import V1Router from 'Versions/V1/Routes/index'
 
-const Router = new ExpressRouter({ strict: true })
+const Router = new CelosiaRouter({ strict: true })
 
 Router.useRouters('/v1', V1Router)
 

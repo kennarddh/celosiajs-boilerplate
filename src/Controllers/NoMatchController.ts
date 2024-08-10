@@ -1,7 +1,7 @@
-import { BaseController, EmptyObject, ExpressRequest, ExpressResponse } from 'Internals'
+import { BaseController, CelosiaRequest, CelosiaResponse, EmptyObject } from '@celosiajs/core'
 
 class NoMatchController extends BaseController {
-	public override index(_: EmptyObject, __: ExpressRequest, response: ExpressResponse): void {
+	public override index(_: EmptyObject, __: CelosiaRequest, response: CelosiaResponse): void {
 		response.status(404).json({
 			errors: { others: ['Not found'] },
 			data: {},

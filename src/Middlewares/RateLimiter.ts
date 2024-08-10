@@ -1,6 +1,13 @@
-import { RateLimiterAbstract, RateLimiterMemory, RateLimiterRes } from 'rate-limiter-flexible'
+import {
+	BaseMiddleware,
+	CelosiaRequest,
+	CelosiaResponse,
+	EmptyObject,
+	StopHere,
+} from '@celosiajs/core'
+import '@celosiajs/extensions'
 
-import { BaseMiddleware, EmptyObject, ExpressRequest, ExpressResponse, StopHere } from 'Internals'
+import { RateLimiterAbstract, RateLimiterMemory, RateLimiterRes } from 'rate-limiter-flexible'
 
 import Logger from 'Utils/Logger/Logger'
 
@@ -28,8 +35,8 @@ class RateLimiter extends BaseMiddleware {
 
 	public override async index(
 		data: EmptyObject | JWTVerifiedData,
-		request: ExpressRequest,
-		response: ExpressResponse,
+		request: CelosiaRequest,
+		response: CelosiaResponse,
 	) {
 		if ('user' in data && this.useUserRateLimiterIfPossible) {
 			try {
@@ -56,10 +63,7 @@ class RateLimiter extends BaseMiddleware {
 
 				Logger.error('User rate limiter error', error)
 
-				response.status(500).json({
-					errors: { others: ['Internal server error'] },
-					data: {},
-				})
+				response.extensions.sendInternalServerError()
 
 				return StopHere
 			}
@@ -68,10 +72,7 @@ class RateLimiter extends BaseMiddleware {
 		if (request.ip === undefined) {
 			Logger.warn('Rate limiter undefined ip')
 
-			response.status(500).json({
-				errors: { others: ['Internal server error'] },
-				data: {},
-			})
+			response.extensions.sendInternalServerError()
 
 			return StopHere
 		}
@@ -93,10 +94,7 @@ class RateLimiter extends BaseMiddleware {
 
 			Logger.error('Rate limiter error', error)
 
-			response.status(500).json({
-				errors: { others: ['Internal server error'] },
-				data: {},
-			})
+			response.extensions.sendInternalServerError()
 
 			return StopHere
 		}
@@ -105,7 +103,7 @@ class RateLimiter extends BaseMiddleware {
 	}
 
 	private handleRateLimiterRes(
-		response: ExpressResponse,
+		response: CelosiaResponse,
 		rateLimiter: RateLimiterAbstract,
 		rateLimiterRes: RateLimiterRes,
 	) {

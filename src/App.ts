@@ -1,3 +1,5 @@
+import { CelosiaInstance } from '@celosiajs/core'
+
 import Cors from 'Middlewares/Cors'
 import LogHttpRequest from 'Middlewares/LogHttpRequest'
 
@@ -5,9 +7,7 @@ import Router from 'Routes'
 
 import 'Database/index'
 
-import { ExpressInstance } from './Internals'
-
-const Instance = new ExpressInstance({ strict: true })
+const Instance = new CelosiaInstance({ strict: true })
 
 // Middleware
 Instance.useMiddlewares(new Cors())

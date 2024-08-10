@@ -1,7 +1,7 @@
+import { BaseController, CelosiaResponse, EmptyObject, IControllerRequest } from '@celosiajs/core'
+
 import argon2 from 'argon2'
 import { z } from 'zod'
-
-import { BaseController, EmptyObject, ExpressResponse, IControllerRequest } from 'Internals'
 
 import Logger from 'Utils/Logger/Logger'
 
@@ -11,7 +11,7 @@ class Register extends BaseController {
 	public async index(
 		_: EmptyObject,
 		request: IControllerRequest<Register>,
-		response: ExpressResponse,
+		response: CelosiaResponse,
 	) {
 		const { username, name, password } = request.body
 
@@ -31,7 +31,9 @@ class Register extends BaseController {
 				error,
 			})
 
-			throw new Error('Internal Server Error')
+			response.extensions.sendInternalServerError()
+
+			return
 		}
 
 		const hashedPassword = await argon2.hash(password, {
@@ -59,10 +61,9 @@ class Register extends BaseController {
 				error,
 			})
 
-			return response.status(500).json({
-				errors: { others: ['Internal server error'] },
-				data: {},
-			})
+			response.extensions.sendInternalServerError()
+
+			return
 		}
 	}
 

@@ -20,7 +20,6 @@ src/
  |  |--V{/\d+/}/          # Version (Example: V1, V2, V3)
  |  |  |--Controllers/    # Controllers
  |  |  |--Routes/         # Routes
- |--Internals/            # Framework
  |--Controllers/          # Controllers
  |--Routes/               # Main Routes
  |--Database/             # Database configuration

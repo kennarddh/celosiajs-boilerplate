@@ -1,6 +1,12 @@
-import jwt from 'jsonwebtoken'
+import {
+	BaseMiddleware,
+	CelosiaRequest,
+	CelosiaResponse,
+	EmptyObject,
+	StopHere,
+} from '@celosiajs/core'
 
-import { BaseMiddleware, EmptyObject, ExpressRequest, ExpressResponse, StopHere } from 'Internals'
+import jwt from 'jsonwebtoken'
 
 import { ITokenJWTPayload } from 'Types/Types'
 
@@ -14,15 +20,15 @@ export interface JWTVerifiedData {
 }
 
 class VerifyJWT extends BaseMiddleware<
-	ExpressRequest,
-	ExpressResponse,
+	CelosiaRequest,
+	CelosiaResponse,
 	EmptyObject,
 	JWTVerifiedData
 > {
 	public override async index(
 		_: EmptyObject,
-		request: ExpressRequest,
-		response: ExpressResponse,
+		request: CelosiaRequest,
+		response: CelosiaResponse,
 	) {
 		const tokenHeader = request.header('Access-Token')
 
@@ -95,12 +101,7 @@ class VerifyJWT extends BaseMiddleware<
 				token,
 			})
 
-			response.status(500).json({
-				errors: {
-					others: ['Internal server error'],
-				},
-				data: {},
-			})
+			response.extensions.sendInternalServerError()
 
 			return StopHere
 		}
