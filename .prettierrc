@@ -9,11 +9,10 @@
 	"printWidth": 100,
 
 	"importOrder": [
-		"^dotenv",
 		"^express$",
 		"^http$",
 		"^path$",
-		"^bcrypt$",
+		"^argon2$",
 		"^winston",
 		"^compression$",
 		"^cookie-parser$",

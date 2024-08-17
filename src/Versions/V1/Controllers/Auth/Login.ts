@@ -1,6 +1,7 @@
+import argon2 from 'argon2'
+
 import { BaseController, CelosiaResponse, EmptyObject, IControllerRequest } from '@celosiajs/core'
 
-import argon2 from 'argon2'
 import { z } from 'zod'
 
 import { ITokenJWTPayload } from 'Types/Types'
