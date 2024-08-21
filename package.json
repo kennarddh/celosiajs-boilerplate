@@ -28,8 +28,8 @@
 	"author": "kennarddh",
 	"license": "MIT",
 	"dependencies": {
-		"@celosiajs/core": "^0.0.1-alpha.5",
-		"@celosiajs/extensions": "^0.0.1-alpha.5",
+		"@celosiajs/core": "^0.0.1-alpha.6",
+		"@celosiajs/extensions": "^0.0.1-alpha.6",
 		"@celosiajs/logging": "^0.0.1-alpha.4",
 		"@prisma/client": "^5.14.0",
 		"argon2": "^0.40.3",

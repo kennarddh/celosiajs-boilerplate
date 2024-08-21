@@ -3,7 +3,7 @@ import {
 	CelosiaRequest,
 	CelosiaResponse,
 	EmptyObject,
-	StopHere,
+	INextFunction,
 } from '@celosiajs/core'
 import '@celosiajs/extensions'
 
@@ -37,6 +37,7 @@ class RateLimiter extends BaseMiddleware {
 		data: EmptyObject | JWTVerifiedData,
 		request: CelosiaRequest,
 		response: CelosiaResponse,
+		next: INextFunction,
 	) {
 		if ('user' in data && this.useUserRateLimiterIfPossible) {
 			try {
@@ -47,34 +48,28 @@ class RateLimiter extends BaseMiddleware {
 
 				this.handleRateLimiterRes(response, userRateLimiter, rateLimiterRes)
 
-				return
+				return next()
 			} catch (error: unknown) {
 				if (error instanceof RateLimiterRes) {
 					const rateLimiterRes = error
 
 					this.handleRateLimiterRes(response, userRateLimiter, rateLimiterRes)
 
-					response
+					return response
 						.status(429)
 						.json({ errors: { others: ['Rate limit exceeded'] }, data: {} })
-
-					return StopHere
 				}
 
 				Logger.error('User rate limiter error', error)
 
-				response.extensions.sendInternalServerError()
-
-				return StopHere
+				return response.extensions.sendInternalServerError()
 			}
 		}
 
 		if (request.ip === undefined) {
 			Logger.warn('Rate limiter undefined ip')
 
-			response.extensions.sendInternalServerError()
-
-			return StopHere
+			return response.extensions.sendInternalServerError()
 		}
 
 		try {
@@ -83,23 +78,19 @@ class RateLimiter extends BaseMiddleware {
 			this.handleRateLimiterRes(response, ipRateLimiter, rateLimiterRes)
 		} catch (error: unknown) {
 			if (error instanceof RateLimiterRes) {
-				const rateLimiterRes = error
+				this.handleRateLimiterRes(response, ipRateLimiter, error)
 
-				this.handleRateLimiterRes(response, ipRateLimiter, rateLimiterRes)
-
-				response.status(429).json({ errors: { others: ['Rate limit exceeded'] }, data: {} })
-
-				return StopHere
+				return response
+					.status(429)
+					.json({ errors: { others: ['Rate limit exceeded'] }, data: {} })
 			}
 
 			Logger.error('Rate limiter error', error)
 
-			response.extensions.sendInternalServerError()
-
-			return StopHere
+			return response.extensions.sendInternalServerError()
 		}
 
-		return
+		next()
 	}
 
 	private handleRateLimiterRes(

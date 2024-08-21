@@ -6,10 +6,7 @@ const whitelist = process.env.CORS_ORIGIN?.split(',') ?? []
 
 const ExpressCors = cors({
 	origin: (origin, callback) => {
-		if (whitelist.includes(origin ?? '')) {
-			callback(null, true)
-			return
-		}
+		if (whitelist.includes(origin ?? '')) return callback(null, true)
 
 		callback(null, false)
 	},

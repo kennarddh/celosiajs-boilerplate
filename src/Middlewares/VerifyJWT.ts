@@ -3,7 +3,7 @@ import {
 	CelosiaRequest,
 	CelosiaResponse,
 	EmptyObject,
-	StopHere,
+	INextFunction,
 } from '@celosiajs/core'
 
 import jwt from 'jsonwebtoken'
@@ -29,78 +29,62 @@ class VerifyJWT extends BaseMiddleware<
 		_: EmptyObject,
 		request: CelosiaRequest,
 		response: CelosiaResponse,
+		next: INextFunction<JWTVerifiedData>,
 	) {
 		const tokenHeader = request.header('Access-Token')
 
-		if (!tokenHeader) {
-			response.status(401).json({
+		if (!tokenHeader)
+			return response.status(401).json({
 				errors: {
 					others: ['No token provided'],
 				},
 				data: {},
 			})
 
-			return StopHere
-		}
-
-		if (Array.isArray(tokenHeader)) {
-			response.status(401).json({
+		if (Array.isArray(tokenHeader))
+			return response.status(401).json({
 				errors: {
 					others: ['Token must not be an arrray'],
 				},
 				data: {},
 			})
 
-			return StopHere
-		}
-
 		const token = tokenHeader.split(' ')[1]
 
-		if (!token) {
-			response.status(401).json({
+		if (!token)
+			return response.status(401).json({
 				errors: {
 					others: ['Invalid token'],
 				},
 				data: {},
 			})
 
-			return StopHere
-		}
-
 		try {
 			const user = await JWTVerify<ITokenJWTPayload>(token, process.env.JWT_SECRET)
 
-			return {
+			next({
 				user: {
 					id: user.id,
 				},
-			}
+			})
 		} catch (error) {
-			if (error instanceof jwt.TokenExpiredError) {
-				response.status(401).json({
+			if (error instanceof jwt.TokenExpiredError)
+				return response.status(401).json({
 					errors: {
 						others: ['Expired token'],
 					},
 					data: {},
 				})
 
-				return StopHere
-			}
-
-			if (error instanceof jwt.JsonWebTokenError && error.message === 'invalid signature') {
-				response.status(401).json({
+			if (error instanceof jwt.JsonWebTokenError && error.message === 'invalid signature')
+				return response.status(401).json({
 					errors: { others: ['Invalid token'] },
 					data: {},
 				})
 
-				return StopHere
-			}
-
 			Logger.error('Unknown error while verifying JWT', error, { token })
 
-			response.extensions.sendInternalServerError()
-
-			return StopHere
+			return response.extensions.sendInternalServerError()
 		}
 	}
 }

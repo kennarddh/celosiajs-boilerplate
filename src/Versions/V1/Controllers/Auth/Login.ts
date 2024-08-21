@@ -73,36 +73,28 @@ class Login extends BaseController {
 							username,
 						})
 
-						response.extensions.sendInternalServerError()
-
-						return
+						return response.extensions.sendInternalServerError()
 					}
 				} catch (error) {
 					Logger.error('Login controller failed to sign token JWT', error, {
 						username,
 					})
 
-					response.extensions.sendInternalServerError()
-
-					return
+					return response.extensions.sendInternalServerError()
 				}
 			} catch (error) {
 				Logger.error('Login controller failed verify hash', error, {
 					username,
 				})
 
-				response.extensions.sendInternalServerError()
-
-				return
+				return response.extensions.sendInternalServerError()
 			}
 		} catch (error) {
 			Logger.error('Login controller failed to get user', error, {
 				username,
 			})
 
-			response.extensions.sendInternalServerError()
-
-			return
+			return response.extensions.sendInternalServerError()
 		}
 	}
 

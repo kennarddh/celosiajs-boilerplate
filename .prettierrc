@@ -17,6 +17,8 @@
 		"^compression$",
 		"^cookie-parser$",
 		"^helmet$",
+		"^jsonwebtoken$",
+		"^zod$",
 		"^@celosiajs/",
 		"<THIRD_PARTY_MODULES>",
 		"^App$",

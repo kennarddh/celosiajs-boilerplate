@@ -36,23 +36,12 @@ export default tsEslint.config(
 	...tsEslint.configs.stylisticTypeChecked,
 	prettierRecommended,
 	{
+		name: 'Prettier Warn',
 		plugins: {
-			'@typescript-eslint': tsEslint.plugin,
 			prettier,
 		},
 		rules: {
-			'@typescript-eslint/require-await': 'off',
 			'prettier/prettier': 'warn',
-			'@typescript-eslint/no-unused-vars': [
-				'warn',
-				{
-					argsIgnorePattern: '^_',
-					caughtErrorsIgnorePattern: '^_',
-					destructuredArrayIgnorePattern: '^_',
-					varsIgnorePattern: '^_',
-				},
-			],
-			'@typescript-eslint/no-confusing-void-expression': 'off',
 		},
 	},
 	{
@@ -69,19 +58,10 @@ export default tsEslint.config(
 				'error',
 				{ allow: ['private-constructors', 'protected-constructors'] },
 			],
-			'@typescript-eslint/no-confusing-void-expression': [
-				'error',
-				{
-					ignoreArrowShorthand: true,
-					ignoreVoidOperator: true,
-				},
-			],
 			'@typescript-eslint/no-misused-promises': [
 				'error',
 				{
-					checksVoidReturn: {
-						arguments: false,
-					},
+					checksVoidReturn: false,
 				},
 			],
 			'@typescript-eslint/restrict-template-expressions': [
@@ -90,6 +70,17 @@ export default tsEslint.config(
 					allowNumber: true,
 				},
 			],
+			'@typescript-eslint/require-await': 'off',
+			'@typescript-eslint/no-unused-vars': [
+				'warn',
+				{
+					argsIgnorePattern: '^_',
+					caughtErrorsIgnorePattern: '^_',
+					destructuredArrayIgnorePattern: '^_',
+					varsIgnorePattern: '^_',
+				},
+			],
+			'@typescript-eslint/no-confusing-void-expression': 'off',
 			// 'import/prefer-default-export': 'off',
 			// 'import/extensions': ['warn', { ts: 'never', json: 'never' }],
 		},
