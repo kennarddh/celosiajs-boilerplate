@@ -1,7 +1,8 @@
-import { BaseController, CelosiaResponse, EmptyObject, IControllerRequest } from '@celosiajs/core'
-
 import jwt from 'jsonwebtoken'
+
 import { z } from 'zod'
+
+import { BaseController, CelosiaResponse, EmptyObject, IControllerRequest } from '@celosiajs/core'
 
 import { ITokenJWTPayload } from 'Types/Types'
 

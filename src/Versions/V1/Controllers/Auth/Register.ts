@@ -1,8 +1,8 @@
 import argon2 from 'argon2'
 
-import { BaseController, CelosiaResponse, EmptyObject, IControllerRequest } from '@celosiajs/core'
-
 import { z } from 'zod'
+
+import { BaseController, CelosiaResponse, EmptyObject, IControllerRequest } from '@celosiajs/core'
 
 import Logger from 'Utils/Logger/Logger'
 
