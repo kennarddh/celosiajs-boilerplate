@@ -1,6 +1,12 @@
 import { IncomingHttpHeaders, OutgoingHttpHeaders } from 'http'
 
-import { BaseMiddleware, CelosiaRequest, CelosiaResponse, EmptyObject } from '@celosiajs/core'
+import {
+	BaseMiddleware,
+	CelosiaRequest,
+	CelosiaResponse,
+	EmptyObject,
+	INextFunction,
+} from '@celosiajs/core'
 
 import Logger from 'Utils/Logger/Logger'
 
@@ -15,6 +21,7 @@ class LogHttpRequest extends BaseMiddleware {
 		_: EmptyObject,
 		request: CelosiaRequest,
 		response: CelosiaResponse,
+		next: INextFunction,
 	) {
 		const requestStart = Date.now()
 
@@ -43,6 +50,8 @@ class LogHttpRequest extends BaseMiddleware {
 				},
 			})
 		})
+
+		next()
 	}
 }
 

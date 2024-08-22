@@ -76,6 +76,8 @@ class RateLimiter extends BaseMiddleware {
 			const rateLimiterRes = await ipRateLimiter.consume(request.ip, this.pointsToConsume)
 
 			this.handleRateLimiterRes(response, ipRateLimiter, rateLimiterRes)
+
+			return next()
 		} catch (error: unknown) {
 			if (error instanceof RateLimiterRes) {
 				this.handleRateLimiterRes(response, ipRateLimiter, error)
@@ -89,8 +91,6 @@ class RateLimiter extends BaseMiddleware {
 
 			return response.extensions.sendInternalServerError()
 		}
-
-		next()
 	}
 
 	private handleRateLimiterRes(

@@ -3,6 +3,7 @@ import path from 'path'
 import winston from 'winston'
 import WinstonDailyRotateFile from 'winston-daily-rotate-file'
 
+import { Globals } from '@celosiajs/core'
 import { CelosiaFormat, FilterLevel } from '@celosiajs/logging'
 
 import GetRootDirectory from 'Utils/GetRootDirectory'
