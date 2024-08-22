@@ -74,4 +74,6 @@ const Logger = winston.createLogger({
 	transports,
 })
 
+Globals.logger = Logger
+
 export default Logger
