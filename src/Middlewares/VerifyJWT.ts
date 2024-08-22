@@ -1,3 +1,5 @@
+import jwt from 'jsonwebtoken'
+
 import {
 	BaseMiddleware,
 	CelosiaRequest,
@@ -5,8 +7,6 @@ import {
 	EmptyObject,
 	INextFunction,
 } from '@celosiajs/core'
-
-import jwt from 'jsonwebtoken'
 
 import { ITokenJWTPayload } from 'Types/Types'
 

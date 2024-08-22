@@ -1,6 +1,6 @@
-import { JSONObject } from '@celosiajs/core'
-
 import jwt from 'jsonwebtoken'
+
+import { JSONObject } from '@celosiajs/core'
 
 const JWTSign = (payload: JSONObject, secret: jwt.Secret, option: jwt.SignOptions) =>
 	new Promise<string>((resolve, reject) => {
