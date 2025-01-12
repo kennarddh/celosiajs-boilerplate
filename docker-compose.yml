@@ -2,25 +2,19 @@ version: '3.8'
 
 services:
     database:
-        image: mariadb:lts
-        environment:
-            MYSQL_ROOT_PASSWORD: 'root'
-            MYSQL_DATABASE: 'celosiajs-boilerplate'
+        image: postgres:17.2-alpine
         volumes:
-            - database:/var/lib/mysql
+            - database:/var/lib/postgresql/data
+        environment:
+            - POSTGRES_PASSWORD=root
+            - POSTGRES_USER=root
+            - POSTGRES_DB=celosiajs_boilerplate
         healthcheck:
-            test:
-                [
-                    'CMD',
-                    '/usr/local/bin/healthcheck.sh',
-                    '--su-mysql',
-                    '--connect',
-                    '--innodb_initialized',
-                ]
+            test: ['CMD', 'pg_isready', '-d', 'db_prod']
         networks:
             - app
         ports:
-            - 3309:3306
+            - 5432:5432
 
 volumes:
     database:
