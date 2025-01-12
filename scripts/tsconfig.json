@@ -1,0 +1,8 @@
+{
+	"compilerOptions": {
+		"composite": true,
+		"types": ["node"]
+	},
+	"include": ["build.ts", "esbuildOptions.ts"],
+	"extends": "../tsconfig.json"
+}
