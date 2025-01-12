@@ -27,4 +27,4 @@ COPY --from=builder /app/build ./
 
 ENV NODE_ENV=production
 
-ENTRYPOINT ["node", "./build/index.js"]
+ENTRYPOINT ["node", "./index.js"]

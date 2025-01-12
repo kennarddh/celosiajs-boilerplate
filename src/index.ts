@@ -13,7 +13,7 @@ Instance.addErrorHandler()
 
 await DependencyInjection.get(DatabaseRepository).connect()
 
-await Instance.listen({ port: Port })
+await Instance.listen({ port: Port, host: '0.0.0.0' })
 
 Logger.info('Server running.', {
 	port: Port,

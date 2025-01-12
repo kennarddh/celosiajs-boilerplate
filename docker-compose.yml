@@ -1,4 +1,4 @@
-version: '3.8'
+name: celosiajs_boilerplate-local
 
 services:
     database:
@@ -10,7 +10,7 @@ services:
             - POSTGRES_USER=root
             - POSTGRES_DB=celosiajs_boilerplate
         healthcheck:
-            test: ['CMD', 'pg_isready', '-d', 'db_prod']
+            test: ['CMD', 'pg_isready', '-d', 'celosiajs_boilerplate']
         networks:
             - app
         ports:

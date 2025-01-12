@@ -1,0 +1,40 @@
+name: celosiajs_boilerplate-production
+
+services:
+    database:
+        image: postgres:17.2-alpine
+        volumes:
+            - database:/var/lib/postgresql/data
+        env_file:
+            - .env.production.database.local
+        environment:
+            - POSTGRES_DB=celosiajs_boilerplate
+        healthcheck:
+            test: ['CMD', 'pg_isready', '-d', 'celosiajs_boilerplate']
+        networks:
+            - app
+    
+    server:
+        build:
+            context: .
+            dockerfile: ./Dockerfile
+        stop_signal: SIGTERM
+        stop_grace_period: 30s
+        networks:
+            - app
+        ports:
+            - "8080:8080/tcp"
+        env_file:
+            - .env.production.server.local
+        environment:
+            PORT: 8080
+        depends_on:
+            database:    
+                condition: service_healthy
+        restart: unless-stopped
+
+volumes:
+    database:
+
+networks:
+    app:
