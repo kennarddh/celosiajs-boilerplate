@@ -41,6 +41,5 @@
 		"experimentalDecorators": true,
 		"emitDecoratorMetadata": true
 	},
-	"references": [{ "path": "./tsconfig.eslint.json" }],
-	"include": ["src"]
+	"include": ["src", "eslint.config.ts"]
 }
