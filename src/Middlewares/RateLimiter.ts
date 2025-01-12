@@ -3,13 +3,10 @@ import {
 	CelosiaRequest,
 	CelosiaResponse,
 	EmptyObject,
-	INextFunction,
+	NextFunction,
 } from '@celosiajs/core'
-import '@celosiajs/extensions'
 
 import { RateLimiterAbstract, RateLimiterMemory, RateLimiterRes } from 'rate-limiter-flexible'
-
-import Logger from 'Utils/Logger/Logger'
 
 import { JWTVerifiedData } from './VerifyJWT'
 
@@ -30,14 +27,14 @@ class RateLimiter extends BaseMiddleware {
 		private pointsToConsume = 1,
 		private useUserRateLimiterIfPossible = true,
 	) {
-		super()
+		super('RateLimiter')
 	}
 
 	public override async index(
 		data: EmptyObject | JWTVerifiedData,
 		request: CelosiaRequest,
 		response: CelosiaResponse,
-		next: INextFunction,
+		next: NextFunction,
 	) {
 		if ('user' in data && this.useUserRateLimiterIfPossible) {
 			try {
@@ -60,16 +57,16 @@ class RateLimiter extends BaseMiddleware {
 						.json({ errors: { others: ['Rate limit exceeded'] }, data: {} })
 				}
 
-				Logger.error('User rate limiter error', error)
+				this.logger.error('User rate limiter error.', { requestId: request.id }, error)
 
-				return response.extensions.sendInternalServerError()
+				return response.sendInternalServerError()
 			}
 		}
 
 		if (request.ip === undefined) {
-			Logger.warn('Rate limiter undefined ip')
+			this.logger.warn('Undefined ip.', { requestId: request.id })
 
-			return response.extensions.sendInternalServerError()
+			return response.sendInternalServerError()
 		}
 
 		try {
@@ -87,9 +84,9 @@ class RateLimiter extends BaseMiddleware {
 					.json({ errors: { others: ['Rate limit exceeded'] }, data: {} })
 			}
 
-			Logger.error('Rate limiter error', error)
+			this.logger.error('IP rate limiter error.', { requestId: request.id }, error)
 
-			return response.extensions.sendInternalServerError()
+			return response.sendInternalServerError()
 		}
 	}
 

@@ -5,12 +5,11 @@ import {
 	CelosiaRequest,
 	CelosiaResponse,
 	EmptyObject,
-	INextFunction,
+	NextFunction,
 } from '@celosiajs/core'
 
 import { ITokenJWTPayload } from 'Types/Types'
 
-import Logger from 'Utils/Logger/Logger'
 import JWTVerify from 'Utils/Promises/JWTVerify'
 
 export interface JWTVerifiedData {
@@ -25,11 +24,15 @@ class VerifyJWT extends BaseMiddleware<
 	EmptyObject,
 	JWTVerifiedData
 > {
+	constructor() {
+		super('VerifyJWT')
+	}
+
 	public override async index(
 		_: EmptyObject,
 		request: CelosiaRequest,
 		response: CelosiaResponse,
-		next: INextFunction<JWTVerifiedData>,
+		next: NextFunction<JWTVerifiedData>,
 	) {
 		const tokenHeader = request.header('Access-Token')
 
@@ -82,9 +85,9 @@ class VerifyJWT extends BaseMiddleware<
 					data: {},
 				})
 
-			Logger.error('Unknown error while verifying JWT', error, { token })
+			this.logger.error('Error.', error, { token, requestId: request.id })
 
-			return response.extensions.sendInternalServerError()
+			return response.sendInternalServerError()
 		}
 	}
 }

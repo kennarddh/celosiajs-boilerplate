@@ -1,10 +1,11 @@
+import { DependencyInjection } from '@celosiajs/core'
+
+import DatabaseRepository from 'Repositories/DatabaseRepository'
 import { Port } from 'index'
 
 import Instance from 'App'
 
 import Logger from 'Utils/Logger/Logger'
-
-import prisma from 'Database/index'
 
 const OnShutdown = async (signal: string, exitCode = 0) => {
 	Logger.info(`${signal} signal received: Stopping server`, {
@@ -29,7 +30,7 @@ const OnShutdown = async (signal: string, exitCode = 0) => {
 	})
 
 	try {
-		await prisma.$disconnect()
+		await DependencyInjection.get(DatabaseRepository).disconnect()
 
 		Logger.info('Database connection closed')
 	} catch (error) {

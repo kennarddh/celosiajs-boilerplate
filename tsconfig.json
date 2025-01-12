@@ -29,17 +29,17 @@
 		"outDir": "./build/",
 		"baseUrl": "src",
 		"paths": {
-			"Utils/*": ["./Utils/*"],
-			"Versions/*": ["./Versions/*"],
-			"Database/*": ["./Database/*"],
+			"Controllers/*": ["./Controllers/*"],
 			"Middlewares/*": ["./Middlewares/*"],
+			"Repositories/*": ["./Repositories/*"],
 			"Routes/*": ["./Routes/*"],
-			"Types/*": ["./Types/*"]
-		}
-	},
-	"tsc-alias": {
-		"resolveFullPaths": true,
-		"verbose": false
+			"Services/*": ["./Services/*"],
+			"Types/*": ["./Types/*"],
+			"Utils/*": ["./Utils/*"],
+			"Versions/*": ["./Versions/*"]
+		},
+		"experimentalDecorators": true,
+		"emitDecoratorMetadata": true
 	},
 	"references": [{ "path": "./tsconfig.eslint.json" }],
 	"include": ["src"]

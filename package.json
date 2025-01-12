@@ -28,9 +28,8 @@
 	"author": "kennarddh",
 	"license": "MIT",
 	"dependencies": {
-		"@celosiajs/core": "^0.0.1-alpha.8",
-		"@celosiajs/extensions": "^0.0.1-alpha.8",
-		"@celosiajs/logging": "^0.0.1-alpha.8",
+		"@celosiajs/core": "^0.0.1-alpha.27",
+		"@celosiajs/logging": "^0.0.1-alpha.26",
 		"@prisma/client": "^5.14.0",
 		"argon2": "^0.40.3",
 		"compression": "^1.7.4",
@@ -39,7 +38,8 @@
 		"jsonwebtoken": "^9.0.2",
 		"rate-limiter-flexible": "^5.0.3",
 		"winston": "^3.13.0",
-		"winston-daily-rotate-file": "^5.0.0"
+		"winston-daily-rotate-file": "^5.0.0",
+		"zod": "^3.24.1"
 	},
 	"devDependencies": {
 		"@eslint/js": "^9.3.0",

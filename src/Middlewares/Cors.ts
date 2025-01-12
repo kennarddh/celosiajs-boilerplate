@@ -1,10 +1,10 @@
-import { ConvertExpressMiddleware } from '@celosiajs/core'
+import { ExpressMiddlewareCompat, NoInputMiddleware } from '@celosiajs/core'
 
 import cors from 'cors'
 
 const whitelist = process.env.CORS_ORIGIN?.split(',') ?? []
 
-const ExpressCors = cors({
+const ExpressCORS = cors({
 	origin: (origin, callback) => {
 		if (whitelist.includes(origin ?? '')) return callback(null, true)
 
@@ -12,6 +12,6 @@ const ExpressCors = cors({
 	},
 })
 
-const Cors = ConvertExpressMiddleware(ExpressCors)
+const CORS = ExpressMiddlewareCompat<NoInputMiddleware>('CORS', ExpressCORS)
 
-export default Cors
+export default CORS

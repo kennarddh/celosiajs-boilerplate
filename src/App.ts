@@ -2,21 +2,21 @@ import compression from 'compression'
 
 import helmet from 'helmet'
 
-import { CelosiaInstance, ConvertExpressMiddleware } from '@celosiajs/core'
+import { CelosiaInstance, ExpressMiddlewareCompat, NoInputMiddleware } from '@celosiajs/core'
 
-import Cors from 'Middlewares/Cors'
+import CORS from 'Middlewares/CORS'
 import LogHttpRequest from 'Middlewares/LogHttpRequest'
 
 import Router from 'Routes'
 
-import 'Database/index'
-
 const Instance = new CelosiaInstance({ strict: true })
 
 // Middleware
-Instance.useMiddlewares(new (ConvertExpressMiddleware(compression()))())
-Instance.useMiddlewares(new (ConvertExpressMiddleware(helmet()))())
-Instance.useMiddlewares(new Cors())
+Instance.useMiddlewares(
+	new (ExpressMiddlewareCompat<NoInputMiddleware>('Compression', compression()))(),
+)
+Instance.useMiddlewares(new (ExpressMiddlewareCompat<NoInputMiddleware>('Helmet', helmet()))())
+Instance.useMiddlewares(new CORS())
 Instance.useMiddlewares(new LogHttpRequest())
 
 Instance.useRouters(Router)

@@ -8,6 +8,6 @@ const Router = new CelosiaRouter({ strict: true })
 
 Router.useRouters('/v1', V1Router)
 
-Router.all('*', [], new NoMatchController())
+Router.all('/*splat', [], new NoMatchController())
 
 export default Router

@@ -5,10 +5,8 @@ import {
 	CelosiaRequest,
 	CelosiaResponse,
 	EmptyObject,
-	INextFunction,
+	NextFunction,
 } from '@celosiajs/core'
-
-import Logger from 'Utils/Logger/Logger'
 
 const FilterHeaders = (headers: IncomingHttpHeaders | OutgoingHttpHeaders) => {
 	const { 'access-token': _, 'set-cookie': __, cookie: ___, ...newHeaders } = headers
@@ -17,15 +15,19 @@ const FilterHeaders = (headers: IncomingHttpHeaders | OutgoingHttpHeaders) => {
 }
 
 class LogHttpRequest extends BaseMiddleware {
+	constructor() {
+		super('LogHttpRequest')
+	}
+
 	public override async index(
 		_: EmptyObject,
 		request: CelosiaRequest,
 		response: CelosiaResponse,
-		next: INextFunction,
+		next: NextFunction,
 	) {
 		const requestStart = Date.now()
 
-		response.on('finish', () => {
+		response.expressResponse.on('finish', () => {
 			const {
 				headers,
 				httpVersion,
@@ -36,7 +38,8 @@ class LogHttpRequest extends BaseMiddleware {
 
 			const { statusCode, statusMessage } = response
 
-			Logger.http({
+			this.logger.http('Incoming request.', {
+				requestId: request.id,
 				processingTime: Date.now() - requestStart,
 				headers: FilterHeaders(headers),
 				httpVersion,

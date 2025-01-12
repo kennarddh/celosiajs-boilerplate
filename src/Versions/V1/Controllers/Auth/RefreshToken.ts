@@ -1,87 +1,59 @@
-import jwt from 'jsonwebtoken'
-
 import { z } from 'zod'
 
-import { BaseController, CelosiaResponse, EmptyObject, IControllerRequest } from '@celosiajs/core'
+import {
+	BaseController,
+	CelosiaResponse,
+	ControllerRequest,
+	DependencyInjection,
+	EmptyObject,
+} from '@celosiajs/core'
 
-import { ITokenJWTPayload } from 'Types/Types'
-
-import Logger from 'Utils/Logger/Logger'
-import JWTSign from 'Utils/Promises/JWTSign'
-import JWTVerify from 'Utils/Promises/JWTVerify'
+import TokenExpiredError from 'Services/Token/Errors/TokenExpiredError'
+import TokenVerifyError from 'Services/Token/Errors/TokenVerifyError'
+import UserService from 'Services/UserService/UserService'
 
 class RefreshToken extends BaseController {
+	constructor(private userService = DependencyInjection.get(UserService)) {
+		super('AuthRefreshToken')
+	}
+
 	public async index(
 		_: EmptyObject,
-		request: IControllerRequest<RefreshToken>,
+		request: ControllerRequest<RefreshToken>,
 		response: CelosiaResponse,
 	) {
-		const { refreshToken } = request.cookies
+		const { refreshToken: currentRefreshToken } = request.cookies
 
 		try {
-			const user = await JWTVerify<ITokenJWTPayload>(
-				refreshToken,
-				process.env.REFRESH_JWT_SECRET,
-			)
+			const { accessToken, refreshToken } =
+				await this.userService.refreshToken(currentRefreshToken)
 
-			const payload = { id: user.id } satisfies ITokenJWTPayload
+			response.cookie('refreshToken', refreshToken, {
+				secure: process.env.NODE_ENV === 'production',
+				httpOnly: true,
+				sameSite: 'lax',
+			})
 
-			try {
-				const token = await JWTSign(payload, process.env.JWT_SECRET, {
-					expiresIn: parseInt(process.env.JWT_EXPIRE, 10),
-				})
-
-				try {
-					const refreshToken = await JWTSign(payload, process.env.REFRESH_JWT_SECRET, {
-						expiresIn: parseInt(process.env.REFRESH_JWT_EXPIRE, 10),
-					})
-
-					response.cookie('refreshToken', refreshToken, {
-						secure: process.env.NODE_ENV === 'production',
-						httpOnly: true,
-						sameSite: 'lax',
-					})
-
-					return response.status(200).json({
-						errors: {},
-						data: {
-							token: `Bearer ${token}`,
-						},
-					})
-				} catch (error) {
-					Logger.error(
-						'RefreshToken controller failed to sign refresh token JWT',
-						error,
-						{
-							userID: user.id,
-						},
-					)
-
-					return response.extensions.sendInternalServerError()
-				}
-			} catch (error) {
-				Logger.error('RefreshToken controller failed to sign token JWT', error, {
-					userID: user.id,
-				})
-
-				return response.extensions.sendInternalServerError()
-			}
+			return response.status(200).json({
+				errors: {},
+				data: {
+					token: `Bearer ${accessToken}`,
+				},
+			})
 		} catch (error) {
-			if (error instanceof jwt.TokenExpiredError)
+			if (error instanceof TokenExpiredError) {
 				return response.status(401).json({
-					errors: { others: ['Expired refresh token'] },
+					errors: { others: ['Refresh token expired'] },
 					data: {},
 				})
-
-			if (error instanceof jwt.JsonWebTokenError && error.message === 'invalid signature')
+			} else if (error instanceof TokenVerifyError) {
 				return response.status(401).json({
 					errors: { others: ['Invalid refresh token'] },
 					data: {},
 				})
+			}
 
-			Logger.error('Unknown error while verifying refresh token', error)
-
-			return response.extensions.sendInternalServerError()
+			return response.sendInternalServerError()
 		}
 	}
 

@@ -1,47 +1,47 @@
-import { BaseController, CelosiaResponse, IControllerRequest } from '@celosiajs/core'
+import {
+	BaseController,
+	CelosiaResponse,
+	ControllerRequest,
+	DependencyInjection,
+} from '@celosiajs/core'
 
-import Logger from 'Utils/Logger/Logger'
+import UserService from 'Services/UserService/UserService'
 
 import { JWTVerifiedData } from 'Middlewares/VerifyJWT'
 
-import prisma from 'Database/index'
-
 class GetUserData extends BaseController {
+	constructor(private userService = DependencyInjection.get(UserService)) {
+		super('AuthGetUserData')
+	}
+
 	public async index(
 		data: JWTVerifiedData,
-		_: IControllerRequest<GetUserData>,
+		request: ControllerRequest<GetUserData>,
 		response: CelosiaResponse,
 	) {
 		const id = data.user.id
 
 		try {
-			const user = await prisma.user.findFirst({
-				where: { id },
-				select: {
-					id: true,
-					username: true,
-					name: true,
-				},
-			})
+			const userData = await this.userService.getUserData(id)
 
-			if (!user) {
-				Logger.error("Can't find user in GetUserData controller", { id })
+			if (!userData) {
+				this.logger.error("Can't find user.", { id, requestId: request.id })
 
-				return response.extensions.sendInternalServerError()
+				return response.sendInternalServerError()
 			}
 
 			return response.status(200).json({
 				errors: {},
 				data: {
-					id: user.id,
-					username: user.username,
-					name: user.name,
+					id: userData.id,
+					username: userData.username,
+					name: userData.name,
 				},
 			})
 		} catch (error) {
-			Logger.error('GetUserData controller failed to get user', error, { id })
+			this.logger.error('Failed to get user', error, { id, requestId: request.id })
 
-			return response.extensions.sendInternalServerError()
+			return response.sendInternalServerError()
 		}
 	}
 }
