@@ -14,7 +14,7 @@ permissions:
 jobs:
     check-and-fix-code:
         name: Check and Fix Code
-        runs-on: ubuntu-22.04
+        runs-on: ubuntu-latest
         steps:
             - name: Checkout
               uses: actions/checkout@v4
@@ -24,27 +24,13 @@ jobs:
               with:
                   node-version: 22
                   cache: 'npm'
+                  check-latest: true
 
             - name: Clean Install
               run: npm ci
 
-            - name: X
-              run: pwd
-
-            - name: CAT
-              run: cat ./.eslintcache 2>/dev/null
-
-            - name: RM
-              run: rm ./.eslintcache
-
-            - name: Prettier Fix
-              run: npm run prettier:fix
-
-            - name: Esint Fix
-              run: npx eslint --fix
-
-            - name: Types Check
-              run: npm run types:check
+            - name: Fix
+              run: npm run fix
 
             - name: Commit
               uses: stefanzweifel/git-auto-commit-action@v5
