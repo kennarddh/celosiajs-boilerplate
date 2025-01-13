@@ -11,7 +11,7 @@ AuthRouter.useMiddlewares(new RateLimiter())
 
 AuthRouter.post('/register', [], new Register())
 AuthRouter.post('/login', [], new Login())
-AuthRouter.get('/user', [new VerifyJWT()], new GetUserData())
+AuthRouter.get('/user', [new VerifyJWT(true)], new GetUserData())
 AuthRouter.post('/refresh-token', [], new RefreshToken())
 
 export default AuthRouter
