@@ -7,16 +7,16 @@ import Instance from 'App'
 
 import Logger from 'Utils/Logger/Logger'
 
-const OnShutdown = async (signal: string, exitCode = 0) => {
+const OnShutdown = async (signal: string | undefined, exitCode = 0) => {
 	const configurationService = DependencyInjection.get(ConfigurationService)
 
-	Logger.info(`${signal} signal received: Stopping server.`, {
+	Logger.info(signal ? `${signal} signal received: Stopping server.` : 'Stopping server.', {
 		port: configurationService.configurations.port,
 		pid: process.pid,
 		env: configurationService.configurations.nodeEnv,
 	})
 
-	if (Instance.isListening)
+	if (Instance.isListening) {
 		await new Promise(resolve => {
 			Instance.close()
 				.then(resolve)
@@ -24,6 +24,7 @@ const OnShutdown = async (signal: string, exitCode = 0) => {
 					Logger.info('Failed to close Instance.')
 				})
 		})
+	}
 
 	Logger.info('Server closed.', {
 		port: configurationService.configurations.port,

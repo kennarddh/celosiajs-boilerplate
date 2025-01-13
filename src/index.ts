@@ -2,6 +2,8 @@ import { DependencyInjection } from '@celosiajs/core'
 
 import ConfigurationService from 'Services/ConfigurationService/ConfigurationService'
 
+import Logger from 'Utils/Logger/Logger'
+
 const configurationService = DependencyInjection.get(ConfigurationService)
 
 try {
@@ -11,7 +13,6 @@ try {
 }
 
 const { default: DatabaseRepository } = await import('Repositories/DatabaseRepository')
-const { default: Logger } = await import('Utils/Logger/Logger')
 const { default: Instance } = await import('./App')
 const { default: OnShutdown } = await import('Utils/OnShutdown/OnShutdown')
 

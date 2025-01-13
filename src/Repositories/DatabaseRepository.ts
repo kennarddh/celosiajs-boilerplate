@@ -22,9 +22,9 @@ class DatabaseRepository extends BaseRepository {
 			if (error instanceof PrismaClientInitializationError) {
 				this.logger.error('Prisma failed to connect to the database.', error)
 
-				this.logger.info('Stopping server.')
+				const { default: OnShutdown } = await import('Utils/OnShutdown/OnShutdown')
 
-				process.exit(1)
+				await OnShutdown(undefined, 1)
 			}
 		}
 	}
