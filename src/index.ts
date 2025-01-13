@@ -1,6 +1,7 @@
 import { DependencyInjection } from '@celosiajs/core'
 
 import DatabaseRepository from 'Repositories/DatabaseRepository'
+import ConfigurationService from 'Services/ConfigurationService/ConfigurationService'
 
 import Logger from 'Utils/Logger/Logger'
 import OnShutdown from 'Utils/OnShutdown/OnShutdown'
@@ -11,7 +12,10 @@ export const Port = parseInt(process.env.PORT || '8080', 10)
 
 Instance.addErrorHandler()
 
-await DependencyInjection.get(DatabaseRepository).connect()
+await Promise.all([
+	DependencyInjection.get(DatabaseRepository).connect(),
+	DependencyInjection.get(ConfigurationService).loadProviders(),
+])
 
 await Instance.listen({ port: Port, host: '0.0.0.0' })
 
