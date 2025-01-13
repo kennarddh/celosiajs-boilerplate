@@ -28,11 +28,14 @@ jobs:
             - name: Clean Install
               run: npm ci
 
-            - name: PWD
+            - name: X
               run: pwd
 
-            - name: PWD
-              run: npm ls
+            - name: CAT
+              run: cat ./.eslintcache 2>/dev/null
+
+            - name: RM
+              run: rm ./.eslintcache
 
             - name: Prettier Fix
               run: npm run prettier:fix
