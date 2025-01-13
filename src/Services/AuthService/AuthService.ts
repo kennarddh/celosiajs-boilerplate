@@ -2,8 +2,8 @@ import { BaseService, DependencyInjection, Injectable } from '@celosiajs/core'
 
 import UserRepository from 'Repositories/UserRepository'
 import PasswordHashService from 'Services/PasswordHashService/PasswordHashService'
-import AccessTokenService, { IAccessTokenJWTPayload } from 'Services/Token/AccessTokenService'
-import RefreshTokenService, { IRefreshTokenJWTPayload } from 'Services/Token/RefreshTokenService'
+import AccessTokenService, { AccessTokenJWTPayload } from 'Services/Token/AccessTokenService'
+import RefreshTokenService, { RefreshTokenJWTPayload } from 'Services/Token/RefreshTokenService'
 
 import UnauthorizedError from './Errors/UnauthorizedError'
 import UserExistsError from './Errors/UserExistsError'
@@ -20,11 +20,11 @@ class AuthService extends BaseService {
 	}
 
 	async createTokens(userID: number) {
-		const accessTokenPayload = { id: userID } satisfies IAccessTokenJWTPayload
+		const accessTokenPayload = { id: userID } satisfies AccessTokenJWTPayload
 
 		const accessToken = await this.accessTokenService.sign(accessTokenPayload)
 
-		const refreshTokenPayload = { id: userID } satisfies IRefreshTokenJWTPayload
+		const refreshTokenPayload = { id: userID } satisfies RefreshTokenJWTPayload
 
 		const refreshToken = await this.refreshTokenService.sign(refreshTokenPayload)
 

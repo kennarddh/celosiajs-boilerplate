@@ -2,7 +2,7 @@ import { BaseRepository, DependencyInjection, Injectable, RepositoryError } from
 
 import DatabaseRepository from './DatabaseRepository'
 
-export interface IUser {
+export interface User {
 	id: number
 	name: string
 	username: string
@@ -16,7 +16,7 @@ class UserRepository extends BaseRepository {
 		super('UserRepository')
 	}
 
-	async getByID(id: number): Promise<IUser | null> {
+	async getByID(id: number): Promise<User | null> {
 		try {
 			const user = await this.databaseRepository.prisma.user.findFirst({
 				where: { id },
@@ -45,7 +45,7 @@ class UserRepository extends BaseRepository {
 		}
 	}
 
-	async getByUsername(username: string): Promise<IUser | null> {
+	async getByUsername(username: string): Promise<User | null> {
 		try {
 			const user = await this.databaseRepository.prisma.user.findFirst({
 				where: { username },
@@ -74,7 +74,7 @@ class UserRepository extends BaseRepository {
 		}
 	}
 
-	async create(username: string, name: string, password: string): Promise<IUser> {
+	async create(username: string, name: string, password: string): Promise<User> {
 		try {
 			const user = await this.databaseRepository.prisma.user.create({
 				data: {

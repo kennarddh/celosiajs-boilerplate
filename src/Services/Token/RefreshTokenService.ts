@@ -5,12 +5,12 @@ import ConfigurationService from 'Services/ConfigurationService/ConfigurationSer
 import TokenService from './TokenService'
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
-export type IRefreshTokenJWTPayload = {
+export type RefreshTokenJWTPayload = {
 	id: number
 }
 
 @Injectable()
-class RefreshTokenService extends TokenService<IRefreshTokenJWTPayload> {
+class RefreshTokenService extends TokenService<RefreshTokenJWTPayload> {
 	constructor(configurationService = DependencyInjection.get(ConfigurationService)) {
 		super('RefreshTokenService', configurationService.configurations.tokens.refresh.secret, {
 			expiresIn: configurationService.configurations.tokens.refresh.expire,
