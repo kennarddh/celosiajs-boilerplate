@@ -1,3 +1,5 @@
+import { z } from 'zod'
+
 import { BaseService, DependencyScope, Injectable } from '@celosiajs/core'
 
 import { mergician } from 'mergician'
@@ -5,30 +7,32 @@ import { mergician } from 'mergician'
 import ConfigurationProvider from './Providers/ConfigurationProvider'
 import EnvironmentConfigurationProvider from './Providers/EnvironmentConfigurationProvider'
 
-export interface ApplicationConfiguration {
-	nodeEnv: string
-	port: number
-	databaseUrl: string
-	logLevel: string
-	tokens: {
-		access: {
-			secret: string
-			expire: number
-		}
-		refresh: {
-			secret: string
-			expire: number
-		}
-	}
-	rateLimiter: {
-		max: number
-		window: number
-	}
-	passwordHash: {
-		secret: string
-	}
-	corsOrigin: string[]
-}
+export const ApplicationConfigurationSchema = z.object({
+	nodeEnv: z.string(),
+	port: z.number(),
+	databaseUrl: z.string(),
+	logLevel: z.string(),
+	tokens: z.object({
+		access: z.object({
+			secret: z.string(),
+			expire: z.number(),
+		}),
+		refresh: z.object({
+			secret: z.string(),
+			expire: z.number(),
+		}),
+	}),
+	rateLimiter: z.object({
+		max: z.number(),
+		window: z.number(),
+	}),
+	passwordHash: z.object({
+		secret: z.string(),
+	}),
+	corsOrigin: z.string().array(),
+})
+
+export type ApplicationConfiguration = z.infer<typeof ApplicationConfigurationSchema>
 
 @Injectable(DependencyScope.Singleton)
 class ConfigurationService extends BaseService {
@@ -46,6 +50,19 @@ class ConfigurationService extends BaseService {
 		])
 
 		this.loadConfigurations(configurations)
+
+		const parseResult = await ApplicationConfigurationSchema.safeParseAsync(this.configurations)
+
+		if (!parseResult.success) {
+			this.logger.error(
+				'ConfiguratioService load failed due to invalid configurations',
+				parseResult.error.format(),
+			)
+
+			throw parseResult.error
+		}
+
+		this.configurations = parseResult.data
 
 		this.logger.info('Loaded.')
 	}

@@ -4,7 +4,11 @@ import ConfigurationService from 'Services/ConfigurationService/ConfigurationSer
 
 const configurationService = DependencyInjection.get(ConfigurationService)
 
-await configurationService.load()
+try {
+	await configurationService.load()
+} catch {
+	process.exit(1)
+}
 
 const { default: DatabaseRepository } = await import('Repositories/DatabaseRepository')
 const { default: Logger } = await import('Utils/Logger/Logger')
