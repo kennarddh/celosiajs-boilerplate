@@ -2,32 +2,44 @@ import {
 	BaseMiddleware,
 	CelosiaRequest,
 	CelosiaResponse,
+	DependencyInjection,
 	EmptyObject,
 	NextFunction,
 } from '@celosiajs/core'
 
+import ConfigurationService from 'Services/ConfigurationService/ConfigurationService'
 import { RateLimiterAbstract, RateLimiterMemory, RateLimiterRes } from 'rate-limiter-flexible'
 
 import { JWTVerifiedData } from './VerifyJWT'
 
-const ipRateLimiter = new RateLimiterMemory({
-	keyPrefix: 'ip',
-	points: 100,
-	duration: 60, // In seconds
-})
-
-const userRateLimiter = new RateLimiterMemory({
-	keyPrefix: 'user',
-	points: 100,
-	duration: 60, // In seconds
-})
-
 class RateLimiter extends BaseMiddleware {
+	static ipRateLimiter: RateLimiterMemory
+	static userRateLimiter: RateLimiterMemory
+
 	constructor(
 		private pointsToConsume = 1,
 		private useUserRateLimiterIfPossible = true,
+		configurationService = DependencyInjection.get(ConfigurationService),
 	) {
 		super('RateLimiter')
+
+		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+		if (!RateLimiter.ipRateLimiter) {
+			RateLimiter.ipRateLimiter = new RateLimiterMemory({
+				keyPrefix: 'ip',
+				points: configurationService.configurations.rateLimiter.max,
+				duration: configurationService.configurations.rateLimiter.window, // In seconds
+			})
+		}
+
+		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+		if (!RateLimiter.userRateLimiter) {
+			RateLimiter.userRateLimiter = new RateLimiterMemory({
+				keyPrefix: 'user',
+				points: configurationService.configurations.rateLimiter.max,
+				duration: configurationService.configurations.rateLimiter.window, // In seconds
+			})
+		}
 	}
 
 	public override async index(
@@ -38,19 +50,19 @@ class RateLimiter extends BaseMiddleware {
 	) {
 		if ('user' in data && this.useUserRateLimiterIfPossible) {
 			try {
-				const rateLimiterRes = await userRateLimiter.consume(
+				const rateLimiterRes = await RateLimiter.userRateLimiter.consume(
 					data.user.id,
 					this.pointsToConsume,
 				)
 
-				this.handleRateLimiterRes(response, userRateLimiter, rateLimiterRes)
+				this.handleRateLimiterRes(response, RateLimiter.userRateLimiter, rateLimiterRes)
 
 				return next()
 			} catch (error: unknown) {
 				if (error instanceof RateLimiterRes) {
 					const rateLimiterRes = error
 
-					this.handleRateLimiterRes(response, userRateLimiter, rateLimiterRes)
+					this.handleRateLimiterRes(response, RateLimiter.userRateLimiter, rateLimiterRes)
 
 					return response
 						.status(429)
@@ -70,14 +82,17 @@ class RateLimiter extends BaseMiddleware {
 		}
 
 		try {
-			const rateLimiterRes = await ipRateLimiter.consume(request.ip, this.pointsToConsume)
+			const rateLimiterRes = await RateLimiter.ipRateLimiter.consume(
+				request.ip,
+				this.pointsToConsume,
+			)
 
-			this.handleRateLimiterRes(response, ipRateLimiter, rateLimiterRes)
+			this.handleRateLimiterRes(response, RateLimiter.ipRateLimiter, rateLimiterRes)
 
 			return next()
 		} catch (error: unknown) {
 			if (error instanceof RateLimiterRes) {
-				this.handleRateLimiterRes(response, ipRateLimiter, error)
+				this.handleRateLimiterRes(response, RateLimiter.ipRateLimiter, error)
 
 				return response
 					.status(429)

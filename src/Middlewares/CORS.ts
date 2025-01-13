@@ -1,12 +1,14 @@
-import { ExpressMiddlewareCompat, NoInputMiddleware } from '@celosiajs/core'
+import { DependencyInjection, ExpressMiddlewareCompat, NoInputMiddleware } from '@celosiajs/core'
 
+import ConfigurationService from 'Services/ConfigurationService/ConfigurationService'
 import cors from 'cors'
 
-const whitelist = process.env.CORS_ORIGIN?.split(',') ?? []
+const configurationService = DependencyInjection.get(ConfigurationService)
 
 const ExpressCORS = cors({
 	origin: (origin, callback) => {
-		if (whitelist.includes(origin ?? '')) return callback(null, true)
+		if (configurationService.configurations.corsOrigin.includes(origin ?? ''))
+			return callback(null, true)
 
 		callback(null, false)
 	},

@@ -1,28 +1,24 @@
 import { DependencyInjection } from '@celosiajs/core'
 
-import DatabaseRepository from 'Repositories/DatabaseRepository'
 import ConfigurationService from 'Services/ConfigurationService/ConfigurationService'
 
-import Logger from 'Utils/Logger/Logger'
-import OnShutdown from 'Utils/OnShutdown/OnShutdown'
+const configurationService = DependencyInjection.get(ConfigurationService)
 
-import Instance from './App'
+await configurationService.load()
 
-export const Port = parseInt(process.env.PORT || '8080', 10)
+const { default: DatabaseRepository } = await import('Repositories/DatabaseRepository')
+const { default: Logger } = await import('Utils/Logger/Logger')
+const { default: Instance } = await import('./App')
+const { default: OnShutdown } = await import('Utils/OnShutdown/OnShutdown')
 
-Instance.addErrorHandler()
+await Promise.all([DependencyInjection.get(DatabaseRepository).connect()])
 
-await Promise.all([
-	DependencyInjection.get(DatabaseRepository).connect(),
-	DependencyInjection.get(ConfigurationService).loadProviders(),
-])
-
-await Instance.listen({ port: Port, host: '0.0.0.0' })
+await Instance.listen({ port: configurationService.configurations.port, host: '0.0.0.0' })
 
 Logger.info('Server running.', {
-	port: Port,
+	port: configurationService.configurations.port,
 	pid: process.pid,
-	env: process.env.NODE_ENV,
+	env: configurationService.configurations.nodeEnv,
 })
 
 // Graceful Shutdown

@@ -19,7 +19,6 @@ class DatabaseRepository extends BaseRepository {
 
 			this.logger.info('Connected.')
 		} catch (error) {
-			console.log(error)
 			if (error instanceof PrismaClientInitializationError) {
 				this.logger.error('Prisma failed to connect to the database.', error)
 

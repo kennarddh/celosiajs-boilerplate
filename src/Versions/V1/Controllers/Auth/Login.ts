@@ -8,11 +8,15 @@ import {
 	EmptyObject,
 } from '@celosiajs/core'
 
+import ConfigurationService from 'Services/ConfigurationService/ConfigurationService'
 import UnauthorizedError from 'Services/UserService/Errors/UnauthorizedError'
 import UserService from 'Services/UserService/UserService'
 
 class Login extends BaseController {
-	constructor(private userService = DependencyInjection.get(UserService)) {
+	constructor(
+		private userService = DependencyInjection.get(UserService),
+		private configurationService = DependencyInjection.get(ConfigurationService),
+	) {
 		super('AuthLogin')
 	}
 
@@ -27,7 +31,7 @@ class Login extends BaseController {
 			const { accessToken, refreshToken } = await this.userService.login(username, password)
 
 			response.cookie('refreshToken', refreshToken, {
-				secure: process.env.NODE_ENV === 'production',
+				secure: this.configurationService.configurations.nodeEnv === 'production',
 				httpOnly: true,
 				sameSite: 'lax',
 			})

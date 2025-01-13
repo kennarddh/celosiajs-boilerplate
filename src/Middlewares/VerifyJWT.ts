@@ -4,9 +4,12 @@ import {
 	BaseMiddleware,
 	CelosiaRequest,
 	CelosiaResponse,
+	DependencyInjection,
 	EmptyObject,
 	NextFunction,
 } from '@celosiajs/core'
+
+import ConfigurationService from 'Services/ConfigurationService/ConfigurationService'
 
 import { ITokenJWTPayload } from 'Types/Types'
 
@@ -24,7 +27,7 @@ class VerifyJWT extends BaseMiddleware<
 	EmptyObject,
 	JWTVerifiedData
 > {
-	constructor() {
+	constructor(private configurationService = DependencyInjection.get(ConfigurationService)) {
 		super('VerifyJWT')
 	}
 
@@ -63,7 +66,10 @@ class VerifyJWT extends BaseMiddleware<
 			})
 
 		try {
-			const user = await JWTVerify<ITokenJWTPayload>(token, process.env.JWT_SECRET)
+			const user = await JWTVerify<ITokenJWTPayload>(
+				token,
+				this.configurationService.configurations.tokens.access.secret,
+			)
 
 			next({
 				user: {

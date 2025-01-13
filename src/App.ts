@@ -21,4 +21,6 @@ Instance.useMiddlewares(new LogHttpRequest())
 
 Instance.useRouters(Router)
 
+Instance.addErrorHandler()
+
 export default Instance

@@ -6,23 +6,48 @@ import ConfigurationProvider from './Providers/ConfigurationProvider'
 import EnvironmentConfigurationProvider from './Providers/EnvironmentConfigurationProvider'
 
 export interface ApplicationConfiguration {
-	a: string
+	nodeEnv: string
+	port: number
+	databaseUrl: string
+	logLevel: string
+	tokens: {
+		access: {
+			secret: string
+			expire: number
+		}
+		refresh: {
+			secret: string
+			expire: number
+		}
+	}
+	rateLimiter: {
+		max: number
+		window: number
+	}
+	passwordHash: {
+		secret: string
+	}
+	corsOrigin: string[]
 }
 
 @Injectable(DependencyScope.Singleton)
 class ConfigurationService extends BaseService {
-	configurations: ApplicationConfiguration = {} as ApplicationConfiguration
+	public configurations: ApplicationConfiguration = {} as ApplicationConfiguration
 
 	constructor() {
 		super('ConfigurationService')
 	}
 
-	public async loadProviders() {
+	public async load() {
+		this.logger.info('Loading.')
+
 		const configurations = await Promise.all([
 			this.loadProvider(new EnvironmentConfigurationProvider()),
 		])
 
 		this.loadConfigurations(configurations)
+
+		this.logger.info('Loaded.')
 	}
 
 	public async loadProvider(

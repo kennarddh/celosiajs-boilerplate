@@ -1,4 +1,6 @@
-import { Injectable } from '@celosiajs/core'
+import { DependencyInjection, Injectable } from '@celosiajs/core'
+
+import ConfigurationService from 'Services/ConfigurationService/ConfigurationService'
 
 import TokenService from './TokenService'
 
@@ -9,9 +11,9 @@ export type IAccessTokenJWTPayload = {
 
 @Injectable()
 class AccessTokenService extends TokenService<IAccessTokenJWTPayload> {
-	constructor() {
-		super('AccessTokenService', process.env.JWT_SECRET, {
-			expiresIn: parseInt(process.env.JWT_EXPIRE, 10),
+	constructor(configurationService = DependencyInjection.get(ConfigurationService)) {
+		super('AccessTokenService', configurationService.configurations.tokens.access.secret, {
+			expiresIn: configurationService.configurations.tokens.access.expire,
 		})
 	}
 }

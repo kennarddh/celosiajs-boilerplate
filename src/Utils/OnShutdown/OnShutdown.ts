@@ -1,17 +1,19 @@
 import { DependencyInjection } from '@celosiajs/core'
 
 import DatabaseRepository from 'Repositories/DatabaseRepository'
-import { Port } from 'index'
+import ConfigurationService from 'Services/ConfigurationService/ConfigurationService'
 
 import Instance from 'App'
 
 import Logger from 'Utils/Logger/Logger'
 
 const OnShutdown = async (signal: string, exitCode = 0) => {
-	Logger.info(`${signal} signal received: Stopping server`, {
-		port: Port,
+	const configurationService = DependencyInjection.get(ConfigurationService)
+
+	Logger.info(`${signal} signal received: Stopping server.`, {
+		port: configurationService.configurations.port,
 		pid: process.pid,
-		env: process.env.NODE_ENV,
+		env: configurationService.configurations.nodeEnv,
 	})
 
 	if (Instance.isListening)
@@ -19,25 +21,25 @@ const OnShutdown = async (signal: string, exitCode = 0) => {
 			Instance.close()
 				.then(resolve)
 				.catch(() => {
-					Logger.info('Failed to close Instance')
+					Logger.info('Failed to close Instance.')
 				})
 		})
 
-	Logger.info('Server closed', {
-		port: Port,
+	Logger.info('Server closed.', {
+		port: configurationService.configurations.port,
 		pid: process.pid,
-		env: process.env.NODE_ENV,
+		env: configurationService.configurations.nodeEnv,
 	})
 
 	try {
 		await DependencyInjection.get(DatabaseRepository).disconnect()
 
-		Logger.info('Database connection closed')
+		Logger.info('Database connection closed.')
 	} catch (error) {
-		Logger.error('Failed to close database connection', error)
+		Logger.error('Failed to close database connection.', error)
 	}
 
-	Logger.info('Exiting')
+	Logger.info('Exiting.')
 
 	process.exit(exitCode)
 }

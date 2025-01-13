@@ -8,12 +8,16 @@ import {
 	EmptyObject,
 } from '@celosiajs/core'
 
+import ConfigurationService from 'Services/ConfigurationService/ConfigurationService'
 import TokenExpiredError from 'Services/Token/Errors/TokenExpiredError'
 import TokenVerifyError from 'Services/Token/Errors/TokenVerifyError'
 import UserService from 'Services/UserService/UserService'
 
 class RefreshToken extends BaseController {
-	constructor(private userService = DependencyInjection.get(UserService)) {
+	constructor(
+		private userService = DependencyInjection.get(UserService),
+		private configurationService = DependencyInjection.get(ConfigurationService),
+	) {
 		super('AuthRefreshToken')
 	}
 
@@ -29,7 +33,7 @@ class RefreshToken extends BaseController {
 				await this.userService.refreshToken(currentRefreshToken)
 
 			response.cookie('refreshToken', refreshToken, {
-				secure: process.env.NODE_ENV === 'production',
+				secure: this.configurationService.configurations.nodeEnv === 'production',
 				httpOnly: true,
 				sameSite: 'lax',
 			})
