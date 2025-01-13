@@ -22,14 +22,20 @@ jobs:
             - name: Setup Node
               uses: actions/setup-node@v4
               with:
-                  node-version: 21
+                  node-version: 22
                   cache: 'npm'
 
             - name: Clean Install
               run: npm ci
 
-            - name: Fix
-              run: npm run fix
+            - name: Prettier Fix
+              run: npm run prettier:fix
+
+            - name: Esint Fix
+              run: npx eslint --fix
+
+            - name: Types Check
+              run: npm run types:check
 
             - name: Commit
               uses: stefanzweifel/git-auto-commit-action@v5
