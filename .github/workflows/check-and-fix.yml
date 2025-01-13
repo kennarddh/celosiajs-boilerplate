@@ -28,6 +28,12 @@ jobs:
             - name: Clean Install
               run: npm ci
 
+            - name: PWD
+              run: pwd
+
+            - name: PWD
+              run: npm ls
+
             - name: Prettier Fix
               run: npm run prettier:fix
 
