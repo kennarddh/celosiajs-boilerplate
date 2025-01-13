@@ -8,14 +8,14 @@ import {
 	EmptyObject,
 } from '@celosiajs/core'
 
+import AuthService from 'Services/AuthService/AuthService'
 import ConfigurationService from 'Services/ConfigurationService/ConfigurationService'
 import TokenExpiredError from 'Services/Token/Errors/TokenExpiredError'
 import TokenVerifyError from 'Services/Token/Errors/TokenVerifyError'
-import UserService from 'Services/UserService/UserService'
 
 class RefreshToken extends BaseController {
 	constructor(
-		private userService = DependencyInjection.get(UserService),
+		private authService = DependencyInjection.get(AuthService),
 		private configurationService = DependencyInjection.get(ConfigurationService),
 	) {
 		super('AuthRefreshToken')
@@ -30,7 +30,7 @@ class RefreshToken extends BaseController {
 
 		try {
 			const { accessToken, refreshToken } =
-				await this.userService.refreshToken(currentRefreshToken)
+				await this.authService.refreshToken(currentRefreshToken)
 
 			response.cookie('refreshToken', refreshToken, {
 				secure: this.configurationService.configurations.nodeEnv === 'production',

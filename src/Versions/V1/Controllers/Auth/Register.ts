@@ -8,11 +8,11 @@ import {
 	EmptyObject,
 } from '@celosiajs/core'
 
-import UserExistsError from 'Services/UserService/Errors/UserExistsError'
-import UserService from 'Services/UserService/UserService'
+import AuthService from 'Services/AuthService/AuthService'
+import UserExistsError from 'Services/AuthService/Errors/UserExistsError'
 
 class Register extends BaseController {
-	constructor(private userService = DependencyInjection.get(UserService)) {
+	constructor(private authService = DependencyInjection.get(AuthService)) {
 		super('AuthRegister')
 	}
 
@@ -24,7 +24,7 @@ class Register extends BaseController {
 		const { username, name, password } = request.body
 
 		try {
-			const user = await this.userService.register(username, name, password)
+			const user = await this.authService.register(username, name, password)
 
 			return response.status(201).json({
 				errors: {},
