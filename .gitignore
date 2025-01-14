@@ -134,3 +134,6 @@ dist
 
 # Build
 /build
+
+# Secrets
+secrets/

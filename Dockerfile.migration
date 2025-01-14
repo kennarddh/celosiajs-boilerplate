@@ -10,4 +10,4 @@ RUN npm ci &&\
 
 COPY ./prisma/ ./prisma/
 
-ENTRYPOINT ["npx", "prisma", "migrate", "deploy"]
+ENTRYPOINT DATABASE_URL=$(cat $DATABASE_URL_FILE) npx prisma migrate deploy

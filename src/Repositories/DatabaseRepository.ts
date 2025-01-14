@@ -1,14 +1,19 @@
-import { DependencyScope, Injectable, Repository } from '@celosiajs/core'
+import { DependencyInjection, DependencyScope, Injectable, Repository } from '@celosiajs/core'
 
 import { PrismaClient } from '@prisma/client'
 import { PrismaClientInitializationError } from '@prisma/client/runtime/library'
+import ConfigurationService from 'Services/ConfigurationService/ConfigurationService'
 
 @Injectable(DependencyScope.Singleton)
 class DatabaseRepository extends Repository {
-	private static prisma = new PrismaClient()
+	private _prisma: PrismaClient
 
-	constructor() {
+	constructor(configurationService = DependencyInjection.get(ConfigurationService)) {
 		super('DatabaseRepository')
+
+		this._prisma = new PrismaClient({
+			datasourceUrl: configurationService.configurations.databaseUrl,
+		})
 	}
 
 	async connect() {
@@ -38,7 +43,7 @@ class DatabaseRepository extends Repository {
 	}
 
 	get prisma() {
-		return DatabaseRepository.prisma
+		return this._prisma
 	}
 
 	public async isReady() {
