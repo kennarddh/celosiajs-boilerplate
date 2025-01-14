@@ -25,7 +25,7 @@ COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
 
 COPY --from=builder /app/build ./
 
-HEALTHCHECK  --interval=10s --timeout=10s --start-period=1s --start-interval=5s --retries=5 \
+HEALTHCHECK --interval=30s --timeout=10s --start-period=1s --start-interval=5s --retries=5 \
   CMD wget --no-verbose --tries=1 --spider http://127.0.0.1:${PORT}/health || exit 1
 
 ENV NODE_ENV=production
