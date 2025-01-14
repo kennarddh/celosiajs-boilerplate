@@ -4,6 +4,8 @@ import { DependencyScope, Injectable, Service } from '@celosiajs/core'
 
 import { mergician } from 'mergician'
 
+import { DeepPartialAndUndefined } from 'Types/Types'
+
 import ConfigurationProvider from './Providers/ConfigurationProvider'
 import EnvironmentConfigurationProvider from './Providers/EnvironmentConfigurationProvider'
 
@@ -80,12 +82,14 @@ class ConfigurationService extends Service {
 	}
 
 	public async loadProvider(
-		configurationProvider: ConfigurationProvider<ApplicationConfiguration>,
+		configurationProvider: ConfigurationProvider<
+			DeepPartialAndUndefined<ApplicationConfiguration>
+		>,
 	) {
 		return await configurationProvider.load()
 	}
 
-	public loadConfigurations(configurations: ApplicationConfiguration[]) {
+	public loadConfigurations(configurations: DeepPartialAndUndefined<ApplicationConfiguration>[]) {
 		this.configurations = mergician(
 			this.configurations,
 			...configurations,
