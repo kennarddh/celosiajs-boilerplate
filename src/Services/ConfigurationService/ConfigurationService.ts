@@ -37,10 +37,16 @@ export type ApplicationConfiguration = z.infer<typeof ApplicationConfigurationSc
 
 @Injectable(DependencyScope.Singleton)
 class ConfigurationService extends Service {
+	protected _loaded = false
+
 	public configurations: ApplicationConfiguration = {} as ApplicationConfiguration
 
 	constructor() {
 		super('ConfigurationService')
+	}
+
+	public get loaded() {
+		return this._loaded
 	}
 
 	public async load() {
@@ -64,6 +70,8 @@ class ConfigurationService extends Service {
 		}
 
 		this.configurations = parseResult.data
+
+		this._loaded = true
 
 		this.logger.info('Loaded.')
 	}

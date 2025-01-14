@@ -40,6 +40,16 @@ class DatabaseRepository extends Repository {
 	get prisma() {
 		return DatabaseRepository.prisma
 	}
+
+	public async isReady() {
+		try {
+			await this.prisma.$queryRaw`SELECT 1`
+
+			return true
+		} catch {
+			return false
+		}
+	}
 }
 
 export default DatabaseRepository
