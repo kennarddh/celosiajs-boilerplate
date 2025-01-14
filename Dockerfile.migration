@@ -1,0 +1,13 @@
+FROM node:lts-alpine
+
+WORKDIR /app
+
+COPY package.json package-lock.json ./
+
+RUN npm ci &&\
+	npm cache clean --force &&\
+	rm -rf /root/.npm
+
+COPY ./prisma/ ./prisma/
+
+ENTRYPOINT ["npx", "prisma", "migrate", "deploy"]
