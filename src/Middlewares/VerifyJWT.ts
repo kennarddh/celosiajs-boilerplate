@@ -35,7 +35,7 @@ class VerifyJWT<Optional extends boolean> extends BaseMiddleware<
 		_: EmptyObject,
 		request: CelosiaRequest,
 		response: CelosiaResponse,
-		next: NextFunction<JWTVerifiedData>,
+		next: NextFunction<Optional extends true ? OptionalJWTVerifiedData : JWTVerifiedData>,
 	) {
 		const accessTokenHeader = request.header('Access-Token')
 
