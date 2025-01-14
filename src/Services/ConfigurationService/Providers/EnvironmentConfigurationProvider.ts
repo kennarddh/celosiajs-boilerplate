@@ -12,7 +12,6 @@ class EnvironmentConfigurationProvider extends ConfigurationProvider<Application
 			host: process.env.HOST,
 			port: parseInt(process.env.PORT, 10),
 			databaseUrl: process.env.DATABASE_URL,
-			logLevel: process.env.LOG_LEVEL,
 			tokens: {
 				access: {
 					secret: process.env.ACCESS_TOKEN_SECRET,
@@ -31,6 +30,10 @@ class EnvironmentConfigurationProvider extends ConfigurationProvider<Application
 				secret: process.env.PASSWORD_HASH_SECRET,
 			},
 			corsOrigin: process.env.CORS_ORIGIN.split(','),
+			logging: {
+				level: process.env.LOG_LEVEL,
+				path: process.env.LOG_PATH,
+			},
 		}
 	}
 }

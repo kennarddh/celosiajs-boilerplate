@@ -6,12 +6,10 @@ import WinstonDailyRotateFile from 'winston-daily-rotate-file'
 import { Globals } from '@celosiajs/core'
 import { CelosiaFormat, FilterLevel } from '@celosiajs/logging'
 
-import GetRootDirectory from 'Utils/GetRootDirectory'
-
 // This file use process.env because the ConfigurationService itself require Logger.
 // Preventing cyclical import.
 
-const logsRootDirectory = path.resolve(GetRootDirectory(), 'Logs')
+const logsRootDirectory = path.resolve(process.env.LOG_PATH)
 
 const LoggerFormat = [winston.format.ms(), CelosiaFormat({ inspectOptions: { depth: Infinity } })]
 

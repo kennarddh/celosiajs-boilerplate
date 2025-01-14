@@ -37,6 +37,8 @@ services:
             dockerfile: ./Dockerfile
         stop_signal: SIGTERM
         stop_grace_period: 30s
+        volumes:
+            - server-logs:/app/Logs/
         networks:
             - server
         ports:
@@ -50,6 +52,7 @@ services:
 
 volumes:
     database:
+    server-logs:
 
 networks:
     server:

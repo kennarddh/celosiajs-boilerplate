@@ -12,7 +12,6 @@ export const ApplicationConfigurationSchema = z.object({
 	host: z.string(),
 	port: z.number(),
 	databaseUrl: z.string(),
-	logLevel: z.string(),
 	tokens: z.object({
 		access: z.object({
 			secret: z.string(),
@@ -31,6 +30,10 @@ export const ApplicationConfigurationSchema = z.object({
 		secret: z.string(),
 	}),
 	corsOrigin: z.string().array(),
+	logging: z.object({
+		level: z.string(),
+		path: z.string(),
+	}),
 })
 
 export type ApplicationConfiguration = z.infer<typeof ApplicationConfigurationSchema>

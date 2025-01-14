@@ -11,9 +11,11 @@ declare global {
 			REFRESH_TOKEN_EXPIRE: string
 			RATE_LIMITER_MAX: string
 			RATE_LIMITER_WINDOW: string
-			LOG_LEVEL: string
 			PASSWORD_HASH_SECRET: string
 			CORS_ORIGIN: string
+
+			LOG_LEVEL: string
+			LOG_PATH: string
 		}
 	}
 }
