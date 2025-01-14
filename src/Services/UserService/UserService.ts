@@ -1,4 +1,4 @@
-import { Service, DependencyInjection, Injectable } from '@celosiajs/core'
+import { DependencyInjection, Injectable, Service } from '@celosiajs/core'
 
 import UserRepository from 'Repositories/UserRepository'
 

@@ -9,6 +9,7 @@ import EnvironmentConfigurationProvider from './Providers/EnvironmentConfigurati
 
 export const ApplicationConfigurationSchema = z.object({
 	nodeEnv: z.string(),
+	host: z.string(),
 	port: z.number(),
 	databaseUrl: z.string(),
 	logLevel: z.string(),

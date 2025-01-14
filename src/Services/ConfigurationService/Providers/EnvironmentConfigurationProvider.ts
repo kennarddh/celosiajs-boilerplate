@@ -9,6 +9,7 @@ class EnvironmentConfigurationProvider extends ConfigurationProvider<Application
 	async load(): Promise<ApplicationConfiguration> {
 		return {
 			nodeEnv: process.env.NODE_ENV,
+			host: process.env.HOST,
 			port: parseInt(process.env.PORT, 10),
 			databaseUrl: process.env.DATABASE_URL,
 			logLevel: process.env.LOG_LEVEL,

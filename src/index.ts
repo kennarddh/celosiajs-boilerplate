@@ -18,7 +18,10 @@ const { default: OnShutdown } = await import('Utils/OnShutdown/OnShutdown')
 
 await Promise.all([DependencyInjection.get(DatabaseRepository).connect()])
 
-await Instance.listen({ port: configurationService.configurations.port, host: '0.0.0.0' })
+await Instance.listen({
+	port: configurationService.configurations.port,
+	host: configurationService.configurations.host,
+})
 
 Logger.info('Server running.', {
 	port: configurationService.configurations.port,
