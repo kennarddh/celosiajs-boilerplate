@@ -1,9 +1,9 @@
-import { BaseService, DependencyInjection, Injectable } from '@celosiajs/core'
+import { Service, DependencyInjection, Injectable } from '@celosiajs/core'
 
 import UserRepository from 'Repositories/UserRepository'
 
 @Injectable()
-class UserService extends BaseService {
+class UserService extends Service {
 	constructor(private userRepository = DependencyInjection.get(UserRepository)) {
 		super('UserService')
 	}

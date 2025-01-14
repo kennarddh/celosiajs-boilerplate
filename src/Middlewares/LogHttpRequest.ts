@@ -1,10 +1,10 @@
 import { IncomingHttpHeaders, OutgoingHttpHeaders } from 'http'
 
 import {
-	BaseMiddleware,
 	CelosiaRequest,
 	CelosiaResponse,
 	EmptyObject,
+	Middleware,
 	NextFunction,
 } from '@celosiajs/core'
 
@@ -14,7 +14,7 @@ const FilterHeaders = (headers: IncomingHttpHeaders | OutgoingHttpHeaders) => {
 	return newHeaders
 }
 
-class LogHttpRequest extends BaseMiddleware {
+class LogHttpRequest extends Middleware {
 	constructor() {
 		super('LogHttpRequest')
 	}

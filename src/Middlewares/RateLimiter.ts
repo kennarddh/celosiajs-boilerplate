@@ -1,9 +1,9 @@
 import {
-	BaseMiddleware,
 	CelosiaRequest,
 	CelosiaResponse,
 	DependencyInjection,
 	EmptyObject,
+	Middleware,
 	NextFunction,
 } from '@celosiajs/core'
 
@@ -12,7 +12,7 @@ import { RateLimiterAbstract, RateLimiterMemory, RateLimiterRes } from 'rate-lim
 
 import { JWTVerifiedData } from './VerifyJWT'
 
-class RateLimiter extends BaseMiddleware {
+class RateLimiter extends Middleware {
 	static ipRateLimiter: RateLimiterMemory
 	static userRateLimiter: RateLimiterMemory
 

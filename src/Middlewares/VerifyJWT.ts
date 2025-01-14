@@ -1,8 +1,8 @@
 import {
-	BaseMiddleware,
 	CelosiaRequest,
 	CelosiaResponse,
 	EmptyObject,
+	Middleware,
 	NextFunction,
 } from '@celosiajs/core'
 
@@ -18,7 +18,7 @@ export interface JWTVerifiedData {
 
 export type OptionalJWTVerifiedData = Partial<JWTVerifiedData>
 
-class VerifyJWT<Optional extends boolean> extends BaseMiddleware<
+class VerifyJWT<Optional extends boolean> extends Middleware<
 	CelosiaRequest,
 	CelosiaResponse,
 	EmptyObject,

@@ -1,6 +1,6 @@
 import { z } from 'zod'
 
-import { BaseService, DependencyScope, Injectable } from '@celosiajs/core'
+import { DependencyScope, Injectable, Service } from '@celosiajs/core'
 
 import { mergician } from 'mergician'
 
@@ -35,7 +35,7 @@ export const ApplicationConfigurationSchema = z.object({
 export type ApplicationConfiguration = z.infer<typeof ApplicationConfigurationSchema>
 
 @Injectable(DependencyScope.Singleton)
-class ConfigurationService extends BaseService {
+class ConfigurationService extends Service {
 	public configurations: ApplicationConfiguration = {} as ApplicationConfiguration
 
 	constructor() {

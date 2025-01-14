@@ -1,6 +1,6 @@
 import {
-	BaseController,
 	CelosiaResponse,
+	Controller,
 	ControllerRequest,
 	DependencyInjection,
 } from '@celosiajs/core'
@@ -9,7 +9,7 @@ import UserService from 'Services/UserService/UserService'
 
 import { JWTVerifiedData } from 'Middlewares/VerifyJWT'
 
-class GetUserData extends BaseController {
+class GetUserData extends Controller {
 	constructor(private userService = DependencyInjection.get(UserService)) {
 		super('AuthGetUserData')
 	}

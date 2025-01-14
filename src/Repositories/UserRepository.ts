@@ -1,4 +1,4 @@
-import { BaseRepository, DependencyInjection, Injectable, RepositoryError } from '@celosiajs/core'
+import { DependencyInjection, Injectable, Repository, RepositoryError } from '@celosiajs/core'
 
 import DatabaseRepository from './DatabaseRepository'
 
@@ -11,7 +11,7 @@ export interface User {
 }
 
 @Injectable()
-class UserRepository extends BaseRepository {
+class UserRepository extends Repository {
 	constructor(private databaseRepository = DependencyInjection.get(DatabaseRepository)) {
 		super('UserRepository')
 	}

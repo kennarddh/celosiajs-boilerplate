@@ -1,8 +1,8 @@
 import { z } from 'zod'
 
 import {
-	BaseController,
 	CelosiaResponse,
+	Controller,
 	ControllerRequest,
 	DependencyInjection,
 	EmptyObject,
@@ -13,7 +13,7 @@ import ConfigurationService from 'Services/ConfigurationService/ConfigurationSer
 import TokenExpiredError from 'Services/Token/Errors/TokenExpiredError'
 import TokenVerifyError from 'Services/Token/Errors/TokenVerifyError'
 
-class RefreshToken extends BaseController {
+class RefreshToken extends Controller {
 	constructor(
 		private authService = DependencyInjection.get(AuthService),
 		private configurationService = DependencyInjection.get(ConfigurationService),

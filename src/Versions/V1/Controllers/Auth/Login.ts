@@ -1,8 +1,8 @@
 import { z } from 'zod'
 
 import {
-	BaseController,
 	CelosiaResponse,
+	Controller,
 	ControllerRequest,
 	DependencyInjection,
 	EmptyObject,
@@ -12,7 +12,7 @@ import AuthService from 'Services/AuthService/AuthService'
 import UnauthorizedError from 'Services/AuthService/Errors/UnauthorizedError'
 import ConfigurationService from 'Services/ConfigurationService/ConfigurationService'
 
-class Login extends BaseController {
+class Login extends Controller {
 	constructor(
 		private authService = DependencyInjection.get(AuthService),
 		private configurationService = DependencyInjection.get(ConfigurationService),

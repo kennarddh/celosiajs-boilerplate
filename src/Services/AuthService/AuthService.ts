@@ -1,4 +1,4 @@
-import { BaseService, DependencyInjection, Injectable } from '@celosiajs/core'
+import { DependencyInjection, Injectable, Service } from '@celosiajs/core'
 
 import UserRepository from 'Repositories/UserRepository'
 import PasswordHashService from 'Services/PasswordHashService/PasswordHashService'
@@ -9,7 +9,7 @@ import UnauthorizedError from './Errors/UnauthorizedError'
 import UserExistsError from './Errors/UserExistsError'
 
 @Injectable()
-class AuthService extends BaseService {
+class AuthService extends Service {
 	constructor(
 		private userRepository = DependencyInjection.get(UserRepository),
 		private passwordHashService = DependencyInjection.get(PasswordHashService),

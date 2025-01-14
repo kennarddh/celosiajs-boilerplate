@@ -1,11 +1,11 @@
 import argon2 from 'argon2'
 
-import { BaseService, DependencyInjection, Injectable, ServiceError } from '@celosiajs/core'
+import { DependencyInjection, Injectable, Service, ServiceError } from '@celosiajs/core'
 
 import ConfigurationService from 'Services/ConfigurationService/ConfigurationService'
 
 @Injectable()
-class PasswordHashService extends BaseService {
+class PasswordHashService extends Service {
 	constructor(private configurationService = DependencyInjection.get(ConfigurationService)) {
 		super('PasswordHashService')
 	}

@@ -1,8 +1,8 @@
 import { z } from 'zod'
 
 import {
-	BaseController,
 	CelosiaResponse,
+	Controller,
 	ControllerRequest,
 	DependencyInjection,
 	EmptyObject,
@@ -11,7 +11,7 @@ import {
 import AuthService from 'Services/AuthService/AuthService'
 import UserExistsError from 'Services/AuthService/Errors/UserExistsError'
 
-class Register extends BaseController {
+class Register extends Controller {
 	constructor(private authService = DependencyInjection.get(AuthService)) {
 		super('AuthRegister')
 	}

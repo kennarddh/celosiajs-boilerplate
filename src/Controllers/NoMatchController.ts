@@ -1,6 +1,6 @@
-import { BaseController, CelosiaRequest, CelosiaResponse, EmptyObject } from '@celosiajs/core'
+import { CelosiaRequest, CelosiaResponse, Controller, EmptyObject } from '@celosiajs/core'
 
-class NoMatchController extends BaseController {
+class NoMatchController extends Controller {
 	constructor() {
 		super('NoMatchController')
 	}

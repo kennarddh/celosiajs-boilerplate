@@ -1,12 +1,12 @@
 import jwt from 'jsonwebtoken'
 
-import { BaseService, JSONObject } from '@celosiajs/core'
+import { JSONObject, Service } from '@celosiajs/core'
 
 import TokenExpiredError from './Errors/TokenExpiredError'
 import TokenSignError from './Errors/TokenSignError'
 import TokenVerifyError from './Errors/TokenVerifyError'
 
-abstract class TokenService<T extends JSONObject> extends BaseService {
+abstract class TokenService<T extends JSONObject> extends Service {
 	constructor(
 		loggingSource: string,
 		private secret: jwt.Secret,
