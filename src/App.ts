@@ -5,7 +5,7 @@ import helmet from 'helmet'
 import { CelosiaInstance, ExpressMiddlewareCompat, NoInputMiddleware } from '@celosiajs/core'
 
 import CORS from 'Middlewares/CORS'
-import LogHttpRequest from 'Middlewares/LogHttpRequest'
+import LogHTTPRequest from 'Middlewares/LogHTTPRequest'
 
 import Router from 'Routes'
 
@@ -17,7 +17,7 @@ Instance.useMiddlewares(
 )
 Instance.useMiddlewares(new (ExpressMiddlewareCompat<NoInputMiddleware>('Helmet', helmet()))())
 Instance.useMiddlewares(new CORS())
-Instance.useMiddlewares(new LogHttpRequest())
+Instance.useMiddlewares(new LogHTTPRequest())
 
 Instance.useRouters(Router)
 
