@@ -14,9 +14,9 @@ const FilterHeaders = (headers: IncomingHttpHeaders | OutgoingHttpHeaders) => {
 	return newHeaders
 }
 
-class LogHttpRequest extends Middleware {
+class LogHTTPRequest extends Middleware {
 	constructor() {
-		super('LogHttpRequest')
+		super('LogHTTPRequest')
 	}
 
 	public override async index(
@@ -25,7 +25,7 @@ class LogHttpRequest extends Middleware {
 		response: CelosiaResponse,
 		next: NextFunction,
 	) {
-		const requestStart = Date.now()
+		const requestStart = process.hrtime.bigint()
 
 		response.expressResponse.on('finish', () => {
 			const {
@@ -38,9 +38,14 @@ class LogHttpRequest extends Middleware {
 
 			const { statusCode, statusMessage } = response
 
+			const requestEnd = process.hrtime.bigint()
+
+			// Nanoseconds to milliseconds
+			const requestProcessingTime = (requestEnd - requestStart) / 1_000_000n
+
 			this.logger.http('Incoming request.', {
 				requestId: request.id,
-				processingTime: Date.now() - requestStart,
+				processingTime: requestProcessingTime,
 				headers: FilterHeaders(headers),
 				httpVersion,
 				method,
@@ -58,4 +63,4 @@ class LogHttpRequest extends Middleware {
 	}
 }
 
-export default LogHttpRequest
+export default LogHTTPRequest
