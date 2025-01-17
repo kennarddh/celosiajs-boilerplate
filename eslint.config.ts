@@ -12,10 +12,10 @@ export default tsEslint.config(
 	eslintPluginImportX.flatConfigs.recommended,
 	eslintPluginImportX.flatConfigs.typescript,
 	security.configs.recommended,
-	...tsEslint.configs.strictTypeChecked,
-	...tsEslint.configs.stylisticTypeChecked,
+	tsEslint.configs.strictTypeChecked,
+	tsEslint.configs.stylisticTypeChecked,
 	prettierRecommended,
-	{ ignores: ['**/build/**/*'] },
+	{ ignores: ['build/**/*'] },
 	{
 		languageOptions: {
 			parser: tsEslint.parser as FlatConfig.Parser,
