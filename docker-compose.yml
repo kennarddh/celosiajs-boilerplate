@@ -10,7 +10,12 @@ services:
             - POSTGRES_USER=root
             - POSTGRES_DB=celosiajs_boilerplate
         healthcheck:
-            test: ['CMD', 'pg_isready', '-d', 'celosiajs_boilerplate']
+            test: ['CMD-SHELL', 'pg_isready -d $$POSTGRES_DB']
+            interval: 30s
+            timeout: 20s
+            start_period: 1s
+            start_interval: 5s
+            retries: 5
         networks:
             - app
         ports:
