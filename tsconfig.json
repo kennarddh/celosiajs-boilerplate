@@ -40,7 +40,7 @@
 			"Types/*": ["./Types/*"],
 			"Utils/*": ["./Utils/*"],
 			"Versions/*": ["./Versions/*"]
-		},
+		}
 	},
 	"include": ["src", "eslint.config.ts"]
 }
