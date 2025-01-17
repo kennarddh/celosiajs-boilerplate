@@ -35,7 +35,7 @@
 		"helmet": "^8.0.0",
 		"jsonwebtoken": "^9.0.2",
 		"mergician": "^2.0.2",
-		"rate-limiter-flexible": "^5.0.4",
+		"rate-limiter-flexible": "^5.0.5",
 		"winston": "^3.17.0",
 		"winston-daily-rotate-file": "^5.0.0",
 		"zod": "^3.24.1"
@@ -49,16 +49,16 @@
 		"@types/eslint__js": "^8.42.3",
 		"@types/eslint-plugin-security": "^3.0.0",
 		"@types/jsonwebtoken": "^9.0.7",
-		"@types/node": "^22.10.5",
-		"@typescript-eslint/utils": "^8.19.1",
+		"@types/node": "^22.10.7",
+		"@typescript-eslint/utils": "^8.20.0",
 		"concurrently": "^9.1.2",
 		"cross-env": "^7.0.3",
-		"esbuild": "^0.23.0",
+		"esbuild": "^0.24.2",
 		"eslint": "^9.18.0",
-		"eslint-config-prettier": "^9.1.0",
+		"eslint-config-prettier": "^10.0.1",
 		"eslint-import-resolver-typescript": "^3.7.0",
 		"eslint-plugin-import-x": "^4.6.1",
-		"eslint-plugin-prettier": "^5.2.1",
+		"eslint-plugin-prettier": "^5.2.2",
 		"eslint-plugin-security": "^3.0.1",
 		"globals": "^15.14.0",
 		"jiti": "^2.4.2",
@@ -67,6 +67,6 @@
 		"rimraf": "^6.0.1",
 		"tsx": "^4.19.2",
 		"typescript": "^5.7.3",
-		"typescript-eslint": "^8.19.1"
+		"typescript-eslint": "^8.20.0"
 	}
 }
