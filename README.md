@@ -20,16 +20,17 @@ The environment variables can be found and modified in the `.env` file. See `.en
 
 ```
 src/
+ |--Controllers/          # Controllers
+ |--Middlewares/          # Middlewares
+ |--Repositories/         # Repositories
+ |--Routes/               # Main routes
+ |--Services/             # Repositories
+ |--Types/                # Typescript types definition
+ |--Utils/                # Utility classes and functions
  |--Versions/             # Versions list
  |  |--V{/\d+/}/          # Version (Example: V1, V2, V3)
  |  |  |--Controllers/    # Controllers
  |  |  |--Routes/         # Routes
- |--Controllers/          # Controllers
- |--Routes/               # Main routes
- |--Database/             # Database configuration
- |--Middlewares/          # Middlewares
- |--Utils/                # Utility classes and functions
- |--Types/                # Typescript types definition
  |--App.ts                # CelosiaJS instance
  |--index.ts              # Entry
 ```
@@ -84,14 +85,6 @@ Removes all logs.
 npm run clean:logs
 ```
 
-### Lint Build
-
-Transpile [`eslint.config.ts`](./eslint.config.ts) into eslint.config.js because eslint cannot read Typecript config.
-
-```bash
-npm run lint:build
-```
-
 ### Lint Check
 
 Finds linting errors.
@@ -108,7 +101,7 @@ Fix linting errors.
 npm run lint:fix
 ```
 
-### Prettier check
+### Prettier Check
 
 Check the code formatting.
 
@@ -116,7 +109,7 @@ Check the code formatting.
 npm run prettier:check
 ```
 
-### Prettier fix
+### Prettier Fix
 
 Fix the code formatting.
 
