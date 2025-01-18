@@ -140,7 +140,7 @@ dist
 .prettierrc
 .gitignore
 .env.example
-.eslint.config.ts
+eslint.config.ts
 *.md
 
 .vscode/
@@ -148,3 +148,5 @@ dist
 
 docker-compose.yml
 docker-compose.production.yml
+
+secrets/
