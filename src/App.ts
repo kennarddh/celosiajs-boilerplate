@@ -4,10 +4,10 @@ import helmet from 'helmet'
 
 import { CelosiaInstance, ExpressMiddlewareCompat, NoInputMiddleware } from '@celosiajs/core'
 
+import Router from 'Routes'
+
 import CORS from 'Middlewares/CORS'
 import LogHTTPRequest from 'Middlewares/LogHTTPRequest'
-
-import Router from 'Routes'
 
 const Instance = new CelosiaInstance({ strict: true })
 

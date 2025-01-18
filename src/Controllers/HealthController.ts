@@ -7,6 +7,7 @@ import {
 } from '@celosiajs/core'
 
 import DatabaseRepository from 'Repositories/DatabaseRepository'
+
 import ConfigurationService from 'Services/ConfigurationService/ConfigurationService'
 
 class HealthController extends Controller {

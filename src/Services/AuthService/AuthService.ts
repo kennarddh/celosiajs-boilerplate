@@ -1,6 +1,7 @@
 import { DependencyInjection, Injectable, Service } from '@celosiajs/core'
 
 import UserRepository from 'Repositories/UserRepository'
+
 import PasswordHashService from 'Services/PasswordHashService/PasswordHashService'
 import AccessTokenService, { AccessTokenJWTPayload } from 'Services/Token/AccessTokenService'
 import RefreshTokenService, { RefreshTokenJWTPayload } from 'Services/Token/RefreshTokenService'

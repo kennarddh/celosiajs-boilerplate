@@ -7,8 +7,9 @@ import {
 	NextFunction,
 } from '@celosiajs/core'
 
-import ConfigurationService from 'Services/ConfigurationService/ConfigurationService'
 import { RateLimiterAbstract, RateLimiterMemory, RateLimiterRes } from 'rate-limiter-flexible'
+
+import ConfigurationService from 'Services/ConfigurationService/ConfigurationService'
 
 import { JWTVerifiedData } from './VerifyJWT'
 

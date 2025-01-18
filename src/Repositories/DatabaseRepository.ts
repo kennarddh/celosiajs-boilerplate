@@ -2,6 +2,7 @@ import { DependencyInjection, DependencyScope, Injectable, Repository } from '@c
 
 import { PrismaClient } from '@prisma/client'
 import { PrismaClientInitializationError } from '@prisma/client/runtime/library'
+
 import ConfigurationService from 'Services/ConfigurationService/ConfigurationService'
 
 @Injectable(DependencyScope.Singleton)

@@ -1,7 +1,8 @@
 import { DependencyInjection, ExpressMiddlewareCompat, NoInputMiddleware } from '@celosiajs/core'
 
-import ConfigurationService from 'Services/ConfigurationService/ConfigurationService'
 import cors from 'cors'
+
+import ConfigurationService from 'Services/ConfigurationService/ConfigurationService'
 
 const configurationService = DependencyInjection.get(ConfigurationService)
 

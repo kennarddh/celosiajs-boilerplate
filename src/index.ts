@@ -1,8 +1,8 @@
 import { DependencyInjection } from '@celosiajs/core'
 
-import ConfigurationService from 'Services/ConfigurationService/ConfigurationService'
-
 import Logger from 'Utils/Logger/Logger'
+
+import ConfigurationService from 'Services/ConfigurationService/ConfigurationService'
 
 const configurationService = DependencyInjection.get(ConfigurationService)
 

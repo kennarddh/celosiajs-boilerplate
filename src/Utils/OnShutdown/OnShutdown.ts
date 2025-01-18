@@ -1,11 +1,12 @@
 import { DependencyInjection } from '@celosiajs/core'
 
-import DatabaseRepository from 'Repositories/DatabaseRepository'
-import ConfigurationService from 'Services/ConfigurationService/ConfigurationService'
-
 import Instance from 'App'
 
 import Logger from 'Utils/Logger/Logger'
+
+import DatabaseRepository from 'Repositories/DatabaseRepository'
+
+import ConfigurationService from 'Services/ConfigurationService/ConfigurationService'
 
 const OnShutdown = async (signal: string | undefined, exitCode = 0) => {
 	const configurationService = DependencyInjection.get(ConfigurationService)

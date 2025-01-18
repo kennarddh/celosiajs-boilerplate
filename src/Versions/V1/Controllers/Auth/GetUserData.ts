@@ -5,9 +5,9 @@ import {
 	DependencyInjection,
 } from '@celosiajs/core'
 
-import UserService from 'Services/UserService/UserService'
-
 import { JWTVerifiedData } from 'Middlewares/VerifyJWT'
+
+import UserService from 'Services/UserService/UserService'
 
 class GetUserData extends Controller {
 	constructor(private userService = DependencyInjection.get(UserService)) {
