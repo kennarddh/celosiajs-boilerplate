@@ -26,7 +26,7 @@
 	"author": "kennarddh",
 	"license": "MIT",
 	"dependencies": {
-		"@celosiajs/core": "^0.0.1-alpha.28",
+		"@celosiajs/core": "^0.0.1-alpha.30",
 		"@celosiajs/logging": "^0.0.1-alpha.26",
 		"@prisma/client": "^6.2.1",
 		"argon2": "^0.41.1",
